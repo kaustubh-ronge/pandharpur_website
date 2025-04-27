@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/header";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
+import { Toaster } from "sonner"; // <-- Import Toaster
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,34 +15,34 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider appearance={{
-      
-    }}>
-
+    <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
-        <body
-          className={`${inter.className}`}
-        >
+        <body suppressHydrationWarning className={inter.className}>
           <ThemeProvider
             attribute="class"
             defaultTheme="light"
             enableSystem
             disableTransitionOnChange
           >
-            {/* HEADER  */}
+            {/* HEADER */}
             <Header />
 
             <main className="min-h-screen">{children}</main>
 
-            {/* footer  */}
-            <footer className="bg-muted/50 py-12">
+            {/* FOOTER */}
+            <footer className="bg-muted/50 py-12 !mt-10">
               <div className="container mx-auto px-4 text-center text-gray-200">
-               
+                <p>Made By TY students</p>
               </div>
             </footer>
+
+            {/* TOAST NOTIFICATIONS */}
+            <Toaster position="top-center" richColors /> {/* <- Add this */}
           </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>
   );
 }
+
+
