@@ -1,61 +1,133 @@
+'use client'
 
-'use client';
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
-import Image from "next/image";
-import Link from "next/link";
-import React from "react";
-import { Button } from "./ui/button";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { motion } from "framer-motion"
+import { Button } from "@/components/ui/button"
 import {
-    ChevronDown,
-    FileText,
-    GraduationCap,
-    LayoutDashboard,
-    PenBox,
-    StarsIcon,
-} from "lucide-react";
+  Home,
+  MapPin,
+  CalendarDays,
+  BookOpen,
+  Languages,
+  Menu,
+  ChevronDown
+} from "lucide-react"
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
-const Header = () => {
-    return (
-        <header className="fixed top-0 w-full border-b bg-background/80 backdrop-blur-md z-50 supports-[backdrop-filter]:bg-background/60">
-            <nav className="container mx-auto px-4 pt-2 h-16 flex align-items-center justify-between">
-                
-                logo here 
+export function Header() {
+  const pathname = usePathname()
+  const navItems = [
+    { name: "Home", href: "/", icon: <Home className="h-5 w-5" /> },
+    { name: "Temples", href: "/temples", icon: <MapPin className="h-5 w-5" /> },
+    { name: "Festivals", href: "/festivals", icon: <CalendarDays className="h-5 w-5" /> },
+    { name: "Guide", href: "/guide", icon: <BookOpen className="h-5 w-5" /> }
+  ]
 
-                <div className="flex items-center space-x-2 md:space-x-4">
-                    <SignedIn>
+  return (
+    <header className="sticky top-0 z-50 w-full border-b bg-white/90 backdrop-blur-md shadow-md pb-2">
+      <div className="container flex h-16 items-center justify-between px-6 md:px-8 mt-2">
+        {/* Animated Logo */}
+        <Link href="/" className="flex items-center gap-2 pl-5">
+         
+           
+            <span className="text-2xl font-extrabold text-gray-900">
+              पंढरपुर
+            </span>
+          
+        </Link>
 
-                    </SignedIn>
-                    <SignedOut>
-                        <SignInButton>
-                            <Button className='cursor-pointer' variant='outline'>Sign In</Button>
-                        </SignInButton>
-                    </SignedOut>
-                    <SignedIn>
-                        <UserButton
-                            appearance={{
-                                elements: {
-                                    avatarBox: 'w-10 h-10',
-                                    userButtonPopoverCard: 'shadow-xl',
-                                    userPreviewMainIdentifier: 'font-semibold',
-                                },
-                            }}
-                            afterSignOutUrl="/"
-                        />
-                    </SignedIn>
-                </div>
-            </nav>
-        </header>
-    );
-};
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-10 ml-20">
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`flex items-center gap-2 text-sm font-medium text-gray-700 transition-colors hover:text-orange-600 ${
+                pathname === item.href ? "text-orange-600" : ""
+              }`}
+            >
+              {item.icon}
+              {item.name}
+            </Link>
+          ))}
+        </nav>
 
-export default Header;
+        {/* Mobile Navigation */}
+        <Sheet>
+          <SheetTrigger asChild className="md:hidden">
+            <Button variant="ghost" size="icon" className="text-gray-700 hover:bg-gray-100">
+              <Menu className="h-5 w-5" />
+              <span className="sr-only">Toggle Menu</span>
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right" className="w-[300px] bg-white shadow-lg rounded-lg">
+            <div className="flex flex-col gap-4 pt-6 px-4">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`flex items-center gap-3 py-2 px-4 rounded-md text-gray-800 hover:bg-gray-100 ${
+                    pathname === item.href ? "bg-orange-100 text-orange-600" : ""
+                  }`}
+                >
+                  {item.icon}
+                  {item.name}
+                </Link>
+              ))}
+            </div>
+          </SheetContent>
+        </Sheet>
 
+        {/* Right side controls */}
+        <div className="flex items-center gap-4 pl-10">
+          {/* Language Selector */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="sm" className="gap-1 text-gray-700 hover:bg-gray-100">
+                <Languages className="h-4 w-4" />
+                <span className="hidden sm:inline">Language</span>
+                <ChevronDown className="h-3 w-3 opacity-50" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {["English", "हिंदी", "मराठी", "ಕನ್ನಡ"].map((lang) => (
+                <DropdownMenuItem key={lang}>
+                  {lang}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
 
+          {/* Auth Buttons */}
+          <SignedIn>
+            <UserButton
+              appearance={{
+                elements: {
+                  avatarBox: "h-9 w-9 rounded-full ",
+                  userButtonPopoverCard: "shadow-xl rounded-lg",
+                  userPreviewMainIdentifier: "font-semibold text-orange-600",
+                }
+              }}
+              afterSignOutUrl="/"
+            />
+          </SignedIn>
+          <SignedOut>
+            <SignInButton>
+              <Button variant="outline" className="border-orange-500 text-orange-600 hover:bg-orange-50">
+                Sign In
+              </Button>
+            </SignInButton>
+          </SignedOut>
+        </div>
+      </div>
+    </header>
+  )
+}

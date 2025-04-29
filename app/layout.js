@@ -1,10 +1,10 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import Header from "@/components/header";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { Toaster } from "sonner"; // <-- Import Toaster
+import { Header } from "@/components/header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -46,3 +46,58 @@ export default function RootLayout({ children }) {
 }
 
 
+
+// import { GeistSans, GeistMono } from 'geist/font'
+// import { SpeedInsights } from "@vercel/speed-insights/next"
+// import { Analytics } from "@vercel/analytics/react"
+// import { ThemeProvider } from "@/components/theme-provider"
+// import { SiteHeader } from "@/components/site-header"
+// import { SiteFooter } from "@/components/site-footer"
+// import { Toaster } from "@/components/ui/sonner"
+// import { TooltipProvider } from "@/components/ui/tooltip"
+// import { ClerkProvider } from '@clerk/nextjs'
+// import { dark } from '@clerk/themes'
+// import './globals.css'
+
+// export const metadata = {
+//   title: "श्री पंढरपुर | Vitthal-Rukmini Darshan",
+//   description: "Immersive pilgrimage experience to Lord Vitthal's sacred abode",
+//   metadataBase: new URL('https://pandharpur-darshan.vercel.app'),
+// }
+
+// export default function RootLayout({ children }) {
+//   return (
+//     <ClerkProvider appearance={{ 
+//       baseTheme: dark,
+//       variables: {
+//         colorPrimary: '#f97316', // Pandharpur orange
+//         colorTextOnPrimaryBackground: '#fff'
+//       }
+//     }}>
+//       <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+//         <body className="min-h-screen bg-gradient-to-b from-orange-50 to-amber-50 dark:from-gray-900 dark:to-gray-950">
+//           <ThemeProvider
+//             attribute="class"
+//             defaultTheme="pandharpur"
+//             themes={["light", "dark", "pandharpur"]}
+//             enableSystem
+//             disableTransitionOnChange
+//           >
+//             <TooltipProvider>
+//               <div className="relative flex min-h-screen flex-col">
+//                 <SiteHeader />
+//                 <main className="flex-1">
+//                   {children}
+//                   <SpeedInsights />
+//                   <Analytics />
+//                 </main>
+//                 <SiteFooter />
+//               </div>
+//               <Toaster position="top-center" richColors />
+//             </TooltipProvider>
+//           </ThemeProvider>
+//         </body>
+//       </html>
+//     </ClerkProvider>
+//   )
+// }
