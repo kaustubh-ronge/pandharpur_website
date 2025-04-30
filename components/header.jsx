@@ -148,6 +148,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Input } from "@/components/ui/input"
+import Image from "next/image"
 
 export function Header() {
   const pathname = usePathname()
@@ -169,12 +170,14 @@ export function Header() {
   ]
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md shadow-sm pl-15">
+    <header className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md shadow-sm pl-15 pt-3">
       <div className="container flex h-16 items-center justify-between px-4 md:px-8">
         {/* Logo */}
+        <Image src={'/hero-logo-1.png'} height={200} width={320} className="h-80 w-full ml-[-120px]" alt="logo"/>
         <Link href="/" className="flex items-center gap-2">
-          <span className="text-2xl font-extrabold text-gray-900">पंढरपुर</span>
+          <span className="text-2xl font-extrabold text-gray-900 ml-[-130px] absolute">पंढरपुर</span>
         </Link>
+
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8 ml-10">
@@ -306,6 +309,6 @@ export function Header() {
           </Sheet>
         </div>
       </div>
-    </header>
-  )
+    </header>
+  )
 }
