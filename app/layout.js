@@ -17,6 +17,7 @@ export default function RootLayout({ children }) {
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body suppressHydrationWarning className={inter.className}>
+          
           <ThemeProvider
             attribute="class"
             defaultTheme="light"
