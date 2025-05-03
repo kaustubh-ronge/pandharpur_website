@@ -1574,13 +1574,11 @@ const Hero = () => {
   const [fetchedTestimonials, setFetchedTestimonials] = useState([]);
   const [loadingTestimonials, setLoadingTestimonials] = useState(true);
 
-  // Fetch testimonials from Firestore
   useEffect(() => {
     const fetchTestimonials = async () => {
       try {
         const q = query(
           collection(db, "testimonials"),
-          // where("approved", "==", true), // Only fetch approved testimonials
           orderBy("createdAt", "desc"),
           limit(10)
         );
@@ -1639,13 +1637,7 @@ const Hero = () => {
       setActiveTab("testimonials");
     } catch (error) {
       console.error("Submission error:", error);
-      
-      let errorMessage = "Submission failed. Please try again.";
-      if (error.code === 'permission-denied') {
-        errorMessage = "Please sign in to submit testimonials";
-      }
-      
-      toast.error(errorMessage);
+      toast.error("Submission failed. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -1974,10 +1966,10 @@ const Hero = () => {
                   <CarouselContent>
                     {fetchedTestimonials.map((item) => (
                       <CarouselItem key={item.id} className="md:basis-1/2 lg:basis-1/3">
-                        <div className="p-2">
-                          <motion.div whileHover={{ y: -5 }}>
-                            <Card className="h-full bg-white/90 backdrop-blur-sm border border-orange-100">
-                              <CardContent className="flex flex-col p-6">
+                        <div className="p-2 h-full">
+                          <motion.div whileHover={{ y: -5 }} className="h-full">
+                            <Card className="h-full bg-white/90 backdrop-blur-sm border border-orange-100 flex flex-col">
+                              <CardContent className="flex flex-col p-6 flex-grow">
                                 <div className="flex items-center gap-4 mb-4">
                                   <Avatar>
                                     <AvatarImage src={item.avatar} />
@@ -1988,8 +1980,10 @@ const Hero = () => {
                                     <p className="text-sm text-gray-500">{item.date}</p>
                                   </div>
                                 </div>
-                                <p className="text-gray-600 mb-4 italic">"{item.message}"</p>
-                                <div className="flex mt-auto">
+                                <div className="flex-grow">
+                                  <p className="text-gray-600 mb-4 italic line-clamp-4">"{item.message}"</p>
+                                </div>
+                                <div className="flex">
                                   {[...Array(5)].map((_, i) => (
                                     <Star
                                       key={i}
