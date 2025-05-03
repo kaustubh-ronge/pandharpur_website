@@ -7,11 +7,13 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
   Home, MapPin, CalendarDays, BookOpen,
-  Languages, Menu, ChevronDown, Search, HelpCircle, Phone
+  Languages, Menu, ChevronDown, Search, HelpCircle, Phone,
+  Utensils
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
+  DropdownMenu,
+   DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Input } from "@/components/ui/input"
@@ -96,6 +98,7 @@ export function Header() {
 
           {/* Language Selector */}
           <DropdownMenu>
+            
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="sm" className="gap-1 text-gray-700 hover:bg-gray-100">
                 <Languages className="h-4 w-4" />
