@@ -4,6 +4,7 @@
 import Image from "next/image";
 import { MapPin } from "lucide-react"; 
 import Link from "next/link";
+import { motion } from "framer-motion";
 //import Slider from "react-slick"; // 🚨 Importing react-slick
 
 
@@ -21,7 +22,7 @@ const TempleList = [
     title: "Shri Gajanan Maharaj Mandir",
     description:
       "Serene spiritual center dedicated to the revered saint Shri Gajanan Maharaj, attracting devotees seeking peace, blessings, and inner guidance.",
-    image: "/images/pandharpurtemple1.jpg",
+    image: "/pandharpurtemple11.jpeg",
     location: "Bhakti Marg,Sangola Naka, Pandharpur. ",
 
   },
@@ -96,9 +97,42 @@ export default function TemplePage() {
   //};
 
   return (
-    <div className="bg-white">
+    <div className="bg-white ">
       {/* Shri Ram Mandir Hero Section */}
-      <section className="flex flex-col md:flex-row items-center justify-between px-6 md:px-20 py-12 gap-8 bg-gray-50">
+      <section className="flex flex-col md:flex-row items-center justify-between px-6 md:px-20 py-12 gap-8 bg-gradient-to-t from-orange-100 via-white to-orange-50">
+         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+                  {/* Circle 1 */}
+                  <motion.div 
+                    className="absolute top-10 left-10 w-24 h-24 bg-orange-200 rounded-full opacity-30" 
+                    animate={{ y: [0, 20, 0] }} 
+                    transition={{ repeat: Infinity, duration: 6 }}
+                  />
+                  {/* Circle 2 */}
+                  <motion.div 
+                    className="absolute bottom-20 right-20 w-20 h-20 bg-orange-300 rounded-full opacity-20" 
+                    animate={{ y: [0, -20, 0] }} 
+                    transition={{ repeat: Infinity, duration: 5 }}
+                  />
+                  {/* Additional Circle 3 */}
+                  <motion.div
+                    className="absolute top-20 left-60 w-32 h-32 bg-orange-400 rounded-full opacity-25"
+                    animate={{ y: [0, 25, 0] }}
+                    transition={{ repeat: Infinity, duration: 7 }}
+                  />
+                  {/* Additional Circle 4 */}
+                  <motion.div
+                    className="absolute bottom-40 left-24 w-28 h-28 bg-orange-500 rounded-full opacity-15"
+                    animate={{ x: [0, 30, 0] }}
+                    transition={{ repeat: Infinity, duration: 6.5 }}
+                  />
+                  {/* Additional Circle 5 */}
+                  <motion.div
+                    className="absolute top-40 right-10 w-36 h-36 bg-orange-600 rounded-full opacity-10"
+                    animate={{ x: [0, -30, 0] }}
+                    transition={{ repeat: Infinity, duration: 8 }}
+                  />
+                </div>
+        
         <div className="md:w-1/2 text-left">
           <h1 className="text-4xl font-bold text-gray-800 mb-2">Shri Vitthal Rukmini Mandir</h1>
           <h2 className="text-lg text-orange-600 font-semibold mb-3">
