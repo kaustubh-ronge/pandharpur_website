@@ -1447,7 +1447,7 @@ const majorFestivals = [
         description: "The most important festival when lakhs of devotees gather for Vitthal's darshan.",
         longDescription: "Ashadhi Ekadashi marks the culmination of the Pandharpur Wari pilgrimage. Devotees from across Maharashtra walk hundreds of kilometers to reach Pandharpur on this day. The temple remains open throughout the night for special darshan, and the entire city resonates with devotional songs and chants.",
         highlights: ["Palkhi Procession", "Holy Dip", "Night-long Kirtans", "Abhishekam"],
-        image: "/ashadi-ekadashi.jpeg",
+        image: "/palkhi3.jpg",
         registration: true,
         attendance: {
             expected: "500,000+ devotees",
@@ -1500,7 +1500,7 @@ const majorFestivals = [
         description: "The grand pilgrimage walk from Alandi to Pandharpur following saint traditions.",
         longDescription: "The Pandharpur Wari is a 21-day pilgrimage where devotees walk over 250 km carrying the padukas (footwear) of saints like Dnyaneshwar and Tukaram. The procession includes singing abhangas (devotional songs) and culminates at Pandharpur on Ashadhi Ekadashi.",
         highlights: ["Wari Tradition", "Dindi Processions", "Community Meals", "Cultural Performances"],
-        image: "/palkhi3.jpg",
+        image: "/mandirpandharpur.jpg",
         registration: true,
         attendance: {
             expected: "1,000,000+ participants",

@@ -11,8 +11,8 @@ import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { PlayCircle, MapPin, Landmark, Star, ArrowDown, Calendar, Users, Heart, Clock, BookOpen, ChevronRight, Flag, Droplets } from "lucide-react";
-
 const Hero = () => {
+
   return (
     <>
       {/* Hero Section */}
