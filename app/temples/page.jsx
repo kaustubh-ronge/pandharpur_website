@@ -1,3 +1,4 @@
+
 // "use client";
 // import Image from "next/image";
 // import { MapPin } from "lucide-react"; 
@@ -10,7 +11,7 @@
 //   "/mandirpandharpur.jpg",
 //   "/pandharpurmandir2.webp",
 //   "/pandharpurtemple1.jpg",
-  
+
 // ];
 
 // const TempleList = [
@@ -101,7 +102,7 @@
 //             transition={{ repeat: Infinity, duration: 8 }}
 //           />
 //         </div>
-        
+
 //         <div className="md:w-1/2 text-left z-10">
 //           <h1 className="text-4xl font-bold text-gray-800 mb-2">Shri Vitthal Rukmini Mandir</h1>
 //           <h2 className="text-lg text-orange-600 font-semibold mb-3">
@@ -117,7 +118,7 @@
 //             Discover More
 //           </button>
 //         </div>
-        
+
 //         <div className="md:w-1/2 z-10">
 //           <Carousel className="w-full max-w-lg mx-auto">
 //             <CarouselContent>
@@ -152,7 +153,7 @@
 //         <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
 //           Discover more iconic temples and spiritual landmarks across Pandharpur in a meaningful and immersive way.
 //         </p>
-        
+
 //         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-center">
 //           {TempleList.map((temple, idx) => (
 //             <motion.div
@@ -185,23 +186,18 @@
 //       </section>
 //     </div>
 //   );
-// }
+// } 
+
 
 "use client";
+
 import Image from "next/image";
-import { MapPin, Clock, Calendar, Star, Heart, ChevronRight } from "lucide-react";
-import Link from "next/link";
+import { MapPin, ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { useState, useEffect } from 'react';
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
-import { Progress } from "@/components/ui/progress";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Card, CardContent } from "@/components/ui/card";
 
 const sliderImages = [
   "/mandirpandharpur.jpg",
@@ -209,567 +205,433 @@ const sliderImages = [
   "/pandharpurtemple1.jpg",
 ];
 
-const TempleList = [
+const temples = [
   {
-    title: "Shri Gajanan Maharaj Mandir",
-    description: "Serene spiritual center dedicated to the revered saint Shri Gajanan Maharaj, attracting devotees seeking peace, blessings, and inner guidance.",
+    name: "Shri Gajanan Maharaj Mandir",
+    image: "/shrigajnan1.jpeg",
+    description: "Shani the son of Sun (Surya) is a famous God in Shingnapur A specialty of Shingnapur is there are no doors to the houses. Shri Shani Dev protects people from thieves. Shani Shingnapur is located at the east on Nagar Mammad Road in Ahilyanagar-Nagar Dist.",
+    topAttraction: "The sacred Paduka (footprints) of Shri Gajanan Maharaj and the serene meditation hall.",
+    timing: "5:00 AM to 9:00 PM",
+    location: "Bhakti Marg,Sangola Naka, Pandharpur",
+    reverse: false,
+  },
+  {
+    name: "Vishnupad Temple",
     image: "/pandharpurtemple1.jpg",
-    location: "Bhakti Marg, Sangola Naka, Pandharpur",
-    rating: 4.8,
-    timings: "5:00 AM - 9:00 PM",
-    featured: true,
-    distance: "1.2 km from main temple"
-  },
-  {
-    title: "Vishnupad Temple",
-    description: "The temple is distinguished by the sacred footprints of Lord Vishnu (also associated with Lord Krishna) etched into basalt rock, symbolizing his divine presence.",
-    image: "/images/ganapathi.jpg",
+    description: "Vishnupad Temple is a revered shrine in Pandharpur believed to mark the footprint of Lord Vishnu. Pilgrims consider it a spiritually powerful site, closely connected to the sacred geography of Pandharpur and its divine energy.",
+    topAttraction: "The sacred Paduka (footprints) of Shri Gajanan Maharaj and the serene meditation hall.",
+    timing: "5:00 AM to 9:00 PM",
     location: "Gopalpur Road, Pandharpur",
-    rating: 4.5,
-    timings: "6:00 AM - 8:30 PM",
-    featured: false,
-    distance: "0.8 km from main temple"
+    reverse: true,
   },
   {
-    title: "Yogiraj Tukarambaba Khedlekar Ashram",
-    description: "The ashram is renowned for its majestic statue of Lord Vitthal, which stands as a symbol of devotion and peace.",
-    image: "/images/durga.jpg",
-    location: "Gursale Road, near Vitthal Petrol Pump, Pandharpur",
-    rating: 4.7,
-    timings: "5:30 AM - 9:00 PM",
-    featured: true,
-    distance: "2.1 km from main temple"
+    name: "Yogiraj Tukarambaba Khedlekar Ashram, Pandharpur",
+    image: "/shrigajnan1.jpeg",
+    description: "Yogiraj Tukarambaba Khedlekar Ashram is a spiritually vibrant place established in honor of the saint and yogi Tukarambaba Khedlekar. It is a center for spiritual practice, meditation, and self-realization, attracting seekers from across Maharashtra and India.",
+    topAttraction: "Majestic Vitthal Statue, Serene Green Surroundings, Spiritual Atmosphere by Tukaram Baba, Ideal for Family Gatherings and Marriages",
+    timing: "Open 24 Hours",
+    location: "Gursale Road,near Vitthal Petrol Pump,Pandharpur.",
+    reverse: false,
   },
   {
-    title: "Sant Kaikadi Maharaj Math",
-    description: "The ashram is renowned for its majestic statue of Lord Vitthal, which stands as a symbol of devotion and peace.",
-    image: "/images/durga.jpg",
-    location: "16 Pachimidwar, near Vitthal Mandir, Pandharpur",
-    rating: 4.3,
-    timings: "6:00 AM - 8:00 PM",
-    featured: false,
-    distance: "1.5 km from main temple"
+    name: "Sant Kaikadi Maharaj Math",
+    image: "/pandharpurtemple1.jpg",
+    description: "Sant Kaikadi Maharaj Math is a unique religious site in Pandharpur known for its spiritual teachings and visually captivating representations of Hindu mythology. The math was founded by Sant Kaikadi Maharaj, a respected spiritual leader dedicated to spreading moral and devotional values.",
+    topAttraction: "Sant Kaikadi Maharaj Shrine, Meditation Halls, Peaceful Gardens",
+    timing: "9:00 am to 6:00 pm",
+    location: "16 pachimidwar,near vitthal mandir,Pandharpur",
+    reverse: true,
   },
   {
-    title: "Pundalik Temple",
-    description: "Ancient temple dedicated to Pundalik who brought Lord Vitthal to Pandharpur. A must-visit for spiritual seekers.",
-    image: "/images/durga.jpg",
-    location: "M8HQ+6Q4, Chandrabhaga River, Pandharpur",
-    rating: 4.6,
-    timings: "5:00 AM - 9:00 PM",
-    featured: true,
-    distance: "0.5 km from main temple"
+    name: "Pundalik Temple",
+    image: "/shrigajnan1.jpeg",
+    description: "Pundalik Temple, right in the middle of Pandharpur, is like a special place that tells the story of Pundalik, a saint who loved Vithoba a lot. Pundalik is the one who brought Vithoba to Pandharpur, and you can feel his devotion in the temple. Vithoba, like Vishnu and Krishna, has a big home in the main part of the temple. Pundalik wasn't just a saint; he was also good at Kundalini Yoga, so people called him Kundalik",
+    topAttraction: "Vithoba's Main Shrine, Depiction of Kundalini Energy, Symbolic Muladhara Chakra Brick, Spiritual Representation of Hands and Body",
+    timing: "4:00 am to 7:00 pm",
+    location: "M8HQ+6Q4, Chandrabhaga River,Pandharpur",
+    reverse: false,
   },
   {
-    title: "Sri Sri Radha Pandharinath Mandir",
-    description: "The temple is dedicated to Lord Krishna and Goddess Radha. This temple is very beautiful and situated on the bank of the holy river Chandra Bhaga.",
-    image: "/images/durga.jpg",
-    location: "H74, Shegaon Dumala, Maharashtra",
-    rating: 4.4,
-    timings: "5:30 AM - 8:30 PM",
-    featured: false,
-    distance: "3.2 km from main temple"
+    name: "Sri Sri Radha Pandharinath Mandir Pandharpur",
+    image: "/pandharpurtemple1.jpg",
+    description: "The Sri Sri Radha Pandharinath Mandir is part of the ISKCON (International Society for Krishna Consciousness) movement. It is dedicated to Lord Krishna (Pandharinath) and Radha, and it merges the bhakti traditions of both Vaishnavism and the local Vithoba (Vitthal) devotion of Pandharpur.",
+    topAttraction: "Divine Deities of Sri Sri Radha Pandhiranath, Ekadasi Festival Celebrations, Sharing Srila Prabhupada's Marathi Bhagavad-gita, Riverside Location",
+    timing: "4:00 am to 1:00 pm and 2:00 am to 8:00 pm",
+    location: "ISKCON Temple Road, Shegaon Dumala, Pandharpur, Maharashtra 413304",
+    reverse: true,
   },
   {
-    title: "Kaikadi Maharaj Mandir",
-    description: "This is a great place to worship and doubles up as a museum. Kaikadi Maharaj Mandir in Pandharpur is a serene and spiritual place.",
-    image: "/images/durga.jpg",
-    location: "June Pat, Pandharpur, Maharashtra",
-    rating: 4.2,
-    timings: "6:00 AM - 8:00 PM",
-    featured: false,
-    distance: "1.8 km from main temple"
+    name: "Kaikadi Maharaj Mandir Pandharpur",
+    image: "/shrigajnan1.jpeg",
+    description: "Kaikadi Maharaj Mandir is a unique and spiritual temple in Pandharpur that stands out for its artistic representation of various mythological events and teachings from Hindu scriptures. It is run by the Kaikadi community and offers a journey-like walkthrough experience inside.",
+    topAttraction: "Life-size statues depicting Ramayana and Mahabharata scenes,Mythological caves and dioramas,Spiritual teachings and quotes by Kaikadi Maharaj,Peaceful meditation environment inside the cave setup",
+    timing: "6:00 AM to 8:00 PM",
+    location: "June Pat,Pandharpur,Maharashtra",
+    reverse: false,
   },
   {
-    title: "Shri Sant Gajanan Maharaj Mandir",
-    description: "The temple is dedicated to Gajanan Maharaj. He is one of the well-known saints of India. Devotees believe he is an avatar of Lord Ganesha.",
-    image: "/images/durga.jpg",
-    location: "Shivaji Chowk, Pandharpur, Maharashtra",
-    rating: 4.9,
-    timings: "4:30 AM - 10:00 PM",
-    featured: true,
-    distance: "0.7 km from main temple"
+    name: "Shri Gajanan Maharaj Sansthan",
+    image: "/pandharpurtemple1.jpg",
+    description: "top tourist attraction in Pandharpur blessed by Shree Gajanan Maharaj in 1908. Gajanan Maharaj specified the date and place of his samadhi, and his prophetic words, 'Ya jaagi raaheel' (Will stay here), echoed through the ages.",
+    topAttraction: "Majestic Marble Temple, Grand Mahadwar Entrance, Sacred PranPratishtha Ceremony, Intricately Carved Architecture",
+    timing: "5:00 am to 9:30 pm",
+    location: "Shivaji Chowk, Pandharpur,Maharashtra.",
+    reverse: true,
+  },
+  {
+    name: "Tanpure Maharaj Math",
+    image: "/shrigajnan1.jpeg",
+    description: "Remember to visit the Tanpure Maharaj Math and find a special place called Samadhi Sthal. Inside, there are 12 Jyotirlingas. This place is unique and special because these models look real and are different from each other. This place is not just about the Jyotirlingas; you'll also see models of 4 Dhams here. It's a great spot to visit if you come to Pandharpur, giving you a special feeling of the divine.",
+    topAttraction: "Divine Samadhi Sthal, Lifelike Models of 12 Jyotirlingas, Presence of 4 Dhams, Spiritual Enrichment Experience",
+    timing: "6:00 am to 9:00 pm",
+    location: "Bhakti Marg,Sangola Naka, Pandharpur",
+    reverse: false,
+  },
+  {
+    name: "Shri Gopalkrishna Temple",
+    image: "/pandharpurtemple1.jpg",
+    description: "Perched atop the Govardhan Parvat, Shri Gopalkrishna Temple is dedicated to Lord Krishna. The temple resembles that of a fort and has underground chambers. The temple premises has a kitchen and a grinding place, both of which are believed to be used by Shri Krishna. It is such an important spot that a pilgrim's journey is said to be incomplete if they have not stopped by Shri Gopalkrishna Temple. It is one of the sacred places to visit near Pandharpur.",
+    topAttraction: "Idols of Shri Gopalkrishna and Radha in traditional attire,Intricate carvings and paintings depicting Krishna Leela,Quiet prayer hall ideal for meditation",
+    timing: "Open daily from 5:30 AM to 12:00 PM and 4:00 PM to 9:00 PM",
+    location: "M87W+GVH, Gopalpur, Maharashtra 413304",
+    reverse: true,
   },
 ];
 
 const testimonials = [
   {
-    name: "Rajesh Kumar",
-    avatar: "/avatars/1.jpg",
-    comment: "The divine energy at Vitthal Mandir is unparalleled. I visit every year and each time it feels like coming home.",
-    rating: 5
+    name: "Aarti Sharma",
+    review: "Visiting Shani Shingnapur was a deeply spiritual experience. The energy of the place is amazing!",
   },
   {
-    name: "Priya Patel",
-    avatar: "/avatars/2.jpg",
-    comment: "Pandharpur's temples offer such peace and tranquility. The architecture and spiritual atmosphere is breathtaking.",
-    rating: 4
+    name: "Ravi Kulkarni",
+    review: "Muktidham's white marble and serene atmosphere make it a must-visit in Nashik.",
   },
-  {
-    name: "Amit Deshpande",
-    avatar: "/avatars/3.jpg",
-    comment: "The aarti at Vitthal Mandir during sunrise is an experience that stays with you forever. Highly recommended!",
-    rating: 5
-  },
-  {
-    name: "Sneha Joshi",
-    avatar: "/avatars/4.jpg",
-    comment: "The temple management has improved facilities significantly in recent years. Clean surroundings and well-organized darshan.",
-    rating: 4
-  }
 ];
 
-const events = [
+const faqs = [
   {
-    title: "Ashadhi Ekadashi",
-    date: "July 17, 2024",
-    description: "The most famous festival when lakhs of devotees walk to Pandharpur in the traditional Wari pilgrimage.",
-    image: "/events/ashadhi.jpg"
+    question: "What are the most prominent temples to visit in Pandharpur?",
+    answer: "Some of the main temples include Shri Vitthal Rukmini Mandir, Pundalik Mandir, ISKCON Mandir, Shri Gajanan Maharaj Mandir, and Vishnupad Temple.",
   },
   {
-    title: "Kartiki Ekadashi",
-    date: "November 12, 2024",
-    description: "Another important Ekadashi celebration with special rituals and large gatherings of devotees.",
-    image: "/events/kartiki.jpg"
+    question: "What are the typical visiting hours for these temples?",
+    answer: "Most temples are open from 5:00 AM to 9:00 PM, but timings may vary slightly. It's best to check individually.",
   },
   {
-    title: "Rama Navami",
-    date: "April 6, 2024",
-    description: "Celebration of Lord Rama's birthday with special pujas and cultural programs at the temple.",
-    image: "/events/ramanavami.jpg"
+    question: "Are there any special festivals celebrated at these temples?",
+    answer: "Yes, Ashadhi Ekadashi and Kartik Ekadashi are the most celebrated festivals, attracting lakhs of devotees.",
   },
   {
-    title: "Gudi Padwa",
-    date: "April 9, 2024",
-    description: "Maharashtrian New Year celebrated with traditional decorations and special darshan arrangements.",
-    image: "/events/gudipadwa.jpg"
-  }
+    question: "Is there an entry fee to visit these temples?",
+    answer: "No, visiting is free. However, donations are appreciated by temple authorities.",
+  },
+  {
+    question: "Are there facilities for senior citizens or differently-abled visitors?",
+    answer: "Yes, most temples have wheelchairs, special queues, and volunteers to help such visitors.",
+  },
+  {
+    question: "Can we take photographs inside the temples?",
+    answer: "Some temples allow photography in outer areas but not in sanctum sanctorum. Always follow local rules.",
+  },
+  {
+    question: "How do I reach Pandharpur?",
+    answer: "Pandharpur is connected by road and rail. The nearest major city is Solapur, about 70 km away.",
+  },
 ];
 
 export default function TemplePage() {
+  const [reviews, setReviews] = useState([]);
+  const [form, setForm] = useState({ name: '', comment: '', rating: 5 });
+  const [openIndex, setOpenIndex] = useState(null);
+
+  const toggle = (index) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
+  const fetchReviews = async () => {
+    // Simulate API call
+    return Promise.resolve(testimonials);
+  };
+
+  const submitReview = async (data) => {
+    // Simulate API call
+    const newReview = {
+      ...data,
+      date: new Date().toISOString()
+    };
+    return Promise.resolve(newReview);
+  };
+
+  useEffect(() => {
+    fetchReviews().then(setReviews);
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newReview = await submitReview(form);
+    setReviews([newReview, ...reviews]);
+    setForm({ name: '', comment: '', rating: 5 });
+  };
+
   return (
-    <>
+    <div className="bg-white">
       {/* Hero Section */}
-      <section className="relative flex flex-col md:flex-row items-center justify-between px-6 md:px-20 py-12 gap-8 bg-gradient-to-t from-orange-100 via-white to-orange-50">
+      <section className="flex flex-col md:flex-row items-center justify-between px-6 md:px-20 py-12 gap-8 bg-gradient-to-t from-orange-100 via-white to-orange-50">
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-          {[...Array(8)].map((_, i) => (
-            <motion.div 
-              key={i}
-              className={`absolute ${i%2 ? 'bg-orange-200' : 'bg-orange-300'} rounded-full opacity-20`}
-              style={{
-                width: `${Math.random() * 100 + 50}px`,
-                height: `${Math.random() * 100 + 50}px`,
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-              }}
-              animate={{ 
-                y: [0, (Math.random() * 40 - 20)],
-                x: [0, (Math.random() * 40 - 20)]
-              }}
-              transition={{ 
-                repeat: Infinity, 
-                duration: Math.random() * 10 + 5,
-                repeatType: "reverse"
-              }}
-            />
-          ))}
+          {/* Circle 1 */}
+          <motion.div
+            className="absolute top-10 left-10 w-24 h-24 bg-orange-200 rounded-full opacity-30"
+            animate={{ y: [0, 20, 0] }}
+            transition={{ repeat: Infinity, duration: 6 }}
+          />
+          {/* Circle 2 */}
+          <motion.div
+            className="absolute bottom-20 right-20 w-20 h-20 bg-orange-300 rounded-full opacity-20"
+            animate={{ y: [0, -20, 0] }}
+            transition={{ repeat: Infinity, duration: 5 }}
+          />
+          {/* Additional Circle 3 */}
+          <motion.div
+            className="absolute top-20 left-60 w-32 h-32 bg-orange-400 rounded-full opacity-25"
+            animate={{ y: [0, 25, 0] }}
+            transition={{ repeat: Infinity, duration: 7 }}
+          />
+          {/* Additional Circle 4 */}
+          <motion.div
+            className="absolute bottom-40 left-24 w-28 h-28 bg-orange-500 rounded-full opacity-15"
+            animate={{ x: [0, 30, 0] }}
+            transition={{ repeat: Infinity, duration: 6.5 }}
+          />
+          {/* Additional Circle 5 */}
+          <motion.div
+            className="absolute top-40 right-10 w-36 h-36 bg-orange-600 rounded-full opacity-10"
+            animate={{ x: [0, -30, 0] }}
+            transition={{ repeat: Infinity, duration: 8 }}
+          />
         </div>
-        
-        <div className="md:w-1/2 text-left z-10 space-y-4">
-          <Badge variant="secondary" className="text-orange-600 mb-2">
-            Sacred Pilgrimage Site
-          </Badge>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-800">
-            Shri Vitthal Rukmini Mandir
-          </h1>
-          <h2 className="text-lg text-orange-600 font-semibold">
-            Lord Vitthal appeared in Pandharpur to bless Pundalik
-          </h2>
-          
-          <div className="flex items-center gap-4">
-            <div className="flex items-center">
-              <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-              <span className="ml-1 font-medium">4.9 (12K reviews)</span>
+        <div className="md:w-1/2 text-left z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h1 className="text-4xl font-bold text-gray-800 mb-2">Shri Vitthal Rukmini Mandir</h1>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+          >
+            <h2 className="text-lg text-orange-600 font-semibold mb-3">
+              Lord Vitthal appeared in Pandharpur to bless Pundalik.
+            </h2>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+          >
+            <div className="text-gray-700 mb-4">
+              The Vitthal-Rukmini Temple, located in Pandharpur, Maharashtra, is a prominent Hindu pilgrimage site dedicated to Lord Vitthal (a form of Lord Krishna) and his consort Rukmini.
             </div>
-            <div className="flex items-center text-gray-600">
-              <MapPin className="w-5 h-5" />
-              <span className="ml-1">Pandharpur, Maharashtra</span>
+            <div className="text-gray-700 mb-4">
+              Believed to have been established in the 12th century by the Hoysala king Vishnuvardhana, the temple holds deep historical and spiritual significance.
             </div>
-          </div>
-          
-          <p className="text-gray-700">
-            The Vitthal-Rukmini Temple, located in Pandharpur, Maharashtra, is a prominent Hindu pilgrimage site dedicated to Lord Vitthal (a form of Lord Krishna) and his consort Rukmini.
-          </p>
-          
-          <div className="grid grid-cols-2 gap-4 mt-4">
-            <div className="bg-white p-3 rounded-lg shadow-sm border">
-              <Clock className="w-6 h-6 text-orange-500 mb-1" />
-              <h4 className="font-medium text-sm">Darshan Timings</h4>
-              <p className="text-xs text-gray-600">4:30 AM - 10:00 PM</p>
-            </div>
-            <div className="bg-white p-3 rounded-lg shadow-sm border">
-              <Calendar className="w-6 h-6 text-orange-500 mb-1" />
-              <h4 className="font-medium text-sm">Best Time to Visit</h4>
-              <p className="text-xs text-gray-600">June - December</p>
-            </div>
-          </div>
-          
-          <div className="flex gap-3 mt-6">
-            <Button className="bg-orange-600 hover:bg-orange-700">
-              Plan Your Visit
-            </Button>
-            <Button variant="outline" className="border-orange-600 text-orange-600 hover:bg-orange-50">
-              Virtual Tour
-            </Button>
-          </div>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+          >
+            <button className="bg-orange-600 text-white px-5 py-2 rounded hover:bg-orange-700 transition duration-200">
+              Discover More
+            </button>
+          </motion.div>
         </div>
-        
         <div className="md:w-1/2 z-10">
           <Carousel className="w-full max-w-lg mx-auto">
             <CarouselContent>
               {sliderImages.map((image, index) => (
                 <CarouselItem key={index}>
                   <div className="p-1">
-                    <Card className="overflow-hidden border-none shadow-lg">
-                      <CardContent className="flex aspect-video items-center justify-center p-0 relative">
+                    <Card className="overflow-hidden">
+                      <CardContent className="flex aspect-video items-center justify-center p-0">
                         <Image
                           src={image}
                           alt={`Temple image ${index + 1}`}
-                          fill
-                          className="object-cover w-full h-full rounded-xl"
+                          width={600}
+                          height={500}
+                          className="object-cover w-full h-full"
                           priority={index === 0}
                         />
-                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-                          <h3 className="text-white font-medium">
-                            {index === 0 ? "Main Temple Entrance" : 
-                             index === 1 ? "Evening Aarti View" : "Chandrabhaga River View"}
-                          </h3>
-                        </div>
                       </CardContent>
                     </Card>
                   </div>
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md" />
-            <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md" />
+            <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white" />
+            <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white" />
           </Carousel>
         </div>
       </section>
 
-      {/* Quick Facts Section */}
-      <section className="py-12 px-6 md:px-20 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
-            About <span className="text-orange-600">Vitthal Mandir</span>
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <motion.div 
-              className="bg-orange-50 p-6 rounded-xl border border-orange-100"
-              whileHover={{ y: -5 }}
-            >
-              <div className="text-orange-600 mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"></path>
-                  <path d="M8.5 8.5v.01"></path>
-                  <path d="M16 15.5v.01"></path>
-                  <path d="M12 12v.01"></path>
-                  <path d="M11 17v.01"></path>
-                  <path d="M7 14v.01"></path>
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Historical Significance</h3>
-              <p className="text-gray-600">
-                Believed to have been established in the 12th century by the Hoysala king Vishnuvardhana, the temple holds deep historical and spiritual significance.
-              </p>
-            </motion.div>
-            
-            <motion.div 
-              className="bg-orange-50 p-6 rounded-xl border border-orange-100"
-              whileHover={{ y: -5 }}
-            >
-              <div className="text-orange-600 mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Architectural Marvel</h3>
-              <p className="text-gray-600">
-                The temple showcases exquisite Hemadpanthi architecture with intricate carvings and a grand entrance that reflects the Vijayanagara style of construction.
-              </p>
-            </motion.div>
-            
-            <motion.div 
-              className="bg-orange-50 p-6 rounded-xl border border-orange-100"
-              whileHover={{ y: -5 }}
-            >
-              <div className="text-orange-600 mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <path d="M12 6v6l4 2"></path>
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Daily Rituals</h3>
-              <p className="text-gray-600">
-                The temple follows a strict schedule of rituals including Kakad Aarti (morning), Madhyan Aarti (noon), and Shej Aarti (night) that devotees can participate in.
-              </p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
       {/* Temple List Section */}
-      <section className="py-16 px-6 md:px-20 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-center mb-12">
-            <div>
-              <h2 className="text-3xl font-bold text-gray-800 mb-2">
-                Temples in <span className="text-orange-600">Pandharpur</span>
-              </h2>
-              <p className="text-gray-600 max-w-2xl">
-                Discover more iconic temples and spiritual landmarks across Pandharpur in a meaningful and immersive way.
-              </p>
+      <section className="py-12 text-center px-6 md:px-16 bg-white overflow-hidden">
+        <div className="relative z-10 max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl text-orange-600 font-bold mb-2 text-center">Temples in Pandharpur</h2>
+            <div className="text-gray-600 mb-10 text-center">
+              Discover more iconic temples and spiritual landmarks across Pandharpur in a meaningful and immersive way.
             </div>
-            <Button variant="outline" className="mt-4 md:mt-0 border-orange-600 text-orange-600 hover:bg-orange-50">
-              View All Temples <ChevronRight className="ml-2 w-4 h-4" />
-            </Button>
+          </motion.div>
+          <div className="space-y-12 p-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true }}
+            >
+              {temples.map((temple, idx) => (
+                <div
+                  key={idx}
+                  className={`flex flex-col md:flex-row items-center mb-16 bg-gray-100 shadow-lg rounded-xl overflow-hidden transition hover:shadow-2xl ${temple.reverse ? 'md:flex-row-reverse' : ''
+                    }`}
+                >
+                  <div className="md:w-1/3 w-full">
+                    <Image
+                      src={temple.image}
+                      alt={temple.name}
+                      width={400}
+                      height={300}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="md:w-2/3 w-full p-6 text-left">
+                    <h2 className="text-2xl font-bold text-orange-600">{temple.name}</h2>
+                    <div className="text-gray-700 leading-relaxed">{temple.description}</div>
+                    {temple.topAttraction && (
+                      <div className="mb-2">
+                        <span className="font-semibold text-gray-800">Top Attraction:</span>
+                        <div className="text-gray-700 whitespace-normal">
+                          {temple.topAttraction}
+                        </div>
+                      </div>
+                    )}
+                    {temple.timing && (
+                      <div className="mb-2">
+                        <span className="font-semibold text-gray-800">Timing:</span>
+                        <div className="text-gray-700 whitespace-normal">{temple.timing}</div>
+                      </div>
+                    )}
+                    <div className="flex items-center text-gray-700">
+                      <MapPin className="w-4 h-4 mr-1" />
+                      <span>{temple.location}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </motion.div>
           </div>
-          
-          <Tabs defaultValue="all" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 max-w-md">
-              <TabsTrigger value="all">All Temples</TabsTrigger>
-              <TabsTrigger value="featured">Featured</TabsTrigger>
-              <TabsTrigger value="nearby">Nearby</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="all" className="mt-8">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {TempleList.map((temple, idx) => (
-                  <motion.div
-                    key={idx}
-                    whileHover={{ y: -5 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Card className="h-full flex flex-col">
-                      <div className="relative h-48">
-                        <Image
-                          src={temple.image}
-                          alt={temple.title}
-                          fill
-                          className="object-cover rounded-t-lg"
-                        />
-                        {temple.featured && (
-                          <Badge className="absolute top-2 left-2 bg-orange-600 hover:bg-orange-700">
-                            Featured
-                          </Badge>
-                        )}
-                        <Button 
-                          size="icon" 
-                          variant="ghost" 
-                          className="absolute top-2 right-2 bg-white/90 hover:bg-white rounded-full w-8 h-8"
-                        >
-                          <Heart className="w-4 h-4 text-gray-700" />
-                        </Button>
-                      </div>
-                      <CardHeader>
-                        <CardTitle className="text-lg">{temple.title}</CardTitle>
-                        <div className="flex items-center gap-1">
-                          <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                          <span className="text-sm font-medium">{temple.rating}</span>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="flex-grow">
-                        <p className="text-sm text-gray-600 line-clamp-2 mb-3">
-                          {temple.description}
-                        </p>
-                        <div className="flex items-center text-sm text-gray-500">
-                          <MapPin className="w-4 h-4 mr-1" />
-                          <span className="truncate">{temple.distance}</span>
-                        </div>
-                      </CardContent>
-                      <CardFooter className="flex justify-between items-center">
-                        <Button variant="link" className="text-orange-600 p-0 h-auto">
-                          View Details
-                        </Button>
-                        <div className="text-sm text-gray-500 flex items-center">
-                          <Clock className="w-4 h-4 mr-1" />
-                          {temple.timings}
-                        </div>
-                      </CardFooter>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="featured" className="mt-8">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {TempleList.filter(temple => temple.featured).map((temple, idx) => (
-                  <motion.div
-                    key={idx}
-                    whileHover={{ y: -5 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Card className="h-full flex flex-col border-orange-200">
-                      <div className="relative h-48">
-                        <Image
-                          src={temple.image}
-                          alt={temple.title}
-                          fill
-                          className="object-cover rounded-t-lg"
-                        />
-                        <Badge className="absolute top-2 left-2 bg-orange-600 hover:bg-orange-700">
-                          Featured
-                        </Badge>
-                      </div>
-                      <CardHeader>
-                        <CardTitle className="text-lg">{temple.title}</CardTitle>
-                        <div className="flex items-center gap-1">
-                          <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                          <span className="text-sm font-medium">{temple.rating}</span>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="flex-grow">
-                        <p className="text-sm text-gray-600 line-clamp-3 mb-3">
-                          {temple.description}
-                        </p>
-                      </CardContent>
-                      <CardFooter>
-                        <Button variant="link" className="text-orange-600 p-0 h-auto">
-                          View Details
-                        </Button>
-                      </CardFooter>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="nearby" className="mt-8">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[...TempleList]
-                  .sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance))
-                  .slice(0, 4)
-                  .map((temple, idx) => (
-                    <motion.div
-                      key={idx}
-                      whileHover={{ y: -5 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Card className="h-full flex flex-col">
-                        <div className="relative h-48">
-                          <Image
-                            src={temple.image}
-                            alt={temple.title}
-                            fill
-                            className="object-cover rounded-t-lg"
-                          />
-                        </div>
-                        <CardHeader>
-                          <CardTitle className="text-lg">{temple.title}</CardTitle>
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-1">
-                              <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                              <span className="text-sm font-medium">{temple.rating}</span>
-                            </div>
-                            <Badge variant="outline" className="text-orange-600 border-orange-300">
-                              {temple.distance}
-                            </Badge>
-                          </div>
-                        </CardHeader>
-                        <CardContent>
-                          <Button variant="link" className="text-orange-600 p-0 h-auto">
-                            View Details
-                          </Button>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-                  ))}
-              </div>
-            </TabsContent>
-          </Tabs>
         </div>
       </section>
 
-     
-
-      
       {/* FAQ Section */}
-      <section className="py-16 px-6 md:px-20 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-800 mb-2">
-              Frequently Asked <span className="text-orange-600">Questions</span>
+      <section className="relative md:px-12 bg-orange-50 px-6 py-20 overflow-hidden">
+        <div className="relative z-10 max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <Badge variant="outline" className="mb-4 border-orange-400 text-orange-600">
+              Need Help?
+            </Badge>
+            <h2 className="text-3xl font-bold text-center text-orange-600 mb-4">
+              🙏 Frequently Asked Questions
             </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Find answers to common queries about visiting Pandharpur temples
-            </p>
+            <div className="max-w-2xl mx-auto text-gray-600">
+              Find answers to common questions about the Pandharpur Temples.
+            </div>
+          </motion.div>
+          <div className="space-y-4">
+            {faqs.map((faq, index) => (
+              <div key={index} className="border border-gray-200 rounded-lg shadow-sm">
+                <button
+                  onClick={() => toggle(index)}
+                  className="w-full flex justify-between items-center px-6 py-4 bg-gray-100 text-left text-lg font-medium hover:bg-gray-200"
+                >
+                  {faq.question}
+                  <ChevronDown className={`transition-transform ${openIndex === index ? "rotate-180" : ""}`} />
+                </button>
+                {openIndex === index && (
+                  <div className="px-6 py-4 text-gray-700 bg-white">{faq.answer}</div>
+                )}
+              </div>
+            ))}
           </div>
-          
-          <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="item-1">
-              <AccordionTrigger>What are the temple timings?</AccordionTrigger>
-              <AccordionContent>
-                The main Vitthal-Rukmini temple is open from 4:30 AM to 10:00 PM daily. Special aarti timings are at 5:00 AM (Kakad Aarti), 12:00 PM (Madhyan Aarti), and 7:00 PM (Shej Aarti). Other temples may have slightly different timings.
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-2">
-              <AccordionTrigger>Is there any dress code for temple visit?</AccordionTrigger>
-              <AccordionContent>
-                While there's no strict dress code, modest clothing is recommended. Traditional Indian attire is preferred. Avoid shorts, sleeveless tops, and revealing clothing.
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-3">
-              <AccordionTrigger>How to reach Pandharpur?</AccordionTrigger>
-              <AccordionContent>
-                Pandharpur is well-connected by road. The nearest railway station is Pandharpur Railway Station (3 km). The nearest airport is Solapur Airport (70 km). Regular buses ply from major Maharashtra cities.
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-4">
-              <AccordionTrigger>Where can I stay during my visit?</AccordionTrigger>
-              <AccordionContent>
-                There are various accommodation options ranging from temple-run guest houses (Dharmashalas) to private hotels. The Pandharpur Temple Trust provides affordable lodging for pilgrims.
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-5">
-              <AccordionTrigger>What is the best time to visit?</AccordionTrigger>
-              <AccordionContent>
-                The ideal time is between June to December, especially during Ekadashi days. Avoid peak summer (April-May) as temperatures can be very high.
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
         </div>
       </section>
 
-      {/* Newsletter Section */}
-      <section className="py-16 px-6 md:px-20 bg-orange-50">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-block bg-orange-100 rounded-full p-3 mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-orange-600">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-              <polyline points="22,6 12,13 2,6"></polyline>
-            </svg>
-          </div>
-          <h2 className="text-3xl font-bold text-gray-800 mb-2">
-            Stay Updated on Temple Events
-          </h2>
-          <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-            Subscribe to our newsletter for the latest information on festivals, rituals, and special darshan arrangements.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
-            <Input 
-              type="email" 
-              placeholder="Your email address" 
-              className="bg-white border-gray-300 flex-grow"
-            />
-            <Button className="bg-orange-600 hover:bg-orange-700">
-              Subscribe
-            </Button>
-          </div>
+      {/* Testimonials Section */}
+      <section className="relative py-20 px-6 md:px-12 bg-gradient-to-r from-orange-500 to-red-500 overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <h2 className="text-3xl font-bold text-center text-white mb-6">What Our Visitors Say</h2>
+        </motion.div>
+        <form onSubmit={handleSubmit} className="bg-white shadow-md rounded p-4 max-w-xl mx-auto mb-8">
+          <input
+            type="text"
+            placeholder="Your Name"
+            value={form.name}
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
+            className="w-full p-2 border rounded mb-2"
+            required
+          />
+          <textarea
+            placeholder="Your Comment"
+            value={form.comment}
+            onChange={(e) => setForm({ ...form, comment: e.target.value })}
+            className="w-full p-2 border rounded mb-2"
+            required
+          />
+          <input
+            type="number"
+            min="1"
+            max="5"
+            value={form.rating}
+            onChange={(e) => setForm({ ...form, rating: parseInt(e.target.value) })}
+            className="w-full p-2 border rounded mb-2"
+          />
+          <button type="submit" className="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700">
+            Submit Review
+          </button>
+        </form>
+        <div className="relative z-10 max-w-4xl mx-auto text-center space-y-4">
+          {reviews.map((r, idx) => (
+            <div key={idx} className="bg-gradient-to-r from-orange-500 to-red-500 p-4 rounded shadow border">
+              <div className="flex justify-between">
+                <h3 className="text-lg font-semibold">{r.name}</h3>
+                <p className="text-yellow-500">⭐ {r.rating}/5</p>
+              </div>
+              <div className="text-gray-700">{r.comment || r.review}</div>
+              <p className="text-xs text-gray-400">{new Date(r.date || Date.now()).toLocaleDateString()}</p>
+            </div>
+          ))}
         </div>
       </section>
-    </>
+    </div>
   );
 }
