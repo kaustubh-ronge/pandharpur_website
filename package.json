@@ -1,5 +1,6 @@
+
 {
-  "name": "pandharpur_website",
+  "name": "ai-career-coach",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -38,6 +39,7 @@
     "@react-google-maps/api": "^2.20.6",
     "@react-three/drei": "^10.0.7",
     "@react-three/fiber": "^9.1.2",
+    "@types/leaflet": "^1.9.17",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
@@ -72,6 +74,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/pg": "^8.15.2",
     "drizzle-kit": "^0.31.1",
     "eslint": "^9",
     "eslint-config-next": "15.2.1",
