@@ -8,7 +8,8 @@ import { usePathname } from "next/navigation"
 import {
   Home, MapPin, CalendarDays, BookOpen,
   Languages, Menu, ChevronDown, Search, HelpCircle, Phone,
-  Utensils
+  Utensils,
+  NotebookPen
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -29,7 +30,8 @@ export function Header() {
     { name: "Home", href: "/", icon: <Home className="h-5 w-5" /> },
     { name: "Temples", href: "/temples", icon: <MapPin className="h-5 w-5" /> },
     { name: "Festivals", href: "/festivals", icon: <CalendarDays className="h-5 w-5" /> },
-    { name: "Guide", href: "/guide", icon: <BookOpen className="h-5 w-5" /> }
+    { name: "Guide", href: "/guide", icon: <BookOpen className="h-5 w-5" /> },
+    { name: "Booking", href: "/booking", icon:  <NotebookPen className="h-5 w-5" /> }
   ]
 
   const quickLinks = [

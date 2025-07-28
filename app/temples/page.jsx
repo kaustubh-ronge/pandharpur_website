@@ -208,7 +208,7 @@ const sliderImages = [
 const temples = [
   {
     name: "Shri Gajanan Maharaj Mandir",
-    image: "/shrigajnan1.jpeg",
+    image: "/shrigajanan.jpg",
     description: "Shani the son of Sun (Surya) is a famous God in Shingnapur A specialty of Shingnapur is there are no doors to the houses. Shri Shani Dev protects people from thieves. Shani Shingnapur is located at the east on Nagar Mammad Road in Ahilyanagar-Nagar Dist.",
     topAttraction: "The sacred Paduka (footprints) of Shri Gajanan Maharaj and the serene meditation hall.",
     timing: "5:00 AM to 9:00 PM",
@@ -217,7 +217,7 @@ const temples = [
   },
   {
     name: "Vishnupad Temple",
-    image: "/pandharpurtemple1.jpg",
+    image: "/vishnupad.jpg",
     description: "Vishnupad Temple is a revered shrine in Pandharpur believed to mark the footprint of Lord Vishnu. Pilgrims consider it a spiritually powerful site, closely connected to the sacred geography of Pandharpur and its divine energy.",
     topAttraction: "The sacred Paduka (footprints) of Shri Gajanan Maharaj and the serene meditation hall.",
     timing: "5:00 AM to 9:00 PM",
@@ -226,7 +226,7 @@ const temples = [
   },
   {
     name: "Yogiraj Tukarambaba Khedlekar Ashram, Pandharpur",
-    image: "/shrigajnan1.jpeg",
+    image: "/yogiraj.jpg",
     description: "Yogiraj Tukarambaba Khedlekar Ashram is a spiritually vibrant place established in honor of the saint and yogi Tukarambaba Khedlekar. It is a center for spiritual practice, meditation, and self-realization, attracting seekers from across Maharashtra and India.",
     topAttraction: "Majestic Vitthal Statue, Serene Green Surroundings, Spiritual Atmosphere by Tukaram Baba, Ideal for Family Gatherings and Marriages",
     timing: "Open 24 Hours",
@@ -235,7 +235,7 @@ const temples = [
   },
   {
     name: "Sant Kaikadi Maharaj Math",
-    image: "/pandharpurtemple1.jpg",
+    image: "/santkaikadi1.jpg",
     description: "Sant Kaikadi Maharaj Math is a unique religious site in Pandharpur known for its spiritual teachings and visually captivating representations of Hindu mythology. The math was founded by Sant Kaikadi Maharaj, a respected spiritual leader dedicated to spreading moral and devotional values.",
     topAttraction: "Sant Kaikadi Maharaj Shrine, Meditation Halls, Peaceful Gardens",
     timing: "9:00 am to 6:00 pm",
@@ -244,7 +244,7 @@ const temples = [
   },
   {
     name: "Pundalik Temple",
-    image: "/shrigajnan1.jpeg",
+    image: "/pundaliktemple.jpg",
     description: "Pundalik Temple, right in the middle of Pandharpur, is like a special place that tells the story of Pundalik, a saint who loved Vithoba a lot. Pundalik is the one who brought Vithoba to Pandharpur, and you can feel his devotion in the temple. Vithoba, like Vishnu and Krishna, has a big home in the main part of the temple. Pundalik wasn't just a saint; he was also good at Kundalini Yoga, so people called him Kundalik",
     topAttraction: "Vithoba's Main Shrine, Depiction of Kundalini Energy, Symbolic Muladhara Chakra Brick, Spiritual Representation of Hands and Body",
     timing: "4:00 am to 7:00 pm",
@@ -253,34 +253,17 @@ const temples = [
   },
   {
     name: "Sri Sri Radha Pandharinath Mandir Pandharpur",
-    image: "/pandharpurtemple1.jpg",
+    image: "/shrishri.jpg",
     description: "The Sri Sri Radha Pandharinath Mandir is part of the ISKCON (International Society for Krishna Consciousness) movement. It is dedicated to Lord Krishna (Pandharinath) and Radha, and it merges the bhakti traditions of both Vaishnavism and the local Vithoba (Vitthal) devotion of Pandharpur.",
     topAttraction: "Divine Deities of Sri Sri Radha Pandhiranath, Ekadasi Festival Celebrations, Sharing Srila Prabhupada's Marathi Bhagavad-gita, Riverside Location",
     timing: "4:00 am to 1:00 pm and 2:00 am to 8:00 pm",
     location: "ISKCON Temple Road, Shegaon Dumala, Pandharpur, Maharashtra 413304",
     reverse: true,
   },
-  {
-    name: "Kaikadi Maharaj Mandir Pandharpur",
-    image: "/shrigajnan1.jpeg",
-    description: "Kaikadi Maharaj Mandir is a unique and spiritual temple in Pandharpur that stands out for its artistic representation of various mythological events and teachings from Hindu scriptures. It is run by the Kaikadi community and offers a journey-like walkthrough experience inside.",
-    topAttraction: "Life-size statues depicting Ramayana and Mahabharata scenes,Mythological caves and dioramas,Spiritual teachings and quotes by Kaikadi Maharaj,Peaceful meditation environment inside the cave setup",
-    timing: "6:00 AM to 8:00 PM",
-    location: "June Pat,Pandharpur,Maharashtra",
-    reverse: false,
-  },
-  {
-    name: "Shri Gajanan Maharaj Sansthan",
-    image: "/pandharpurtemple1.jpg",
-    description: "top tourist attraction in Pandharpur blessed by Shree Gajanan Maharaj in 1908. Gajanan Maharaj specified the date and place of his samadhi, and his prophetic words, 'Ya jaagi raaheel' (Will stay here), echoed through the ages.",
-    topAttraction: "Majestic Marble Temple, Grand Mahadwar Entrance, Sacred PranPratishtha Ceremony, Intricately Carved Architecture",
-    timing: "5:00 am to 9:30 pm",
-    location: "Shivaji Chowk, Pandharpur,Maharashtra.",
-    reverse: true,
-  },
+
   {
     name: "Tanpure Maharaj Math",
-    image: "/shrigajnan1.jpeg",
+    image: "/tanpuremaharaj.jpg",
     description: "Remember to visit the Tanpure Maharaj Math and find a special place called Samadhi Sthal. Inside, there are 12 Jyotirlingas. This place is unique and special because these models look real and are different from each other. This place is not just about the Jyotirlingas; you'll also see models of 4 Dhams here. It's a great spot to visit if you come to Pandharpur, giving you a special feeling of the divine.",
     topAttraction: "Divine Samadhi Sthal, Lifelike Models of 12 Jyotirlingas, Presence of 4 Dhams, Spiritual Enrichment Experience",
     timing: "6:00 am to 9:00 pm",
@@ -289,7 +272,7 @@ const temples = [
   },
   {
     name: "Shri Gopalkrishna Temple",
-    image: "/pandharpurtemple1.jpg",
+    image: "/ShriGopalkrishna.jpg",
     description: "Perched atop the Govardhan Parvat, Shri Gopalkrishna Temple is dedicated to Lord Krishna. The temple resembles that of a fort and has underground chambers. The temple premises has a kitchen and a grinding place, both of which are believed to be used by Shri Krishna. It is such an important spot that a pilgrim's journey is said to be incomplete if they have not stopped by Shri Gopalkrishna Temple. It is one of the sacred places to visit near Pandharpur.",
     topAttraction: "Idols of Shri Gopalkrishna and Radha in traditional attire,Intricate carvings and paintings depicting Krishna Leela,Quiet prayer hall ideal for meditation",
     timing: "Open daily from 5:30 AM to 12:00 PM and 4:00 PM to 9:00 PM",
