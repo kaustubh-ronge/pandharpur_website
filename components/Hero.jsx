@@ -1,6 +1,4 @@
 
-
-
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -14,8 +12,6 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { addDoc, collection, serverTimestamp, query, orderBy, limit, getDocs, where } from "firebase/firestore";
-import { db } from "@/lib/firebase";
 import { toast } from "sonner";
 import { 
   Star, PlayCircle, MapPin, Landmark, ArrowDown, Calendar, 
@@ -23,14 +19,13 @@ import {
   Loader2
 } from "lucide-react";
 
-// Pandharpur Events Data with exact dates (recurring annually)
 const pandharpurEvents = [
   {
     id: 1,
     title: "Ashadhi Ekadashi",
     description: "Largest Warkari pilgrimage with Lord Vitthal worship and grand processions.",
     location: "Pandharpur",
-    startDate: "06-25", // MM-DD format
+    startDate: "06-25",
     endDate: "07-05",
     icon: <Flag className="h-6 w-6" />,
     color: "bg-orange-100"
@@ -87,72 +82,49 @@ const pandharpurEvents = [
   }
 ];
 
-// Utility function to get event status
 const getEventStatus = (startDate, endDate) => {
   const today = new Date();
   const currentYear = today.getFullYear();
   const nextYear = currentYear + 1;
-  
-  // Create date objects for this year's occurrence
   const eventStart = new Date(`${currentYear}-${startDate}`);
   const eventEnd = new Date(`${currentYear}-${endDate}`);
-  
-  // For events that span New Year (like Makar Sankranti)
   const eventStartPrevYear = new Date(`${currentYear-1}-${startDate}`);
   const eventEndPrevYear = new Date(`${currentYear-1}-${endDate}`);
-  
-  // Check if event is currently happening
   if (today >= eventStart && today <= eventEnd) {
     return "current";
   }
-  // Check for New Year spanning events
   if (eventStart.getMonth() < eventEnd.getMonth() && today >= eventStartPrevYear && today <= eventEndPrevYear) {
     return "current";
   }
-  
-  // Find next occurrence
   let nextOccurrence = eventStart;
   if (today > eventEnd) {
     nextOccurrence = new Date(`${nextYear}-${startDate}`);
   }
-  
-  // Check if this is the next upcoming event
   const daysUntilNext = Math.ceil((nextOccurrence - today) / (1000 * 60 * 60 * 24));
-  const nextEventThreshold = 30; // Consider next event if within 30 days of current event ending
-  
+  const nextEventThreshold = 30;
   if (daysUntilNext <= nextEventThreshold && daysUntilNext > 0) {
     return "upcoming";
   }
-  
   return "future";
 };
 
-// Sort events by date (handling New Year wrap-around)
 const getSortedEvents = () => {
   const today = new Date();
-  const currentMonth = today.getMonth() + 1; // 1-12
-  
+  const currentMonth = today.getMonth() + 1;
   return [...pandharpurEvents].sort((a, b) => {
-    // Compare months first
     const aMonth = parseInt(a.startDate.split('-')[0]);
     const bMonth = parseInt(b.startDate.split('-')[0]);
-    
-    // Adjust for New Year (Jan events come after Dec)
     const aAdjustedMonth = aMonth < currentMonth ? aMonth + 12 : aMonth;
     const bAdjustedMonth = bMonth < currentMonth ? bMonth + 12 : bMonth;
-    
     if (aAdjustedMonth !== bAdjustedMonth) {
       return aAdjustedMonth - bAdjustedMonth;
     }
-    
-    // If same month, compare days
     const aDay = parseInt(a.startDate.split('-')[1]);
     const bDay = parseInt(b.startDate.split('-')[1]);
     return aDay - bDay;
   });
 };
 
-// FAQ data
 const faqs = {
   general: [
     {
@@ -199,123 +171,21 @@ const faqs = {
 };
 
 const Hero = () => {
-  const [testimonial, setTestimonial] = useState({
-    name: "",
-    email: "",
-    message: "",
-    rating: 5
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [activeTab, setActiveTab] = useState("testimonials");
-  const [fetchedTestimonials, setFetchedTestimonials] = useState([]);
-  const [loadingTestimonials, setLoadingTestimonials] = useState(true);
-
-  // Process events with status
   const processedEvents = getSortedEvents().map(event => {
     const status = getEventStatus(event.startDate, event.endDate);
     return {
       ...event,
       status,
-      // Format display date
       displayDate: `${new Date(`${new Date().getFullYear()}-${event.startDate}`).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${new Date(`${new Date().getFullYear()}-${event.endDate}`).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
     };
   });
 
-  // Find current and upcoming events
   const currentEvent = processedEvents.find(event => event.status === "current");
   const upcomingEvent = processedEvents.find(event => event.status === "upcoming");
 
-  useEffect(() => {
-    const fetchTestimonials = async () => {
-      try {
-        const q = query(
-          collection(db, "testimonials"),
-          orderBy("createdAt", "desc"),
-          limit(10)
-        );
-        
-        const querySnapshot = await getDocs(q);
-        const testimonialsData = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-          date: doc.data().createdAt?.toDate().toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-          }) || 'Recent'
-        }));
-        
-        setFetchedTestimonials(testimonialsData);
-      } catch (error) {
-        console.error("Error fetching testimonials:", error);
-        toast.error("Failed to load testimonials");
-      } finally {
-        setLoadingTestimonials(false);
-      }
-    };
-
-    fetchTestimonials();
-  }, []);
-
-  const handleSubmitTestimonial = async (e) => {
-    e.preventDefault();
-    
-    if (!testimonial.name.trim() || !testimonial.message.trim()) {
-      toast.error("Please fill in name and message");
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    try {
-      const testimonialData = {
-        name: testimonial.name.trim(),
-        message: testimonial.message.trim(),
-        rating: testimonial.rating,
-        approved: false,
-        status: 'pending',
-        createdAt: serverTimestamp()
-      };
-
-      if (testimonial.email.trim()) {
-        testimonialData.email = testimonial.email.trim();
-      }
-
-      await addDoc(collection(db, "testimonials"), testimonialData);
-
-      toast.success("Thank you for your testimonial! It will be reviewed soon.");
-      setTestimonial({ name: "", email: "", message: "", rating: 5 });
-      setActiveTab("testimonials");
-    } catch (error) {
-      console.error("Submission error:", error);
-      toast.error("Submission failed. Please try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const RatingSelector = ({ value, onChange }) => {
-    return (
-      <div className="flex items-center gap-1">
-        {[1, 2, 3, 4, 5].map((star) => (
-          <button
-            key={star}
-            type="button"
-            onClick={() => onChange(star)}
-            className={`text-xl transition-colors ${star <= value ? 'text-orange-500' : 'text-gray-300'}`}
-          >
-            ★
-          </button>
-        ))}
-      </div>
-    );
-  };
-
   return (
     <>
-      {/* Hero Section */}
       <section className="relative h-[95vh] min-h-[700px] md:h-screen overflow-hidden bg-gradient-to-t from-orange-100 via-white to-orange-50">
-        {/* Background floating circles */}
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           {[1, 2, 3, 4, 5].map((i) => (
             <motion.div
@@ -337,7 +207,6 @@ const Hero = () => {
           ))}
         </div>
 
-        {/* Left and Right Corner Images */}
         <div className="absolute top-0 left-0 z-10 p-6">
           <img src="/vitthal-solo-image.png" alt="Shri Vitthal" className="h-120 pl-10" />
         </div>
@@ -345,10 +214,7 @@ const Hero = () => {
           <img src="/rukmini-solo-img.png" alt="Mata Rukmini" className="h-100 mt-10 pr-12" />
         </div>
 
-        {/* Content */}
         <div className="relative z-20 flex flex-col h-full items-center justify-center px-6 md:px-12 text-center text-gray-800">
-          
-          {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -360,7 +226,6 @@ const Hero = () => {
             </Badge>
           </motion.div>
 
-          {/* Heading */}
           <motion.h1
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -374,7 +239,6 @@ const Hero = () => {
             </span>
           </motion.h1>
 
-          {/* Subtitle */}
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -384,7 +248,6 @@ const Hero = () => {
             Walk the sacred path walked by millions — an unforgettable spiritual journey to Lord Vitthal's abode.
           </motion.p>
 
-          {/* Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -399,7 +262,6 @@ const Hero = () => {
             </Button>
           </motion.div>
 
-          {/* Info Cards */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -427,7 +289,6 @@ const Hero = () => {
             </Card>
           </motion.div>
 
-          {/* Down arrow for scroll */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -439,7 +300,6 @@ const Hero = () => {
         </div>
       </section>
 
-      {/* About Section */}
       <section className="relative py-20 px-6 md:px-12 bg-white overflow-hidden">
         <div className="relative z-10 max-w-6xl mx-auto">
           <motion.div
@@ -503,7 +363,6 @@ const Hero = () => {
         </div>
       </section>
 
-      {/* Timeline Section */}
       <section className="relative py-20 px-6 md:px-12 bg-orange-50 overflow-hidden">
         <div className="relative z-10 max-w-6xl mx-auto">
           <motion.div
@@ -522,7 +381,6 @@ const Hero = () => {
             </p>
           </motion.div>
 
-          {/* Current and Upcoming Event Highlight */}
           <div className="grid md:grid-cols-2 gap-6 mb-12">
             {currentEvent && (
               <motion.div
@@ -581,9 +439,7 @@ const Hero = () => {
             )}
           </div>
 
-          {/* Full Timeline */}
           <div className="relative">
-            {/* Animated timeline line */}
             <motion.div
               className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-orange-200 origin-top"
               initial={{ scaleY: 0 }}
@@ -648,166 +504,6 @@ const Hero = () => {
         </div>
       </section>
 
-      {/* Testimonials Section with Form */}
-      {/* <section className="relative py-20 px-6 md:px-12 bg-white overflow-hidden">
-        <div className="relative z-10 max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <Badge variant="outline" className="mb-4 border-orange-400 text-orange-600">
-              Devotee Experiences
-            </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Share Your Journey</h2>
-            <p className="max-w-2xl mx-auto text-gray-600">
-              Hear from fellow pilgrims or share your own spiritual experience
-            </p>
-          </motion.div>
-
-          <Tabs 
-            value={activeTab} 
-            onValueChange={setActiveTab}
-            className="w-full"
-          >
-            <TabsList className="grid w-full grid-cols-2 mb-8 max-w-md mx-auto">
-              <TabsTrigger value="testimonials">Testimonials</TabsTrigger>
-              <TabsTrigger value="form">Share Your Story</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="testimonials">
-              {loadingTestimonials ? (
-                <div className="flex justify-center py-12">
-                  <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
-                </div>
-              ) : fetchedTestimonials.length === 0 ? (
-                <div className="text-center py-12 text-gray-500">
-                  No testimonials yet. Be the first to share your experience!
-                </div>
-              ) : (
-                <Carousel className="w-full max-w-4xl mx-auto">
-                  <CarouselContent>
-                    {fetchedTestimonials.map((item) => (
-                      <CarouselItem key={item.id} className="md:basis-1/2 lg:basis-1/3">
-                        <div className="p-2 h-full">
-                          <motion.div whileHover={{ y: -5 }} className="h-full">
-                            <Card className="h-full bg-white/90 backdrop-blur-sm border border-orange-100 flex flex-col">
-                              <CardContent className="flex flex-col p-6 flex-grow">
-                                <div className="flex items-center gap-4 mb-4">
-                                  <Avatar>
-                                    <AvatarImage src={item.avatar} />
-                                    <AvatarFallback>{item.name[0]}</AvatarFallback>
-                                  </Avatar>
-                                  <div>
-                                    <h4 className="font-semibold">{item.name}</h4>
-                                    <p className="text-sm text-gray-500">{item.date}</p>
-                                  </div>
-                                </div>
-                                <div className="flex-grow">
-                                  <p className="text-gray-600 mb-4 italic line-clamp-4">"{item.message}"</p>
-                                </div>
-                                <div className="flex">
-                                  {[...Array(5)].map((_, i) => (
-                                    <Star
-                                      key={i}
-                                      className={`h-4 w-4 ${i < item.rating ? 'fill-orange-500 text-orange-500' : 'text-gray-300'}`}
-                                    />
-                                  ))}
-                                </div>
-                              </CardContent>
-                            </Card>
-                          </motion.div>
-                        </div>
-                      </CarouselItem>
-                    ))}
-                  </CarouselContent>
-                  <CarouselPrevious className="hidden md:flex" />
-                  <CarouselNext className="hidden md:flex" />
-                </Carousel>
-              )}
-            </TabsContent>
-
-            <TabsContent value="form">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="flex justify-center"
-              >
-                <Card className="w-full max-w-md border border-orange-200 shadow-sm">
-                  <CardHeader>
-                    <CardTitle className="text-xl">Share Your Experience</CardTitle>
-                    <CardDescription>Tell us about your spiritual journey</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <form onSubmit={handleSubmitTestimonial} className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="name">Your Name *</Label>
-                        <Input
-                          id="name"
-                          value={testimonial.name}
-                          onChange={(e) => setTestimonial({...testimonial, name: e.target.value})}
-                          placeholder="Enter your name"
-                          required
-                        />
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <Label htmlFor="email">Email</Label>
-                        <Input
-                          id="email"
-                          type="email"
-                          value={testimonial.email}
-                          onChange={(e) => setTestimonial({...testimonial, email: e.target.value})}
-                          placeholder="your@email.com"
-                        />
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <Label>Your Rating *</Label>
-                        <RatingSelector 
-                          value={testimonial.rating} 
-                          onChange={(rating) => setTestimonial({...testimonial, rating})} 
-                        />
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <Label htmlFor="message">Your Experience *</Label>
-                        <Textarea
-                          id="message"
-                          rows={4}
-                          value={testimonial.message}
-                          onChange={(e) => setTestimonial({...testimonial, message: e.target.value})}
-                          placeholder="Share your spiritual journey..."
-                          required
-                          className="min-h-[120px]"
-                        />
-                      </div>
-                      
-                      <Button 
-                        type="submit" 
-                        className="w-full mt-4 bg-orange-600 hover:bg-orange-700"
-                        disabled={isSubmitting}
-                      >
-                        {isSubmitting ? (
-                          <>
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Submitting...
-                          </>
-                        ) : "Share Your Story"}
-                      </Button>
-                    </form>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </TabsContent>
-          </Tabs>
-        </div>
-      </section> */}
-
-      {/* Registration CTA */}
       <section className="relative py-20 px-6 md:px-12 bg-gradient-to-r from-orange-500 to-red-500 overflow-hidden">
         <div className="relative z-10 max-w-4xl mx-auto text-center">
           <motion.div
@@ -850,7 +546,6 @@ const Hero = () => {
         </div>
       </section>
 
-      {/* FAQ Section */}
       <section className="relative py-20 px-6 md:px-12 bg-white overflow-hidden">
         <div className="relative z-10 max-w-4xl mx-auto">
           <motion.div
