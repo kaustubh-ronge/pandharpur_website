@@ -13,7 +13,7 @@
 // //   return (
 // //     <div className="max-w-6xl mx-auto px-6 py-16">
 // //       <h1 className="text-4xl font-bold mb-10 text-center">Our Partner Hotels</h1>
-      
+
 // //       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 // //         {hotels.map((hotel, index) => (
 // //           <motion.div
@@ -75,7 +75,7 @@
 //   return (
 //     <div className="max-w-6xl mx-auto px-6 py-16">
 //       <h1 className="text-4xl font-bold mb-10 text-center">Our Partner Hotels</h1>
-      
+
 //       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 //         {hotels.map((hotel, index) => (
 //           <motion.div
@@ -132,6 +132,7 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
+import Image from "next/image"
 
 export default function HotelsPage() {
   const [hotels, setHotels] = useState([])
@@ -160,10 +161,17 @@ export default function HotelsPage() {
             <Card className="hover:shadow-xl transition-all duration-300 h-full flex flex-col">
               {hotel.image && (
                 <CardHeader className="p-0">
-                  <img
+                  {/* <img
                     src={hotel.image}
                     alt={hotel.name}
                     className="w-full h-48 object-cover rounded-t-lg"
+                  /> */}
+                  <Image
+                    src={hotel.image}
+                    alt={hotel.name}
+                    width={400}
+                    height={300}
+                    className="rounded-xl object-cover"
                   />
                 </CardHeader>
               )}
