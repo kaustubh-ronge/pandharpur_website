@@ -451,20 +451,20 @@ export default function TripPlanner() {
         - Include rituals: ${profile.preferences.includeRituals}
         - Meal preferences: ${profile.preferences.mealPreferences}
         - Accommodation: ${profile.preferences.accommodation}
-        
+
         Use only real locations from Pandharpur including:
         Temples: ${pandharpurLocations.temples.map(t => t.name).join(', ')}
         Food: ${pandharpurLocations.food.map(f => f.name).join(', ')}
         Landmarks: ${pandharpurLocations.landmarks.map(l => l.name).join(', ')}
         Accommodations: ${pandharpurLocations.accommodations.map(a => a.name).join(', ')}
-        
+
         Include:
         1. Temple visits with timing based on actual aarti schedules
         2. Meal breaks at appropriate locations
         3. Cultural activities if requested
         4. Travel time between locations
         5. Special notes about dress code and customs
-        
+
         Return in this JSON format:
         {
           "itinerary": [
