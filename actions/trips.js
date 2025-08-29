@@ -1,4 +1,4 @@
-// // app/actions/trips.js
+
 // "use server";
 
 // import { db } from "@/lib/prisma";
@@ -34,7 +34,7 @@
 //       }
 //     });
 //     return trip;
-//   } catch (error) {
+//   } catch (error)    {
 //     console.error("Error creating trip:", error);
 //     throw new Error("Failed to create trip");
 //   }
@@ -56,23 +56,6 @@
 //   }
 // }
 
-// export async function deleteTrip(tripId) {
-//   try {
-//     const user = await checkUser();
-//     if (!user) throw new Error("Unauthorized");
-
-//     await db.trip.delete({
-//       where: { id: tripId, userId: user.id }
-//     });
-//     return { success: true };
-//   } catch (error) {
-//     console.error("Error deleting trip:", error);
-//     throw new Error("Failed to delete trip");
-//   }
-// }
-
-
-
 "use server";
 
 import { db } from "@/lib/prisma";
@@ -82,7 +65,7 @@ export async function getTrips() {
   try {
     const user = await checkUser();
     if (!user) throw new Error("Unauthorized");
-    
+   
     const trips = await db.trip.findMany({
       where: { userId: user.id },
       orderBy: { createdAt: "desc" }
@@ -105,10 +88,12 @@ export async function createTrip(tripData) {
         destination: tripData.destination,
         itinerary: tripData.itinerary || [],
         coverImage: tripData.coverImage,
+        title: tripData.title || `My Pandharpur Trip`,
+        isAIGenerated: tripData.isAIGenerated || false
       }
     });
     return trip;
-  } catch (error)    {
+  } catch (error) {
     console.error("Error creating trip:", error);
     throw new Error("Failed to create trip");
   }
@@ -127,5 +112,21 @@ export async function updateTripItinerary(tripId, itinerary) {
   } catch (error) {
     console.error("Error updating trip:", error);
     throw new Error("Failed to update trip");
+  }
+}
+
+export async function deleteTrip(tripId) {
+  try {
+    const user = await checkUser();
+    if (!user) throw new Error("Unauthorized");
+
+    await db.trip.delete({
+      where: { id: tripId, userId: user.id }
+    });
+    
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting trip:", error);
+    throw new Error("Failed to delete trip");
   }
 }
