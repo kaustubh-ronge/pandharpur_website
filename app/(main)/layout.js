@@ -1,4 +1,5 @@
 import { Header } from "@/components/HeaderComponents/Header";
+import { SharedBackground } from "@/components/SharedBackGround";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -17,7 +18,9 @@ export default function MainLayout({ children }) {
         enableSystem
         disableTransitionOnChange
       >
+
         <Header />
+
 
         <main className="min-h-screen">{children}</main>
 
