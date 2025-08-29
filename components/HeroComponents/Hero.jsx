@@ -2,10 +2,10 @@
 import { getEventStatus, getSortedEvents } from "@/utils/eventUtils";
 import React from "react";
 import HeroBannerSection from "./HeroBannerSection";
-import PilgrimageInfoSection from "./PilGrimageInfoSection";
 import EventsTimelineSection from "./EventsTimelineSection";
 import CtaSection from "./CtaSection";
 import FaqSection from "./FaqSection";
+import PilgrimageInfoSection from "./PilGrimageInfoSection";
 
 
 const Hero = () => {

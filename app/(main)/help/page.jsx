@@ -11,28 +11,25 @@ import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
 import { Progress } from "@/components/ui/progress"
-import { 
-  HelpCircle, Phone, Mail, MessageSquare, MapPin, Clock, 
-  ChevronRight, CheckCircle, XCircle, AlertCircle, 
+import {
+  HelpCircle, Phone, Mail, MessageSquare, MapPin, Clock,
+  ChevronRight, CheckCircle, XCircle,
   LifeBuoy, User, Calendar, Smartphone, Globe, MailCheck,
   BookOpen, Search, Download, AlertTriangle, Map,
   Ambulance
 } from "lucide-react"
 import { useRef } from "react"
-import { useInView } from "framer-motion"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
-import dynamic from 'next/dynamic'
 
 
 export default function HelpCenter() {
-  const ref = useRef(null)
   const containerRef = useRef(null)
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"]
   })
-  
+
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"])
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
 
@@ -153,23 +150,15 @@ export default function HelpCenter() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-orange-50 to-amber-50 relative overflow-hidden" ref={containerRef}>
-      {/* 3D Background Element */}
-      <motion.div 
-        className="absolute top-1/4 -right-20 w-64 h-64 z-0"
-        style={{ y, opacity }}
-      >
-        <FloatingTemple />
-      </motion.div>
-
       {/* Animated Gradient Background */}
-      <motion.div 
+      <motion.div
         className="absolute inset-0 overflow-hidden pointer-events-none z-0"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
       >
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-orange-100/30 via-transparent to-transparent" />
-        
+
         {[...Array(6)].map((_, i) => (
           <motion.div
             key={i}
@@ -216,7 +205,7 @@ export default function HelpCenter() {
                 <LifeBuoy className="h-4 w-4 mr-2" /> Support Center
               </Badge>
             </motion.div>
-            <motion.h1 
+            <motion.h1
               className="text-4xl md:text-5xl font-bold text-gray-900 mb-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -224,7 +213,7 @@ export default function HelpCenter() {
             >
               How can we help you today?
             </motion.h1>
-            <motion.p 
+            <motion.p
               className="text-xl text-gray-600 max-w-2xl mx-auto"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -247,8 +236,8 @@ export default function HelpCenter() {
                 className="h-14 text-lg pl-14 pr-6 shadow-lg border-2 border-orange-200 focus:border-orange-400 group-hover:shadow-xl transition-all duration-300"
               />
               <Search className="absolute left-5 top-1/2 transform -translate-y-1/2 h-6 w-6 text-gray-400 group-hover:text-orange-500 transition-colors" />
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-orange-600 hover:bg-orange-700 shadow-md group-hover:shadow-lg transition-all"
               >
                 Search
@@ -264,26 +253,26 @@ export default function HelpCenter() {
               transition={{ delay: 0.6, duration: 0.6 }}
             >
               <TabsList className="grid w-full grid-cols-1 md:grid-cols-4 bg-orange-50 p-2 h-auto mb-12 rounded-xl border border-orange-200">
-                <TabsTrigger 
-                  value="faq" 
+                <TabsTrigger
+                  value="faq"
                   className="py-3 data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg transition-all"
                 >
                   <HelpCircle className="h-5 w-5 mr-2" /> FAQs
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="contact" 
+                <TabsTrigger
+                  value="contact"
                   className="py-3 data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg transition-all"
                 >
                   <Phone className="h-5 w-5 mr-2" /> Contact
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="resources" 
+                <TabsTrigger
+                  value="resources"
                   className="py-3 data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg transition-all"
                 >
                   <BookOpen className="h-5 w-5 mr-2" /> Resources
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="team" 
+                <TabsTrigger
+                  value="team"
                   className="py-3 data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg transition-all"
                 >
                   <User className="h-5 w-5 mr-2" /> Our Team
@@ -385,7 +374,7 @@ export default function HelpCenter() {
                     </CardHeader>
                     <CardContent>
                       <div className="flex flex-col sm:flex-row items-center gap-6">
-                        <motion.div 
+                        <motion.div
                           className="bg-orange-100 p-4 rounded-xl shadow-inner"
                           whileHover={{ scale: 1.05 }}
                           transition={{ type: "spring", stiffness: 300 }}
@@ -472,8 +461,8 @@ export default function HelpCenter() {
                                   </h3>
                                   <Badge variant="outline" className={
                                     channel.badge === "Critical" ? "border-red-200 bg-red-50 text-red-600" :
-                                    channel.badge === "Fast" ? "border-green-200 bg-green-50 text-green-600" :
-                                    "border-blue-200 bg-blue-50 text-blue-600"
+                                      channel.badge === "Fast" ? "border-green-200 bg-green-50 text-green-600" :
+                                        "border-blue-200 bg-blue-50 text-blue-600"
                                   }>
                                     {channel.badge}
                                   </Badge>
@@ -506,9 +495,9 @@ export default function HelpCenter() {
                             <span className="text-sm font-medium">Emergency Hotline</span>
                             <span className="text-xs text-green-600">24/7</span>
                           </div>
-                          <Progress 
-                            value={100} 
-                            className="h-2 bg-green-100" 
+                          <Progress
+                            value={100}
+                            className="h-2 bg-green-100"
                             indicatorClassName={cn(
                               "bg-green-500",
                               "data-[state=indeterminate]:animate-pulse"
@@ -520,9 +509,9 @@ export default function HelpCenter() {
                             <span className="text-sm font-medium">WhatsApp Support</span>
                             <span className="text-xs text-blue-600">6AM - 11PM</span>
                           </div>
-                          <Progress 
-                            value={70} 
-                            className="h-2 bg-blue-100" 
+                          <Progress
+                            value={70}
+                            className="h-2 bg-blue-100"
                             indicatorClassName={cn(
                               "bg-blue-500",
                               "data-[state=indeterminate]:animate-pulse"
@@ -534,9 +523,9 @@ export default function HelpCenter() {
                             <span className="text-sm font-medium">Physical Centers</span>
                             <span className="text-xs text-orange-600">7AM - 9PM</span>
                           </div>
-                          <Progress 
-                            value={58} 
-                            className="h-2 bg-orange-100" 
+                          <Progress
+                            value={58}
+                            className="h-2 bg-orange-100"
                             indicatorClassName={cn(
                               "bg-orange-500",
                               "data-[state=indeterminate]:animate-pulse"
@@ -577,8 +566,8 @@ export default function HelpCenter() {
                           className="min-h-[150px]"
                         />
                       </div>
-                      <Button 
-                        type="submit" 
+                      <Button
+                        type="submit"
                         className="w-full bg-orange-600 hover:bg-orange-700 shadow-md hover:shadow-lg transition-all"
                       >
                         Send Message <MailCheck className="h-4 w-4 ml-2" />
@@ -751,9 +740,9 @@ export default function HelpCenter() {
                                   {member.years} yrs
                                 </Badge>
                               </div>
-                              <Button 
-                                variant="outline" 
-                                size="sm" 
+                              <Button
+                                variant="outline"
+                                size="sm"
                                 className="w-full mt-4 border-orange-200 text-orange-600 hover:bg-orange-50 group-hover:border-orange-300 group-hover:text-orange-700 transition-colors"
                               >
                                 Contact
@@ -815,8 +804,8 @@ export default function HelpCenter() {
                               <Label htmlFor="v-role">Preferred Role</Label>
                               <Input id="v-role" placeholder="Which role interests you?" />
                             </div>
-                            <Button 
-                              type="submit" 
+                            <Button
+                              type="submit"
                               className="w-full bg-orange-600 hover:bg-orange-700 shadow-md hover:shadow-lg transition-all"
                             >
                               Apply to Volunteer
@@ -831,8 +820,8 @@ export default function HelpCenter() {
             </TabsContent>
           </Tabs>
         </div>
-                {/* Footer Section */}
-        <motion.footer 
+        {/* Footer Section */}
+        <motion.footer
           className="mt-24 py-12 border-t border-orange-200"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -892,9 +881,9 @@ export default function HelpCenter() {
                     Subscribe to our newsletter for updates
                   </p>
                   <div className="mt-2 flex">
-                    <Input 
-                      type="email" 
-                      placeholder="Your email" 
+                    <Input
+                      type="email"
+                      placeholder="Your email"
                       className="rounded-r-none border-r-0 focus:ring-0 focus:border-orange-300"
                     />
                     <Button className="rounded-l-none bg-orange-600 hover:bg-orange-700">
@@ -919,8 +908,8 @@ export default function HelpCenter() {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
       >
-        <Button 
-          size="lg" 
+        <Button
+          size="lg"
           className="rounded-full h-16 w-16 shadow-xl bg-orange-600 hover:bg-orange-700 text-white"
         >
           <LifeBuoy className="h-6 w-6" />
