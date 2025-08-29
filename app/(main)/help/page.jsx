@@ -24,15 +24,9 @@ import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
 import dynamic from 'next/dynamic'
 
-// Dynamically import 3D components to avoid SSR issues
-const FloatingTemple = dynamic(() => import('@/components/floating-temple'), { 
-  ssr: false,
-  loading: () => <div className="w-64 h-64 bg-orange-100 rounded-full opacity-20" />
-})
 
 export default function HelpCenter() {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: false, amount: 0.1 })
   const containerRef = useRef(null)
   const { scrollYProgress } = useScroll({
     target: containerRef,

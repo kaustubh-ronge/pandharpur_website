@@ -1,11 +1,12 @@
 "use client";
+import { getEventStatus, getSortedEvents } from "@/utils/eventUtils";
 import React from "react";
-import { getSortedEvents, getEventStatus } from '@/utils/eventUtils';
-import HeroBannerSection from './HeroBannerSection';
-import PilgrimageInfoSection from './PilgrimageInfoSection';
-import EventsTimelineSection from './EventsTimelineSection';
-import CtaSection from './CtaSection';
-import FaqSection from './FaqSection';
+import HeroBannerSection from "./HeroBannerSection";
+import PilgrimageInfoSection from "./PilGrimageInfoSection";
+import EventsTimelineSection from "./EventsTimelineSection";
+import CtaSection from "./CtaSection";
+import FaqSection from "./FaqSection";
+
 
 const Hero = () => {
     const processedEvents = getSortedEvents().map(event => {
