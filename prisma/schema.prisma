@@ -1,3 +1,5 @@
+// In prisma/schema.prisma
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,43 +10,57 @@ datasource db {
 }
 
 model User {
-  id           String         @id @default(uuid())
-  clerkUserId  String         @unique
-  name         String?
-  email        String?
-  imageUrl     String?
-  
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
+  id          String       @id @default(uuid())
+  clerkUserId String       @unique
+  name        String?
+  email       String?
+  imageUrl    String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 
-  trips        Trip[]
-  aiSuggestion AiSuggestion?
+  manualTrips ManualTrip[]
+  aiTrips     AiTrip[]
+  aiRoutes    AiRoute[]
+  aiSchedules AiSchedule[]
 }
 
-model Trip {
-  id          String         @id @default(cuid())
+model ManualTrip {
+  id          String   @id @default(uuid())
+  title       String
+  startDate   DateTime
+  endDate     DateTime
+  locations   String   // Stored as a JSON string
+  preferences String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   userId      String
-  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  destination String?
-  itinerary   Json?
-  coverImage  String?
-  isAIGenerated Boolean      @default(false)
-  title       String?
-
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-
-  @@index([userId])
+  user        User     @relation(fields: [userId], references: [id])
 }
 
-model AiSuggestion {
-  id          String         @id @default(cuid())
-  userId      String         @unique
-  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+model AiTrip {
+  id        String   @id @default(uuid())
+  prompt    Json
+  response  Json
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+}
 
-  suggestions Json?
-  
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
+model AiRoute {
+  id            String   @id @default(uuid())
+  startLocation String
+  endLocation   String   @default("Pandharpur, Maharashtra, India")
+  response      Json
+  createdAt     DateTime @default(now())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
+}
+
+model AiSchedule {
+  id        String   @id @default(uuid())
+  prompt    Json
+  response  Json
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
 }
