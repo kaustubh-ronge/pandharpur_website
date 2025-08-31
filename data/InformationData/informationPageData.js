@@ -18,7 +18,7 @@ export const categories = [
     icon: <MapPin className="h-6 w-6" />,
     descriptionTemplate: "Explore all {count} temples",
     color: "bg-red-100 text-red-600",
-    link: "/temples" // This also has a link
+    link: "/information-page/temples" // This also has a link
   },
   {
     id: "bhaktniwas",

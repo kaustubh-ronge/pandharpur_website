@@ -80,3 +80,43 @@ export const getBhaktaniwasBySlugQuery = `
     "gallery": gallery[].asset->url
   }
 `;
+
+// --- EXISTING QUERIES ---
+// (Keep your hotel and bhaktaniwas queries here)
+
+
+// --- NEW TEMPLE QUERIES ---
+
+// This query fetches all temples for the list view
+export const getAllTemplesQuery = `
+  *[_type == "temple"] | order(isFeatured desc, _createdAt desc) {
+    _id,
+    name,
+    "slug": slug.current,
+    presidingDeity,
+    description,
+    "image": image.asset->url,
+    isFeatured
+  }
+`;
+
+// This query fetches one specific temple by its slug for the detail page
+export const getTempleBySlugQuery = `
+  *[_type == "temple" && slug.current == $slug][0] {
+    _id,
+    name,
+    "slug": slug.current,
+    presidingDeity,
+    isFeatured,
+    address,
+    website,
+    description,
+    historyAndSignificance,
+    darshanTimings,
+    majorFestivals,
+    "image": image.asset->url,
+    phoneNumber,
+    googleMapsEmbedUrl,
+    "gallery": gallery[].asset->url
+  }
+`;
