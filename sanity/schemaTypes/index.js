@@ -1,7 +1,6 @@
-import festival from "./festival";
+import bhaktaniwas from "./bhaktaniwas";
 import hotel from "./hotel";
-import temple from "./temple";
 
 export const schema = {
-  types: [hotel,temple,festival],
+  types: [hotel, bhaktaniwas],
 }
