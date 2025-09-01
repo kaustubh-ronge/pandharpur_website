@@ -34,7 +34,7 @@ export const categories = [
     icon: <Utensils className="h-6 w-6" />,
     description: "Prasad & Maharashtrian cuisine",
     color: "bg-green-100 text-green-600",
-    link:"/information-page/restaurant"
+    link:"/information-page/restaurants"
   },
   {
     id: "travel",
@@ -42,7 +42,7 @@ export const categories = [
     icon: <Bus className="h-6 w-6" />,
     description: "Buses & taxis to Pandharpur",
     color: "bg-purple-100 text-purple-600",
-    link:"/information-page/travel"
+    link:"/information-page/travels"
   },
 ];
 
