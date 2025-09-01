@@ -7,6 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// --- Enum for Chatbot Role ---
+enum Role {
+  user
+  model
+}
+
 model User {
   id          String       @id @default(uuid())
   clerkUserId String       @unique
@@ -19,6 +25,7 @@ model User {
   aiSchedules AiSchedule[]
   aiTrips     AiTrip[]
   manualTrips ManualTrip[]
+  chatSessions ChatSession[] // <-- ADD THIS LINE to your User model
 }
 
 model ManualTrip {
@@ -61,3 +68,26 @@ model AiSchedule {
   userId    String
   user      User     @relation(fields: [userId], references: [id])
 }
+
+// --- Start of New Chatbot Schema ---
+
+model ChatSession {
+  id        String        @id @default(uuid())
+  userId    String?       // Optional: for logged-in users
+  guestId   String?       @unique // Optional: for anonymous users
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  user      User?         @relation(fields: [userId], references: [id])
+  messages  ChatMessage[]
+}
+
+model ChatMessage {
+  id            String      @id @default(uuid())
+  role          Role        // 'user' or 'model'
+  content       String      // CORRECTED: Removed @db.Text
+  createdAt     DateTime    @default(now())
+  chatSessionId String
+  chatSession   ChatSession @relation(fields: [chatSessionId], references: [id], onDelete: Cascade)
+}
+
+// --- End of New Chatbot Schema ---
