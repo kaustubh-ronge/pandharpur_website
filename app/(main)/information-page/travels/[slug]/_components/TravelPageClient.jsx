@@ -273,7 +273,7 @@ export default function TravelPageClient({ item }) {
     return (
         <div className="bg-gradient-to-br from-amber-50 via-red-50 to-amber-100">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-                
+
                 <AnimatedSection>
                     <header className="mb-8">
                         <Breadcrumbs itemName={item.name} />
@@ -308,7 +308,7 @@ export default function TravelPageClient({ item }) {
                         </div>
                     </div>
                 </AnimatedSection>
-                
+
                 {/* --- SECTIONS BELOW ARE STRUCTURALLY UNCHANGED, ONLY STYLES & ANIMATIONS ADDED --- */}
                 <AnimatedSection>
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 mt-12">
@@ -334,10 +334,10 @@ export default function TravelPageClient({ item }) {
                             <div className="bg-white/70 backdrop-blur-sm p-6 rounded-lg border border-amber-200/60 sticky top-24 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
                                 <h3 className="text-2xl font-bold mb-4 text-stone-800">Quick Info</h3>
                                 <div className="space-y-4 text-stone-800">
-                                    {item.operatingHours && <p className="flex items-start gap-3"><Clock className="h-5 w-5 mt-1 text-orange-500"/> <span><strong>Hours:</strong> {item.operatingHours}</span></p>}
-                                    {item.phoneNumber && <p className="flex items-start gap-3"><Phone className="h-5 w-5 mt-1 text-orange-500"/> <a href={`tel:${item.phoneNumber}`} className="hover:underline">{item.phoneNumber}</a></p>}
-                                    {item.address && <p className="flex items-start gap-3"><MapPin className="h-5 w-5 mt-1 text-orange-500"/>{item.address}</p>}
-                                    {item.website && <a href={item.website} target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 text-orange-700 hover:underline"><Globe className="h-5 w-5 mt-1 text-orange-500"/> Official Website</a>}
+                                    {item.operatingHours && <p className="flex items-start gap-3"><Clock className="h-5 w-5 mt-1 text-orange-500" /> <span><strong>Hours:</strong> {item.operatingHours}</span></p>}
+                                    {item.phoneNumber && <p className="flex items-start gap-3"><Phone className="h-5 w-5 mt-1 text-orange-500" /> <a href={`tel:${item.phoneNumber}`} className="hover:underline">{item.phoneNumber}</a></p>}
+                                    {item.address && <p className="flex items-start gap-3"><MapPin className="h-5 w-5 mt-1 text-orange-500" />{item.address}</p>}
+                                    {item.website && <a href={item.website} target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 text-orange-700 hover:underline"><Globe className="h-5 w-5 mt-1 text-orange-500" /> Official Website</a>}
                                 </div>
                             </div>
                         </div>
