@@ -5,13 +5,6 @@ import TripPlannerPage from './_components/TripPlannerPage';
 
 const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
-/**
- * Main Guide Page (Server Component)
- *
- * This is the root page component. It is a server component, which means it
- * renders on the server and provides the initial HTML. All client-side interactivity is handled
- * by the imported TripPlannerPage component.
- */
 const GuidePage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50/50 via-slate-50 to-orange-50/50 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 p-4 sm:p-6 lg:p-8">
