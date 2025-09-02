@@ -16,7 +16,7 @@ import AiSchedulePlanner from "../PlannerComponents/AiSchedulePlanner";
 export default function PlannerColumn({ setMapLocations, onPlanCreated, ppur_attractions, useFetch, zodResolver, useForm, z, format, cn, toast, createManualTrip, generateAiTrip, generateAiRoute, generateAiSchedule }) {
   return (
     <Tabs defaultValue="ai_trip" className="w-full">
-      <TabsList className="grid w-full grid-cols-4 h-12 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm p-1 rounded-full border">
+      <TabsList className="grid w-full grid-cols-4 h-12 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm over p-1 rounded-full border">
         <TabsTrigger value="manual_trip" className="flex-1 text-xs md:text-sm rounded-full">
           <User className="w-4 h-4 mr-1 md:mr-2" />
           <span className="hidden md:inline">Manual</span>

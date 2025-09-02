@@ -63,8 +63,9 @@ function PastList({
 
   return (
     <div className="space-y-2 pr-2">
+      <h2 className='font-semibold text-lg pt-1 pb-3 text-amber-600'>Click On these to View Your Past Itineraries</h2>
       {items.map(item => (
-        <div key={item.id} className="p-3 border rounded-lg bg-background hover:bg-slate-100/50 dark:hover:bg-slate-800/50 transition-colors">
+        <div key={item.id} className="p-3 cursor-pointer border rounded-lg bg-background hover:bg-slate-100/50 dark:hover:bg-slate-800/50 transition-colors" onClick={() => onViewDetails(item, type)}>
           <div className="flex justify-between items-start">
             <div className="flex-1 mr-2">
               <p className="font-semibold truncate">{item.title || item.startLocation || item.response?.scheduleTitle || item.response?.title || "Untitled"}</p>

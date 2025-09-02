@@ -4,7 +4,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { format } from "date-fns";
 import { Clock4, Loader2, CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -17,6 +16,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { toast } from "sonner";
 import { aiScheduleSchema } from '@/lib/schema';
+import { format } from "date-fns";
 
 /**
  * AiSchedulePlanner (Client Component)
@@ -25,7 +25,16 @@ import { aiScheduleSchema } from '@/lib/schema';
  * It manages form state, validation, and communicates with the
  * AI schedule generation server action.
  */
-function AiSchedulePlanner({ setMapLocations, onPlanCreated, useFetch, zodResolver, useForm, z, format, cn, toast, generateAiSchedule }) {
+function AiSchedulePlanner({
+  setMapLocations,
+  onPlanCreated,
+  useFetch,
+  zodResolver,
+  useForm,
+  z,
+  toast,
+  generateAiSchedule
+}) {
   const { fn: generate, loading, error } = useFetch(generateAiSchedule);
   const form = useForm({ resolver: zodResolver(aiScheduleSchema) });
 
