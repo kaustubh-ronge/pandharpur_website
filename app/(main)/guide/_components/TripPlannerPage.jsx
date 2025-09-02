@@ -49,7 +49,7 @@ import DetailedItinerariesSection from './DetailsComponents/DetailedItinerariesS
  * It manages the global state (map locations, refresh triggers, etc.)
  * and orchestrates the rendering of the planner and display columns.
  */
-export default function TripPlannerPage({ GOOGLE_MAPS_API_KEY, PANDHARPUR_ATTRACTIONS }) {
+export default function TripPlannerPage({ GOOGLE_MAPS_API_KEY, ppur_attractions }) {
   const { user, isLoaded } = useUser();
   const [mapLocations, setMapLocations] = useState([]);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -84,7 +84,7 @@ export default function TripPlannerPage({ GOOGLE_MAPS_API_KEY, PANDHARPUR_ATTRAC
               handlePlanChange();
               showSingleDetail(data, type);
             }}
-            PANDHARPUR_ATTRACTIONS={PANDHARPUR_ATTRACTIONS}
+            ppur_attractions={ppur_attractions}
             useFetch={useFetch}
             zodResolver={zodResolver}
             useForm={useForm}
@@ -107,7 +107,7 @@ export default function TripPlannerPage({ GOOGLE_MAPS_API_KEY, PANDHARPUR_ATTRAC
             onPlanDeleted={handlePlanChange}
             onViewDetails={showSingleDetail}
             onViewOnMap={handleViewOnMap}
-            PANDHARPUR_ATTRACTIONS={PANDHARPUR_ATTRACTIONS}
+            ppur_attractions={ppur_attractions}
             getManualTrips={getManualTrips}
             deleteManualTrip={deleteManualTrip}
             getAiTrips={getAiTrips}
@@ -135,7 +135,7 @@ export default function TripPlannerPage({ GOOGLE_MAPS_API_KEY, PANDHARPUR_ATTRAC
           useFetch={useFetch}
           cn={cn}
           format={format}
-          PANDHARPUR_ATTRACTIONS={PANDHARPUR_ATTRACTIONS}
+          ppur_attractions={ppur_attractions}
         />
       </div>
     </div>

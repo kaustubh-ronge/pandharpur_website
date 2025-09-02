@@ -27,7 +27,7 @@ function PastList({
   onDeleted,
   onViewDetails,
   onViewOnMap,
-  PANDHARPUR_ATTRACTIONS,
+  ppur_attractions,
   useFetch,
   format,
 }) {
@@ -46,7 +46,7 @@ function PastList({
     let locations = [];
     const response = item.response;
     if (type === 'manual_trip') {
-      locations = PANDHARPUR_ATTRACTIONS.filter(attr => item.locations.includes(attr.label)).map(attr => ({ title: attr.label, position: attr.position }));
+      locations = ppur_attractions.filter(attr => item.locations.includes(attr.label)).map(attr => ({ title: attr.label, position: attr.position }));
     } else if (response?.itinerary) {
       locations = response.itinerary.flatMap(d => d.activities.map(a => ({ position: a.coordinates, title: a.locationName })));
     } else if (response?.routes) {

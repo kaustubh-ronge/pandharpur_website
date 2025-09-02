@@ -15,7 +15,7 @@ import { useFetch } from '@/hooks/useFetch';
  * It fetches data using the provided fetcher function and renders a list of cards,
  * each containing a component for displaying detailed information.
  */
-function AllDetailsList({ fetcher, DetailsComponent, refreshTrigger, useFetch, cn, format, PANDHARPUR_ATTRACTIONS }) {
+function AllDetailsList({ fetcher, DetailsComponent, refreshTrigger, useFetch, cn, format, ppur_attractions }) {
   const { data, loading, error, fn: fetchItems } = useFetch(fetcher);
 
   useEffect(() => {
@@ -35,7 +35,7 @@ function AllDetailsList({ fetcher, DetailsComponent, refreshTrigger, useFetch, c
         {items.map(item => (
           <Card key={item.id} className="bg-background shadow-sm">
             <CardContent className="pt-6">
-              <DetailsComponent data={item} cn={cn} format={format} PANDHARPUR_ATTRACTIONS={PANDHARPUR_ATTRACTIONS} />
+              <DetailsComponent data={item} cn={cn} format={format} ppur_attractions={ppur_attractions} />
             </CardContent>
           </Card>
         ))}

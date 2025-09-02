@@ -21,7 +21,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import { manualTripSchema } from '@/lib/schema';
-import { ppur_attractions } from '@/data/guidePageData/pandharpurAttractions';
 
 /**
  * ManualTripPlanner (Client Component)

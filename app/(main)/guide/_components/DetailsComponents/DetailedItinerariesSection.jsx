@@ -18,7 +18,7 @@ import AiScheduleDetails from './AiScheduleDetails';
  * This component handles the detailed view of a single plan or the
  * list of all plans within a tabbed interface.
  */
-function DetailedItinerariesSection({ detailedViewData, onShowAll, refreshTrigger, getManualTrips, getAiTrips, getAiRoutes, getAiSchedules, useFetch, cn, format, PANDHARPUR_ATTRACTIONS }) {
+function DetailedItinerariesSection({ detailedViewData, onShowAll, refreshTrigger, getManualTrips, getAiTrips, getAiRoutes, getAiSchedules, useFetch, cn, format, ppur_attractions }) {
   const [activeTab, setActiveTab] = useState('manual_trip');
 
   useEffect(() => {
@@ -54,16 +54,16 @@ function DetailedItinerariesSection({ detailedViewData, onShowAll, refreshTrigge
                 transition={{ duration: 0.2 }}
               >
                 <TabsContent value="manual_trip" forceMount={activeTab === 'manual_trip'}>
-                  {detailedViewData && detailedViewData.type === 'manual_trip' ? <ManualTripDetails data={detailedViewData.data} /> : <AllDetailsList fetcher={getManualTrips} type="manual_trip" DetailsComponent={ManualTripDetails} refreshTrigger={refreshTrigger} useFetch={useFetch} cn={cn} format={format} PANDHARPUR_ATTRACTIONS={PANDHARPUR_ATTRACTIONS} />}
+                  {detailedViewData && detailedViewData.type === 'manual_trip' ? <ManualTripDetails data={detailedViewData.data} /> : <AllDetailsList fetcher={getManualTrips} type="manual_trip" DetailsComponent={ManualTripDetails} refreshTrigger={refreshTrigger} useFetch={useFetch} cn={cn} format={format} ppur_attractions={ppur_attractions} />}
                 </TabsContent>
                 <TabsContent value="ai_trip" forceMount={activeTab === 'ai_trip'}>
-                  {detailedViewData && detailedViewData.type === 'ai_trip' ? <AiTripDetails data={detailedViewData.data} /> : <AllDetailsList fetcher={getAiTrips} type="ai_trip" DetailsComponent={AiTripDetails} refreshTrigger={refreshTrigger} useFetch={useFetch} cn={cn} format={format} PANDHARPUR_ATTRACTIONS={PANDHARPUR_ATTRACTIONS} />}
+                  {detailedViewData && detailedViewData.type === 'ai_trip' ? <AiTripDetails data={detailedViewData.data} /> : <AllDetailsList fetcher={getAiTrips} type="ai_trip" DetailsComponent={AiTripDetails} refreshTrigger={refreshTrigger} useFetch={useFetch} cn={cn} format={format} ppur_attractions={ppur_attractions} />}
                 </TabsContent>
                 <TabsContent value="ai_route" forceMount={activeTab === 'ai_route'}>
-                  {detailedViewData && detailedViewData.type === 'ai_route' ? <AiRouteDetails data={detailedViewData.data} /> : <AllDetailsList fetcher={getAiRoutes} type="ai_route" DetailsComponent={AiRouteDetails} refreshTrigger={refreshTrigger} useFetch={useFetch} cn={cn} format={format} PANDHARPUR_ATTRACTIONS={PANDHARPUR_ATTRACTIONS} />}
+                  {detailedViewData && detailedViewData.type === 'ai_route' ? <AiRouteDetails data={detailedViewData.data} /> : <AllDetailsList fetcher={getAiRoutes} type="ai_route" DetailsComponent={AiRouteDetails} refreshTrigger={refreshTrigger} useFetch={useFetch} cn={cn} format={format} ppur_attractions={ppur_attractions} />}
                 </TabsContent>
                 <TabsContent value="ai_schedule" forceMount={activeTab === 'ai_schedule'}>
-                  {detailedViewData && detailedViewData.type === 'ai_schedule' ? <AiScheduleDetails data={detailedViewData.data} /> : <AllDetailsList fetcher={getAiSchedules} type="ai_schedule" DetailsComponent={AiScheduleDetails} refreshTrigger={refreshTrigger} useFetch={useFetch} cn={cn} format={format} PANDHARPUR_ATTRACTIONS={PANDHARPUR_ATTRACTIONS} />}
+                  {detailedViewData && detailedViewData.type === 'ai_schedule' ? <AiScheduleDetails data={detailedViewData.data} /> : <AllDetailsList fetcher={getAiSchedules} type="ai_schedule" DetailsComponent={AiScheduleDetails} refreshTrigger={refreshTrigger} useFetch={useFetch} cn={cn} format={format} ppur_attractions={ppur_attractions} />}
                 </TabsContent>
               </motion.div>
             </AnimatePresence>

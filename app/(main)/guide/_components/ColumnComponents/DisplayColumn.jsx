@@ -12,7 +12,7 @@ import GoogleMapComponent from "../GoogleMapComponent";
  * This component contains the tabs for viewing the live map and past
  * itineraries, encapsulating all the display logic.
  */
-export default function DisplayColumn({ activeTab, setActiveTab, mapLocations, refreshTrigger, onPlanDeleted, onViewDetails, onViewOnMap, PANDHARPUR_ATTRACTIONS, getManualTrips, deleteManualTrip, getAiTrips, deleteAiTrip, getAiRoutes, deleteAiRoute, getAiSchedules, deleteAiSchedule, useFetch, format, GOOGLE_MAPS_API_KEY }) {
+export default function DisplayColumn({ activeTab, setActiveTab, mapLocations, refreshTrigger, onPlanDeleted, onViewDetails, onViewOnMap, ppur_attractions, getManualTrips, deleteManualTrip, getAiTrips, deleteAiTrip, getAiRoutes, deleteAiRoute, getAiSchedules, deleteAiSchedule, useFetch, format, GOOGLE_MAPS_API_KEY }) {
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
       <TabsList className="grid w-full grid-cols-2 h-12 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm p-1 rounded-full border">
@@ -27,7 +27,7 @@ export default function DisplayColumn({ activeTab, setActiveTab, mapLocations, r
           onPlanDeleted={onPlanDeleted}
           onViewDetails={onViewDetails}
           onViewOnMap={onViewOnMap}
-          PANDHARPUR_ATTRACTIONS={PANDHARPUR_ATTRACTIONS}
+          ppur_attractions={ppur_attractions}
           getManualTrips={getManualTrips}
           deleteManualTrip={deleteManualTrip}
           getAiTrips={getAiTrips}
