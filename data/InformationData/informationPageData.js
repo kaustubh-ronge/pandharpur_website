@@ -42,7 +42,7 @@ export const categories = [
     icon: <Bus className="h-6 w-6" />,
     description: "Buses & taxis to Pandharpur",
     color: "bg-purple-100 text-purple-600",
-    link:"/information-page/travels"
+    link:"/information-page/travel"
   },
 ];
 
