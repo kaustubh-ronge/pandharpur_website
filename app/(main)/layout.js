@@ -1,7 +1,7 @@
 import { Header } from "@/components/HeaderComponents/Header";
 import { SharedBackground } from "@/components/SharedBackGround";
 import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "sonner";
 
 export const metadata = {
   title: "ppur",
@@ -26,7 +26,7 @@ export default function MainLayout({ children }) {
         </div>
       </footer>
 
-      {/* <Toaster position="top-center" richColors /> */}
+      <Toaster position="top-center" richColors />
     </ThemeProvider>
   );
 }

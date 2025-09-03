@@ -28,7 +28,7 @@ import { manualTripSchema } from '@/lib/schema';
  * This component provides the form for users to manually create a trip.
  * It handles form state, validation, and submission to the server action.
  */
-function ManualTripPlanner({ setMapLocations, onPlanCreated, ppur_attractions, useFetch, zodResolver, useForm, z, format, cn, toast, createManualTrip }) {
+function ManualTripPlanner({ setMapLocations, onPlanCreated, ppur_attractions, useFetch, zodResolver, useForm, z, format, cn, createManualTrip }) {
   const { fn: create, loading } = useFetch(createManualTrip);
   const form = useForm({ resolver: zodResolver(manualTripSchema), defaultValues: { title: "", locations: [] } });
   const watchedLocations = form.watch('locations');

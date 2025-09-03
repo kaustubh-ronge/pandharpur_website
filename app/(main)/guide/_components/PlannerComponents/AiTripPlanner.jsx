@@ -23,7 +23,7 @@ import { aiTripSchema } from '@/lib/schema';
  * It manages form state, validation, and communicates with the AI
  * generation server action.
  */
-function AiTripPlanner({ setMapLocations, onPlanCreated, useFetch, zodResolver, useForm, z, toast, generateAiTrip }) {
+function AiTripPlanner({ setMapLocations, onPlanCreated, useFetch, zodResolver, useForm, z, generateAiTrip }) {
   const { fn: generate, loading, error } = useFetch(generateAiTrip);
   const form = useForm({ resolver: zodResolver(aiTripSchema), defaultValues: { prompt: "", duration: 2, people: 2, budget: "Mid-Range" } });
 
@@ -35,6 +35,9 @@ function AiTripPlanner({ setMapLocations, onPlanCreated, useFetch, zodResolver, 
       setMapLocations(locs);
       onPlanCreated(result.trip, 'ai_trip');
       form.reset({ prompt: "", duration: 2, people: 2, budget: "Mid-Range" });
+    }
+    else{
+      toast.error("Failed to generate AI Trip. Please try again.");
     }
   };
 

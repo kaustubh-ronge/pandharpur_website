@@ -1,9 +1,9 @@
 
 // In actions/ai-trips.js
 "use server";
-import { checkUser } from "@/lib/checkUser";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { db } from "@/lib/prisma";
+import { checkUser } from "@/lib/checkUser";
 
 export async function generateAiTrip(formData) {
   console.log("\n--- [ACTION: generateAiTrip] Received a new request ---");

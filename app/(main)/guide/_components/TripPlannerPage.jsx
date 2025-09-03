@@ -2,40 +2,28 @@
 
 "use client";
 
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { motion, AnimatePresence } from "framer-motion";
-import { Loader } from "@googlemaps/js-api-loader";
+
 
 // --- Server Action & Custom Hook Imports ---
 import useFetch from '@/hooks/useFetch';
-import { createManualTrip, getManualTrips, deleteManualTrip } from '@/actions/manual-trips';
+import { getManualTrips, deleteManualTrip, createManualTrip } from '@/actions/manual-trips';
 import { generateAiTrip, getAiTrips, deleteAiTrip } from '@/actions/ai-trips';
 import { generateAiRoute, getAiRoutes, deleteAiRoute } from '@/actions/ai-routes';
 import { generateAiSchedule, getAiSchedules, deleteAiSchedule } from '@/actions/ai-schedules';
 
-// --- ShadCN UI & Component Imports ---
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Checkbox } from "@/components/ui/checkbox";
-import { ScrollArea } from "@/components/ui/scroll-area";
+
+
+
 import { toast } from "sonner";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { Separator } from '@/components/ui/separator';
+
 
 // --- Icon Imports ---
-import { CalendarIcon, User, Sparkles, Route, Clock4, Loader2, PlusCircle, Map, History, Trash2, Car, Train, Plane, Wind, Utensils, Wallet, Eye, MapPin, List, ArrowLeft } from "lucide-react";
+import {Loader2} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import PlannerColumn from './ColumnComponents/PlannerColumn';

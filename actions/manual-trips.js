@@ -37,6 +37,7 @@ export async function getManualTrips() {
       "[ACTION: getManualTrips] Step 1: Checking user authentication..."
     );
     const user = await checkUser();
+    console.log("_____________manual trip user ", user)
     if (!user) throw new Error("Authentication failed.");
     console.log(
       `[ACTION: getManualTrips] Step 1 SUCCESS: User authenticated (ID: ${user.id})`

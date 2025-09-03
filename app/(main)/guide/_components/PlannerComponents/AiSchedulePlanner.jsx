@@ -32,7 +32,6 @@ function AiSchedulePlanner({
   zodResolver,
   useForm,
   z,
-  toast,
   generateAiSchedule
 }) {
   const { fn: generate, loading, error } = useFetch(generateAiSchedule);
@@ -46,6 +45,8 @@ function AiSchedulePlanner({
       setMapLocations(locs);
       onPlanCreated(result.schedule, 'ai_schedule');
       form.reset();
+    }else{
+      toast.error("Failed to generate AI Schedule. Please try again.");
     }
   };
 
