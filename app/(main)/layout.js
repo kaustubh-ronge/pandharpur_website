@@ -1,3 +1,4 @@
+import Chatbot from "@/components/chatbot/Chatbot";
 import { Header } from "@/components/HeaderComponents/Header";
 import { SharedBackground } from "@/components/SharedBackGround";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -19,6 +20,8 @@ export default function MainLayout({ children }) {
       <Header />
 
       <main className="min-h-screen">{children}</main>
+
+      <Chatbot />
 
       <footer className="bg-muted/50 py-12 !mt-10">
         <div className="container mx-auto px-4 text-center text-gray-200">
