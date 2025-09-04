@@ -6,14 +6,13 @@ import {
 
 export const navItems = [
   { name: "Home", href: "/", icon: <Home className="h-5 w-5" /> },
-  { name: "Temples", href: "/information-page/temples", icon: <MapPin className="h-5 w-5" /> },
+  { name: "Attractions", href: "/other-attractions", icon: <MapPin className="h-5 w-5" /> },
   { name: "Festivals", href: "/festivals", icon: <CalendarDays className="h-5 w-5" /> },
   { name: "Guide", href: "/guide", icon: <BookOpen className="h-5 w-5" /> },
   { name: "Booking", href: "/information-page", icon: <NotebookPen className="h-5 w-5" /> }
 ];
 
 export const quickLinks = [
-  { name: "Report Missing Person", href: "/report", icon: <HelpCircle className="h-4 w-4 mr-2" /> },
   { name: "Emergency Contacts", href: "/emergency", icon: <Phone className="h-4 w-4 mr-2" /> },
   { name: "Help Center", href: "/help", icon: <HelpCircle className="h-4 w-4 mr-2" /> }
 ];

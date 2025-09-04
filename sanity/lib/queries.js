@@ -202,3 +202,53 @@ export const getTravelBySlugQuery = `
   }
 `;
 
+
+
+/**
+ * GROQ (Graph-Relational Object Queries) for Fetching Data from Sanity
+ *
+ * This file centralizes all the queries used in the application.
+ * Using a separate file for queries makes the code more organized and reusable.
+ */
+// Query to get all attractions, grouped by their category, for the main listing page.
+export const attractionsQuery = `
+*[_type == "category"] | order(title asc) {
+  _id,
+  title,
+  "attractions": *[_type == "attraction" && references(^._id)] | order(title asc) {
+    _id,
+    title,
+    "slug": slug.current,
+    "mainImageUrl": mainImage.asset->url,
+    "mainImageAlt": mainImage.alt
+  }
+}
+`
+
+// Query to get a single attraction by its unique slug for the detail page.
+export const attractionBySlugQuery = `
+*[_type == "attraction" && slug.current == $slug][0] {
+  _id,
+  title,
+  "category": category->title,
+  "mainImageUrl": mainImage.asset->url,
+  "mainImageAlt": mainImage.alt,
+  gallery[] {
+    "imageUrl": asset->url,
+    alt,
+    caption
+  },
+  location {
+    address,
+    googleMapsUrl
+  },
+  description
+}
+`
+
+// Query to get all attraction slugs. This is used by Next.js to generate static pages.
+export const attractionPathsQuery = `
+*[_type == "attraction" && defined(slug.current)][]{
+  "params": { "slug": slug.current }
+}
+`
