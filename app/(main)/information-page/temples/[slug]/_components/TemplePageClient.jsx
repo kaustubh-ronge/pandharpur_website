@@ -1,13 +1,16 @@
+
 "use client";
 
 import Image from "next/image";
 import Link from "next/link";
 import { PortableText } from "@portabletext/react";
 import { motion } from "framer-motion";
+import { useState, useEffect, useCallback } from "react";
 
 // ICONS
 import {
-    MapPin, Phone, Clock, CalendarDays, Globe, ChevronRight, Sparkles, Building
+    MapPin, Phone, Clock, CalendarDays, Globe, ChevronRight, Sparkles, Building,
+    ChevronLeft, ChevronRightIcon, Star
 } from "lucide-react";
 
 // --- SHADCN UI IMPORTS ---
@@ -31,6 +34,113 @@ function AnimatedSection({ children }) {
     );
 }
 
+// --- ENHANCED GALLERY SLIDER (from hotels page) ---
+function GallerySlider({ images = [], templeName }) {
+    const validImages = images?.filter(img => img && typeof img === 'string' && img.trim() !== '') || [];
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    // Auto-rotate images
+    useEffect(() => {
+        if (validImages.length <= 1) return;
+        
+        const interval = setInterval(() => {
+            setCurrentIndex((prevIndex) => 
+                prevIndex === validImages.length - 1 ? 0 : prevIndex + 1
+            );
+        }, 4000);
+
+        return () => clearInterval(interval);
+    }, [validImages.length]);
+
+    const goToNext = useCallback(() => {
+        setCurrentIndex(currentIndex === validImages.length - 1 ? 0 : currentIndex + 1);
+    }, [currentIndex, validImages.length]);
+
+    const goToPrev = useCallback(() => {
+        setCurrentIndex(currentIndex === 0 ? validImages.length - 1 : currentIndex - 1);
+    }, [currentIndex, validImages.length]);
+
+    const goToImage = (index) => {
+        setCurrentIndex(index);
+    };
+
+    if (validImages.length === 0) {
+        return (
+            <div className="bg-amber-100/50 rounded-lg flex items-center justify-center text-stone-500 h-full">
+                <div className="text-center">
+                    <div className="mx-auto bg-amber-200 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-3">
+                        <Sparkles className="h-8 w-8 text-amber-600" />
+                    </div>
+                    <p className="font-medium">No gallery images available</p>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div className="relative h-full w-full overflow-hidden rounded-xl group">
+            <div className="relative h-full w-full">
+                {validImages.map((img, idx) => (
+                    <div
+                        key={idx}
+                        className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${idx === currentIndex ? 'opacity-100' : 'opacity-0'}`}
+                    >
+                        <Image
+                            src={img}
+                            alt={`Gallery image ${idx + 1} of ${templeName}`}
+                            fill
+                            style={{ objectFit: 'cover' }}
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            priority={idx === 0}
+                        />
+                    </div>
+                ))}
+            </div>
+
+            {/* Navigation Arrows */}
+            {validImages.length > 1 && (
+                <>
+                    <button
+                        onClick={goToPrev}
+                        className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-stone-800 rounded-full p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 border border-amber-200"
+                        aria-label="Previous image"
+                    >
+                        <ChevronLeft className="h-5 w-5" />
+                    </button>
+                    <button
+                        onClick={goToNext}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-stone-800 rounded-full p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 border border-amber-200"
+                        aria-label="Next image"
+                    >
+                        <ChevronRightIcon className="h-5 w-5" />
+                    </button>
+                </>
+            )}
+
+            {/* Dots Indicator */}
+            {validImages.length > 1 && (
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-10">
+                    {validImages.map((_, idx) => (
+                        <button
+                            key={idx}
+                            onClick={() => goToImage(idx)}
+                            className={`h-2 rounded-full transition-all duration-300 ${idx === currentIndex ? 'w-6 bg-amber-600' : 'w-2 bg-white/90'}`}
+                            aria-label={`Go to image ${idx + 1}`}
+                        />
+                    ))}
+                </div>
+            )}
+
+            {/* Image Counter */}
+            {validImages.length > 1 && (
+                <div className="absolute top-4 right-4 bg-black/70 text-white text-xs px-2 py-1 rounded-full z-10">
+                    {currentIndex + 1} / {validImages.length}
+                </div>
+            )}
+        </div>
+    );
+}
+
 // --- UI SUB-COMPONENTS ---
 
 function Breadcrumbs({ templeName }) {
@@ -42,23 +152,6 @@ function Breadcrumbs({ templeName }) {
             <ChevronRight className="h-4 w-4 mx-1.5" />
             <span className="text-stone-700 font-semibold">{templeName}</span>
         </nav>
-    );
-}
-
-function GallerySlider({ images = [], templeName }) {
-    const validImages = images?.filter(Boolean) || [];
-    if (validImages.length === 0) return <div className="bg-amber-100/50 rounded-lg flex items-center justify-center text-stone-500 h-full">No gallery images</div>;
-
-    return (
-        <div className="relative h-full w-full">
-            <div className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide h-full rounded-lg">
-                {validImages.map((img, idx) => (
-                    <div key={idx} className="flex-shrink-0 w-full snap-center relative">
-                        <Image src={img} alt={`Gallery image ${idx + 1} of ${templeName}`} fill style={{ objectFit: 'cover' }} sizes="50vw" />
-                    </div>
-                ))}
-            </div>
-        </div>
     );
 }
 
@@ -245,11 +338,6 @@ export default function TemplePageClient({ temple }) {
                             </TabsContent>
                         </Tabs>
                     </div>
-                </AnimatedSection>
-                
-                <AnimatedSection>
-                    <Separator className="my-12 bg-amber-200" />
-                    {/* You can add a "Nearby Temples" section here if desired */}
                 </AnimatedSection>
             </div>
         </div>
