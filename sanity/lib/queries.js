@@ -204,12 +204,6 @@ export const getTravelBySlugQuery = `
 
 
 
-/**
- * GROQ (Graph-Relational Object Queries) for Fetching Data from Sanity
- *
- * This file centralizes all the queries used in the application.
- * Using a separate file for queries makes the code more organized and reusable.
- */
 // Query to get all attractions, grouped by their category, for the main listing page.
 export const attractionsQuery = `
 *[_type == "category"] | order(title asc) {
@@ -220,7 +214,9 @@ export const attractionsQuery = `
     title,
     "slug": slug.current,
     "mainImageUrl": mainImage.asset->url,
-    "mainImageAlt": mainImage.alt
+    "mainImageAlt": mainImage.alt,
+    description, // ⬅️ ADDED
+    distance     // ⬅️ ADDED
   }
 }
 `

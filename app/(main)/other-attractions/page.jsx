@@ -1,4 +1,3 @@
-
 import { attractionsQuery } from '@/sanity/lib/queries'
 import { client } from '@/sanity/lib/sanity'
 import Link from 'next/link'
@@ -82,7 +81,7 @@ export default async function AttractionsPage() {
                           {attraction.title}
                         </CardTitle>
                         <CardDescription className="text-gray-600 line-clamp-2">
-                          {attraction.description || "A sacred place of spiritual significance in Pandharpur."}
+                          {attraction.description?.[0]?.children?.[0]?.text || "A sacred place of spiritual significance in Pandharpur."}
                         </CardDescription>
                         {attraction.distance && (
                           <div className="flex items-center mt-4 text-sm text-gray-500">

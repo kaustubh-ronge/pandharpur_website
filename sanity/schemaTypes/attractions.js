@@ -105,6 +105,14 @@ export default {
         },
       ],
     },
+    // ⬇️ THIS FIELD IS NEW ⬇️
+    {
+      name: "distance",
+      title: "Distance from Main Temple",
+      type: "string",
+      description:
+        'A short description of the distance (e.g., "5 km" or "15-minute walk").',
+    },
     {
       name: "description",
       title: "Description",

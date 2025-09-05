@@ -22,7 +22,7 @@ const Hero = () => {
     const upcomingEvent = processedEvents.find(event => event.status === "upcoming");
 
     return (
-        <>
+        <div className="mt-20">
             <HeroBannerSection />
             <PilgrimageInfoSection />
             <EventsTimelineSection
@@ -32,7 +32,7 @@ const Hero = () => {
             />
             <CtaSection />
             <FaqSection />
-        </>
+        </div>
     );
 };
 
