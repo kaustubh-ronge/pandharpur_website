@@ -11,7 +11,7 @@ function PageHeader({ title, subtitle }) {
   // Redesigned Header: More spacing, elegant serif font for the title, and a decorative element.
   return (
     <div className="text-center mb-16 md:mb-20">
-      <h1 className="font-serif text-4xl md:text-6xl font-bold mb-4 tracking-tight text-slate-800">
+      <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight text-slate-800">
         {title}
       </h1>
       <p className="max-w-3xl mx-auto text-lg text-slate-500">
@@ -65,7 +65,7 @@ function HotelCard({ hotel }) {
             )}
           </div>
           
-          <h3 className="font-serif text-2xl font-bold text-slate-800 mb-2">{hotel.name}</h3>
+          <h3 className=" text-2xl font-bold text-slate-800 mb-2">{hotel.name}</h3>
           
           <div className="flex items-center gap-2 text-slate-500 text-sm mb-4">
             <MapPin className="h-4 w-4 flex-shrink-0" />
@@ -128,7 +128,7 @@ export default async function HotelsPage() {
             // Redesigned "No hotels found" state: More informative and visually appealing.
             <div className="text-center mt-16 text-slate-600 bg-white border border-slate-200 rounded-2xl p-12 max-w-lg mx-auto">
               <BedDouble className="mx-auto h-16 w-16 text-slate-400 mb-4" />
-              <h3 className="text-2xl font-semibold font-serif text-slate-800">No Accommodations Found</h3>
+              <h3 className="text-2xl font-semibold  text-slate-800">No Accommodations Found</h3>
               <p className="mt-3 text-slate-500">We couldn't find any available places to stay at the moment. Please check back again soon as we are constantly updating our listings.</p>
             </div>
           )}

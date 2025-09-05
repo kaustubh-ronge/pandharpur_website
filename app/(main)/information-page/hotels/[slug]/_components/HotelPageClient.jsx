@@ -1,5 +1,4 @@
 
-
 "use client";
 
 import Image from "next/image";
@@ -12,7 +11,8 @@ import { useState, useEffect, useCallback } from "react";
 import {
   Star, MapPin, Phone, Mail, CheckCircle, ChevronRight, BedDouble, 
   Sparkles, Wallet, Building, Mountain, Train, ChevronLeft, ChevronRightIcon,
-  Globe, Clock
+  Globe, Clock, Users, Wifi, Car, Utensils, Coffee, Home,
+  Bath
 } from "lucide-react";
 
 // --- SHADCN UI IMPORTS ---
@@ -21,6 +21,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Separator } from "@/components/ui/separator";
+import { Calendar } from "@/components/ui/calendar";
 
 // --- ANIMATION WRAPPER ---
 function AnimatedSection({ children, className = "" }) {
@@ -37,7 +39,21 @@ function AnimatedSection({ children, className = "" }) {
   );
 }
 
-// --- ENHANCED GALLERY SLIDER ---
+// --- UI SUB-COMPONENTS ---
+
+function Breadcrumbs({ hotelName }) {
+  return (
+    <nav className="flex items-center text-sm font-medium text-stone-500 mb-6">
+      <Link href="/" className="hover:text-orange-600 transition-colors">Home</Link>
+      <ChevronRight className="h-4 w-4 mx-1.5" />
+      <Link href="/information-page/hotels" className="hover:text-orange-600 transition-colors">Hotels</Link>
+      <ChevronRight className="h-4 w-4 mx-1.5" />
+      <span className="text-stone-700 font-semibold">{hotelName}</span>
+    </nav>
+  );
+}
+
+// Enhanced Gallery Slider with dots and auto-slide
 function GallerySlider({ images = [], hotelName }) {
   const validImages = images?.filter(img => img && typeof img === 'string' && img.trim() !== '') || [];
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -69,10 +85,10 @@ function GallerySlider({ images = [], hotelName }) {
 
   if (validImages.length === 0) {
     return (
-      <div className="bg-gradient-to-br from-white to-amber-50 rounded-xl flex items-center justify-center text-stone-500 h-full p-8 border-2 border-dashed border-amber-200">
+      <div className="bg-stone-100 rounded-xl flex items-center justify-center text-stone-500 h-full p-8">
         <div className="text-center">
-          <div className="mx-auto bg-amber-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-3">
-            <Sparkles className="h-8 w-8 text-amber-600" />
+          <div className="mx-auto bg-stone-200 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-3">
+            <Sparkles className="h-8 w-8 text-stone-400" />
           </div>
           <p className="font-medium">No gallery images available</p>
         </div>
@@ -95,6 +111,7 @@ function GallerySlider({ images = [], hotelName }) {
               style={{ objectFit: 'cover' }}
               sizes="(max-width: 768px) 100vw, 50vw"
               priority={idx === 0}
+              className="rounded-xl"
             />
           </div>
         ))}
@@ -105,14 +122,14 @@ function GallerySlider({ images = [], hotelName }) {
         <>
           <button
             onClick={goToPrev}
-            className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-stone-800 rounded-full p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 border border-amber-200"
+            className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-stone-800 rounded-full p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 border border-stone-200"
             aria-label="Previous image"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
           <button
             onClick={goToNext}
-            className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-stone-800 rounded-full p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 border border-amber-200"
+            className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-stone-800 rounded-full p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 border border-stone-200"
             aria-label="Next image"
           >
             <ChevronRightIcon className="h-5 w-5" />
@@ -127,7 +144,7 @@ function GallerySlider({ images = [], hotelName }) {
             <button
               key={idx}
               onClick={() => goToImage(idx)}
-              className={`h-2 rounded-full transition-all duration-300 ${idx === currentIndex ? 'w-6 bg-amber-600' : 'w-2 bg-white/90'}`}
+              className={`h-2 rounded-full transition-all duration-300 ${idx === currentIndex ? 'w-6 bg-orange-600' : 'w-2 bg-white/90'}`}
               aria-label={`Go to image ${idx + 1}`}
             />
           ))}
@@ -144,17 +161,55 @@ function GallerySlider({ images = [], hotelName }) {
   );
 }
 
-// --- THEMED UI SUB-COMPONENTS ---
+// Improved Main Image component with responsive sizing
+function MainImage({ src, alt }) {
+  const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
+  const [isLoading, setIsLoading] = useState(true);
 
-function Breadcrumbs({ hotelName }) {
+  useEffect(() => {
+    if (!src) return;
+    
+    const img = new window.Image();
+    img.src = src;
+    img.onload = () => {
+      setImageSize({ width: img.width, height: img.height });
+      setIsLoading(false);
+    };
+    img.onerror = () => {
+      setIsLoading(false);
+    };
+  }, [src]);
+
+  // Calculate aspect ratio class
+  const getAspectRatioClass = () => {
+    if (!imageSize.width || !imageSize.height) return 'aspect-video';
+    
+    const ratio = imageSize.width / imageSize.height;
+    
+    if (ratio > 1.5) return 'aspect-video';        // Wide images
+    if (ratio > 0.8 && ratio <= 1.5) return 'aspect-square'; // Square-ish images
+    return 'aspect-[3/4]';                         // Tall images
+  };
+
   return (
-    <nav className="flex items-center text-sm font-medium text-stone-600 mb-6">
-      <Link href="/" className="hover:text-orange-600 transition-colors">Home</Link>
-      <ChevronRight className="h-4 w-4 mx-1.5" />
-      <Link href="/information-page/hotels" className="hover:text-orange-600 transition-colors">Hotels</Link>
-      <ChevronRight className="h-4 w-4 mx-1.5" />
-      <span className="text-stone-800 font-semibold">{hotelName}</span>
-    </nav>
+    <div className={`relative w-full ${getAspectRatioClass()} rounded-xl overflow-hidden shadow-md`}>
+      {isLoading ? (
+        <div className="w-full h-full bg-stone-100 flex items-center justify-center">
+          <div className="animate-pulse text-stone-400">Loading image...</div>
+        </div>
+      ) : (
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          style={{ objectFit: 'cover' }}
+          sizes="(max-width: 768px) 100vw, 50vw"
+          className="rounded-xl transition-opacity duration-300 opacity-0"
+          onLoadingComplete={(image) => image.classList.remove('opacity-0')}
+          priority
+        />
+      )}
+    </div>
   );
 }
 
@@ -163,22 +218,22 @@ function HotelOverviewSection({ hotel }) {
     <div className="mt-12">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Left Side: About Card */}
-        <Card className="bg-white border-amber-200 shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-1 rounded-xl overflow-hidden">
+        <Card className="bg-white shadow-md border-stone-200 transition-all duration-300 hover:shadow-lg rounded-xl overflow-hidden">
           <CardHeader className="pb-4">
             <CardTitle className="text-2xl font-bold flex items-center gap-2">
-              <Sparkles className="h-6 w-6" /> About this Stay
+              <Home className="h-6 w-6 text-orange-500" /> About this Stay
             </CardTitle>
           </CardHeader>
-          <CardContent className="h-[28rem] lg:h-auto overflow-y-auto scrollbar-thin scrollbar-thumb-amber-300 p-6">
+          <CardContent className="h-[28rem] lg:h-auto overflow-y-auto scrollbar-thin scrollbar-thumb-orange-300 scrollbar-track-stone-100 p-6">
             <div className="prose prose-stone max-w-none text-base leading-relaxed">
-              {hotel.detailedDescription ? <PortableText value={hotel.detailedDescription} /> : <p>{hotel.description}</p>}
+              {hotel.detailedDescription ? <PortableText value={hotel.detailedDescription} /> : <p className="text-stone-500">No detailed information available.</p>}
             </div>
           </CardContent>
         </Card>
 
         {/* Right Side: THREE Info Cards */}
         <div className="flex flex-col gap-6">
-          <Card className="flex-1 bg-white border-amber-200 shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-1 rounded-xl overflow-hidden">
+          <Card className="bg-white shadow-md border-stone-200 transition-all duration-300 hover:shadow-lg rounded-xl overflow-hidden">
             <CardHeader className="pb-4">
               <CardTitle className="text-lg font-bold text-stone-800 flex items-center gap-2">
                 <Sparkles className="h-5 w-5 text-orange-500" /> Top Amenities
@@ -193,7 +248,7 @@ function HotelOverviewSection({ hotel }) {
             </CardContent>
           </Card>
 
-          <Card className="flex-1 bg-white border-amber-200 shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-1 rounded-xl overflow-hidden">
+          <Card className="bg-white shadow-md border-stone-200 transition-all duration-300 hover:shadow-lg rounded-xl overflow-hidden">
             <CardHeader className="pb-4">
               <CardTitle className="text-lg font-bold text-stone-800 flex items-center gap-2">
                 <BedDouble className="h-5 w-5 text-orange-500" /> Accommodation
@@ -219,7 +274,7 @@ function HotelOverviewSection({ hotel }) {
             </CardContent>
           </Card>
 
-          <Card className="flex-1 bg-white border-amber-200 shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-1 rounded-xl overflow-hidden">
+          <Card className="bg-white shadow-md border-stone-200 transition-all duration-300 hover:shadow-lg rounded-xl overflow-hidden">
             <CardHeader className="pb-4">
               <CardTitle className="text-lg font-bold text-stone-800 flex items-center gap-2">
                 <Phone className="h-5 w-5 text-orange-500" /> Quick Contact
@@ -257,14 +312,14 @@ function HotelOverviewSection({ hotel }) {
 function BookingBar({ hotel }) {
   const price = hotel.priceRange?.split('-')[0].trim();
   return (
-    <Card className="mt-10 bg-gradient-to-r from-amber-500 to-orange-500 text-white border-none shadow-xl">
+    <Card className="mt-10 bg-white shadow-md border-stone-200">
       <div className="flex flex-col md:flex-row justify-between items-center p-6 gap-4">
-        <div>
-          <h3 className="text-2xl font-bold">Book Your Divine Stay</h3>
-          <p className="text-amber-100 mt-1">Secure the best rates for a blessed experience.</p>
+        <div className="text-center md:text-left">
+          <h3 className="text-2xl font-bold text-stone-900">Book Your Stay</h3>
+          <p className="text-stone-600 mt-1">Secure the best rates for your visit</p>
         </div>
         <div className="flex items-center gap-4">
-          {price && <p className="text-2xl font-bold">{price}<span className="text-base font-medium text-amber-100">/night</span></p>}
+          {price && <p className="text-2xl font-bold text-stone-900">{price}<span className="text-base font-medium text-stone-600">/night</span></p>}
         </div>
       </div>
     </Card>
@@ -281,10 +336,10 @@ function NearbyAttractions({ nearbyAttractions }) {
       ];
 
   return (
-    <div className="mt-12 bg-gradient-to-b from-white to-amber-50 py-12 px-6 rounded-2xl border border-amber-100">
+    <div className="mt-12 bg-stone-50 py-12 px-6 rounded-2xl border border-stone-200">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl font-bold text-stone-800 mb-2 text-center">Nearby Sacred Sites</h2>
-        <p className="text-stone-500 mb-8 text-center">Places of spiritual significance near this accommodation</p>
+        <h2 className="text-3xl font-bold text-stone-800 mb-2 text-center">Nearby Attractions</h2>
+        <p className="text-stone-600 mb-8 text-center">Places of interest near this accommodation</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {attractions.map((attraction, index) => (
             <motion.div
@@ -294,14 +349,14 @@ function NearbyAttractions({ nearbyAttractions }) {
               transition={{ duration: 0.4, delay: index * 0.1 }}
               viewport={{ once: true }}
             >
-              <Card className="bg-white border-amber-200 shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full rounded-xl overflow-hidden">
+              <Card className="bg-white border-stone-200 shadow-md transition-all duration-300 hover:shadow-lg h-full rounded-xl overflow-hidden">
                 <CardContent className="flex items-center gap-4 p-6">
-                  <div className="bg-amber-100 p-3 rounded-full">
+                  <div className="bg-orange-100 p-3 rounded-full">
                     {attraction.icon}
                   </div>
                   <div>
                     <h4 className="font-bold text-stone-800">{attraction.name}</h4>
-                    <p className="text-sm text-stone-500">{attraction.distance} away</p>
+                    <p className="text-sm text-stone-600">{attraction.distance} away</p>
                   </div>
                 </CardContent>
               </Card>
@@ -313,6 +368,20 @@ function NearbyAttractions({ nearbyAttractions }) {
   );
 }
 
+function FacilityIcons({ facility }) {
+  const iconMap = {
+    'wifi': <Wifi className="h-5 w-5 text-blue-500" />,
+    'parking': <Car className="h-5 w-5 text-green-500" />,
+    'food': <Utensils className="h-5 w-5 text-amber-500" />,
+    'ac': <Bath className="h-5 w-5 text-purple-500" />,
+    'hot water': <Coffee className="h-5 w-5 text-red-500" />,
+  };
+  
+  const defaultIcon = <CheckCircle className="h-5 w-5 text-green-500" />;
+  
+  return iconMap[facility.toLowerCase()] || defaultIcon;
+}
+
 // --- MAIN PAGE COMPONENT ---
 export default function HotelPageClient({ hotel }) {
   if (!hotel) {
@@ -321,190 +390,169 @@ export default function HotelPageClient({ hotel }) {
 
   return (
     <div className="min-h-screen">
-      {/* Header Section with subtle background */}
-      <div className="bg-gradient-to-br from-amber-50 to-orange-50 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatedSection>
-            <header className="mb-8">
-              <Breadcrumbs hotelName={hotel.name} />
-              <div className="mt-4">
-                <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-stone-900 tracking-tight">
-                  {hotel.name}
-                </h1>
-                <div className="mt-4 flex items-center flex-wrap gap-x-6 gap-y-2 text-stone-600">
-                  {hotel.rating && (
-                    <Badge className="text-base font-bold gap-1.5 py-1 px-3 bg-amber-500 text-white border-none rounded-full">
-                      <Star className="h-5 w-5 text-yellow-200 fill-current" /> {hotel.rating}.0
-                    </Badge>
-                  )}
-                  {hotel.category && (
-                    <Badge variant="outline" className="text-stone-600 border-amber-400 rounded-full">
-                      {hotel.category}
-                    </Badge>
-                  )}
-                  <p className="flex items-center gap-2 font-medium">
-                    <MapPin className="h-5 w-5 text-stone-500" /> {hotel.address}
-                  </p>
-                </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        <AnimatedSection className="mb-10">
+          <header>
+            <Breadcrumbs hotelName={hotel.name} />
+            <div className="mt-4">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-stone-900 tracking-tight">
+                {hotel.name}
+              </h1>
+              <div className="mt-4 flex items-center flex-wrap gap-x-6 gap-y-2 text-stone-600">
+                {hotel.rating && (
+                  <Badge className="text-base font-bold gap-1.5 py-1.5 px-3 bg-amber-500 text-white border-none rounded-full">
+                    <Star className="h-5 w-5 text-yellow-200 fill-current" /> {hotel.rating}.0
+                  </Badge>
+                )}
+                {hotel.category && (
+                  <Badge variant="outline" className="text-stone-600 border-stone-400 rounded-full">
+                    {hotel.category}
+                  </Badge>
+                )}
+                <p className="flex items-center gap-2 font-medium">
+                  <MapPin className="h-5 w-5 text-stone-500" /> {hotel.address}
+                </p>
               </div>
-            </header>
-          </AnimatedSection>
-        </div>
-      </div>
+            </div>
+          </header>
+        </AnimatedSection>
 
-      {/* Main Content with white background */}
-      <div className="bg-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatedSection>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-[500px] mb-12">
-              <div className="relative h-full w-full rounded-xl overflow-hidden shadow-lg border border-amber-200">
-                <Image 
-                  src={hotel.image} 
-                  alt={`Main image of ${hotel.name}`} 
-                  fill 
-                  style={{ objectFit: 'cover' }} 
-                  priority 
-                  className="transition-transform duration-700 hover:scale-105"
-                />
+        <AnimatedSection className="mb-12">
+          {/* Updated layout with main image on left, gallery on right, and map below */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            {/* Left column - Main image */}
+            <div className="w-full">
+              <MainImage src={hotel.image} alt={`Main image of ${hotel.name}`} />
+            </div>
+            
+            {/* Right column - Gallery slider */}
+            <div className="w-full h-full min-h-[400px]">
+              <GallerySlider images={hotel.gallery} hotelName={hotel.name} />
+            </div>
+          </div>
+          
+          {/* Map spanning both columns */}
+          <div className="rounded-xl overflow-hidden shadow-md border border-stone-200">
+            {hotel.googleMapsEmbedUrl ? (
+              <iframe 
+                src={hotel.googleMapsEmbedUrl} 
+                width="100%" 
+                height="400" 
+                style={{ border: 0 }} 
+                allowFullScreen="" 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+                className="w-full"
+              ></iframe>
+            ) : (
+              <div className="bg-stone-100 h-96 w-full flex flex-col items-center justify-center text-stone-400">
+                <MapPin className="h-12 w-12 mb-4 opacity-50" />
+                <p>Map not available</p>
               </div>
-              <div className="h-full w-full flex flex-col gap-6">
-                <div className="flex-1 rounded-xl overflow-hidden shadow-lg border border-amber-200">
-                  <GallerySlider images={hotel.gallery} hotelName={hotel.name} />
+            )}
+          </div>
+        </AnimatedSection>
+
+        <AnimatedSection className="mb-12">
+          <BookingBar hotel={hotel} />
+        </AnimatedSection>
+
+        <AnimatedSection className="mb-12">
+          <HotelOverviewSection hotel={hotel} />
+        </AnimatedSection>
+
+        <AnimatedSection className="mb-12">
+          <div className="bg-white rounded-xl shadow-md p-6 border border-stone-200">
+            <h2 className="text-3xl font-bold text-stone-800 mb-6">Full Details</h2>
+            <Tabs defaultValue="amenities" className="w-full">
+              <TabsList className="bg-stone-100 p-1 h-auto">
+                <TabsTrigger value="amenities" className="data-[state=active]:bg-white data-[state=active]:shadow-sm py-2 px-4">Amenities</TabsTrigger>
+                <TabsTrigger value="rooms" className="data-[state=active]:bg-white data-[state=active]:shadow-sm py-2 px-4">Rooms</TabsTrigger>
+                <TabsTrigger value="contact" className="data-[state=active]:bg-white data-[state=active]:shadow-sm py-2 px-4">Contact & Info</TabsTrigger>
+              </TabsList>
+              <TabsContent value="amenities" className="mt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {hotel.facilities?.map(facility => (
+                    <div key={facility} className="flex items-center gap-3 text-base font-medium text-stone-700 bg-stone-50 p-3 rounded-lg border border-stone-200">
+                      <FacilityIcons facility={facility} />
+                      <span>{facility}</span>
+                    </div>
+                  ))}
                 </div>
-                <div className="flex-1 rounded-xl overflow-hidden shadow-lg border border-amber-200">
-                  {hotel.googleMapsEmbedUrl ? (
-                    <iframe 
-                      src={hotel.googleMapsEmbedUrl} 
-                      width="100%" 
-                      height="100%" 
-                      style={{ border: 0 }} 
-                      allowFullScreen="" 
-                      loading="lazy" 
-                      referrerPolicy="no-referrer-when-downgrade"
-                      className="rounded-xl"
-                    ></iframe>
-                  ) : (
-                    <div className="bg-gradient-to-br from-white to-amber-50 h-full w-full flex items-center justify-center text-stone-400 rounded-xl p-8 border-2 border-dashed border-amber-200">
-                      <div className="text-center">
-                        <MapPin className="h-12 w-12 mx-auto text-amber-400 mb-3" />
-                        <p className="font-medium">Map not available</p>
+              </TabsContent>
+              <TabsContent value="rooms" className="mt-6">
+                <Table>
+                  <TableHeader className="bg-stone-100">
+                    <TableRow>
+                      <TableHead className="font-bold text-stone-800">Room Type</TableHead>
+                      <TableHead className="font-bold text-stone-800">Amenities</TableHead>
+                      <TableHead className="text-right font-bold text-stone-800">Price per Night</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {hotel.roomTypes?.map((room, i) => (
+                      <TableRow key={i} className="border-stone-200 hover:bg-stone-50/50 transition-colors">
+                        <TableCell className="font-semibold text-stone-800">{room.typeName}</TableCell>
+                        <TableCell className="text-stone-600 text-sm">
+                          <div className="flex flex-wrap gap-1">
+                            {room.amenities?.slice(0, 3).map((am, idx) => (
+                              <span key={idx} className="bg-stone-100 text-stone-800 px-2 py-1 rounded-md text-xs">
+                                {am}
+                              </span>
+                            ))}
+                            {room.amenities?.length > 3 && (
+                              <span className="bg-stone-200 text-stone-900 px-2 py-1 rounded-md text-xs">
+                                +{room.amenities.length - 3} more
+                              </span>
+                            )}
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-right font-bold text-stone-800">{room.price ? `₹${room.price}` : 'N/A'}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TabsContent>
+              <TabsContent value="contact" className="mt-6">
+                <div className="space-y-4 text-stone-700">
+                  {hotel.phoneNumber && (
+                    <p className="flex items-center gap-3 p-3 bg-stone-50 rounded-lg border border-stone-200">
+                      <Phone className="h-5 w-5 text-orange-500 flex-shrink-0" /> 
+                      <a href={`tel:${hotel.phoneNumber}`} className="font-medium hover:underline hover:text-orange-600 transition-colors">{hotel.phoneNumber}</a>
+                    </p>
+                  )}
+                  {hotel.email && (
+                    <p className="flex items-center gap-3 p-3 bg-stone-50 rounded-lg border border-stone-200">
+                      <Mail className="h-5 w-5 text-orange-500 flex-shrink-0" /> 
+                      <a href={`mailto:${hotel.email}`} className="font-medium hover:underline hover:text-orange-600 transition-colors">{hotel.email}</a>
+                    </p>
+                  )}
+                  {hotel.website && (
+                    <p className="flex items-center gap-3 p-3 bg-stone-50 rounded-lg border border-stone-200">
+                      <Globe className="h-5 w-5 text-orange-500 flex-shrink-0" /> 
+                      <a href={hotel.website} target="_blank" rel="noopener noreferrer" className="font-medium hover:underline hover:text-orange-600 transition-colors">
+                        Visit Website
+                      </a>
+                    </p>
+                  )}
+                  {hotel.policies && (
+                    <div className="mt-6">
+                      <h4 className="font-bold text-stone-800 mb-2">Hotel Policies</h4>
+                      <div className="prose prose-sm prose-stone bg-stone-50 p-4 rounded-lg border border-stone-200">
+                        <PortableText value={hotel.policies} />
                       </div>
                     </div>
                   )}
                 </div>
-              </div>
-            </div>
-          </AnimatedSection>
+              </TabsContent>
+            </Tabs>
+          </div>
+        </AnimatedSection>
 
-          <AnimatedSection>
-            <BookingBar hotel={hotel} />
-          </AnimatedSection>
-
-          <AnimatedSection className="mt-12">
-            <HotelOverviewSection hotel={hotel} />
-          </AnimatedSection>
-
-          <AnimatedSection className="mt-12">
-            <div className="bg-gradient-to-br from-amber-50 to-orange-50 p-8 rounded-2xl border border-amber-100">
-              <h2 className="text-3xl font-bold text-stone-800 mb-2">Full Details</h2>
-              <p className="text-stone-600 mb-6">Explore all amenities, room options, and contact information</p>
-              
-              <Tabs defaultValue="amenities" className="mt-4">
-                <TabsList className="bg-amber-200 rounded-xl p-1">
-                  <TabsTrigger value="amenities" className="rounded-lg data-[state=active]:bg-white data-[state=active]:text-amber-700 data-[state=active]:shadow-sm">Amenities</TabsTrigger>
-                  <TabsTrigger value="rooms" className="rounded-lg data-[state=active]:bg-white data-[state=active]:text-amber-700 data-[state=active]:shadow-sm">Rooms</TabsTrigger>
-                  <TabsTrigger value="contact" className="rounded-lg data-[state=active]:bg-white data-[state=active]:text-amber-700 data-[state=active]:shadow-sm">Contact & Info</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="amenities" className="p-6 bg-white rounded-b-xl rounded-tr-xl border border-amber-200 border-t-0 mt-0">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {hotel.facilities?.map(facility => (
-                      <div key={facility} className="flex items-center gap-3 text-base font-medium text-stone-700 p-3 bg-amber-50 rounded-lg border border-amber-100">
-                        <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" /> <span>{facility}</span>
-                      </div>
-                    ))}
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="rooms" className="p-0 bg-white rounded-b-xl rounded-tr-xl border border-amber-200 border-t-0 mt-0">
-                  <Table>
-                    <TableHeader className="bg-amber-100">
-                      <TableRow>
-                        <TableHead className="font-bold text-stone-800">Room Type</TableHead>
-                        <TableHead className="font-bold text-stone-800">Amenities</TableHead>
-                        <TableHead className="text-right font-bold text-stone-800">Price per Night</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {hotel.roomTypes?.map((room, i) => (
-                        <TableRow key={i} className="border-amber-200 hover:bg-amber-50/50 transition-colors">
-                          <TableCell className="font-semibold text-stone-800">{room.typeName}</TableCell>
-                          <TableCell className="text-stone-600 text-sm">
-                            <div className="flex flex-wrap gap-1">
-                              {room.amenities?.slice(0, 3).map((am, idx) => (
-                                <span key={idx} className="bg-amber-100 text-amber-800 px-2 py-1 rounded-md text-xs">
-                                  {am}
-                                </span>
-                              ))}
-                              {room.amenities?.length > 3 && (
-                                <span className="bg-amber-200 text-amber-900 px-2 py-1 rounded-md text-xs">
-                                  +{room.amenities.length - 3} more
-                                </span>
-                              )}
-                            </div>
-                          </TableCell>
-                          <TableCell className="text-right font-bold text-stone-800">{room.price ? `₹${room.price}` : 'N/A'}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TabsContent>
-                
-                <TabsContent value="contact" className="p-6 bg-white rounded-b-xl rounded-tr-xl border border-amber-200 border-t-0 mt-0">
-                  <div className="space-y-4 text-stone-700">
-                    {hotel.phoneNumber && (
-                      <p className="flex items-center gap-3 p-3 bg-amber-50 rounded-lg border border-amber-100">
-                        <Phone className="h-5 w-5 text-orange-500 flex-shrink-0" /> 
-                        <a href={`tel:${hotel.phoneNumber}`} className="font-medium hover:underline hover:text-orange-600 transition-colors">{hotel.phoneNumber}</a>
-                      </p>
-                    )}
-                    {hotel.email && (
-                      <p className="flex items-center gap-3 p-3 bg-amber-50 rounded-lg border border-amber-100">
-                        <Mail className="h-5 w-5 text-orange-500 flex-shrink-0" /> 
-                        <a href={`mailto:${hotel.email}`} className="font-medium hover:underline hover:text-orange-600 transition-colors">{hotel.email}</a>
-                      </p>
-                    )}
-                    {hotel.website && (
-                      <p className="flex items-center gap-3 p-3 bg-amber-50 rounded-lg border border-amber-100">
-                        <Globe className="h-5 w-5 text-orange-500 flex-shrink-0" /> 
-                        <a href={hotel.website} target="_blank" rel="noopener noreferrer" className="font-medium hover:underline hover:text-orange-600 transition-colors">
-                          Visit Website
-                        </a>
-                      </p>
-                    )}
-                    {hotel.policies && (
-                      <div className="mt-6">
-                        <h4 className="font-bold text-stone-800 mb-2">Hotel Policies</h4>
-                        <div className="prose prose-sm prose-stone bg-amber-50 p-4 rounded-lg border border-amber-100">
-                          <PortableText value={hotel.policies} />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </TabsContent>
-              </Tabs>
-            </div>
-          </AnimatedSection>
-        </div>
-      </div>
-
-      {/* Nearby Attractions with different background */}
-      <div className="bg-gradient-to-br from-amber-100 to-orange-100 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatedSection>
-            <NearbyAttractions nearbyAttractions={hotel.nearbyAttractions} />
-          </AnimatedSection>
-        </div>
+        <AnimatedSection className="mb-12">
+          <Separator className="my-12 bg-stone-200" />
+          <NearbyAttractions nearbyAttractions={hotel.nearbyAttractions} />
+        </AnimatedSection>
       </div>
     </div>
   );

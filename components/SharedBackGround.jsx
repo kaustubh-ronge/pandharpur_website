@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export function SharedBackground() {
   return (
-    <div className="absolute inset-0 z-[-1] overflow-hidden pointer-events-none bg-gradient-to-t from-orange-100 via-white to-orange-50">
+    <div className="absolute inset-0 z-[-1] overflow-hidden pointer-events-none bg-gradient-to-t from-orange-100 via-white to-orange-50 h-full">
       {[1, 2, 3, 4, 5].map((i) => (
         <motion.div
           key={i}

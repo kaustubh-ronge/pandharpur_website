@@ -54,7 +54,7 @@ export default function TravelPageClient({ item }) {
     const travelTypeCapitalized = item.travelType ? item.travelType.charAt(0).toUpperCase() + item.travelType.slice(1).replace('-', ' ') : '';
 
     return (
-        <div className="bg-gradient-to-br from-amber-50 via-red-50 to-amber-100">
+        <div>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
 
                 <AnimatedSection>
