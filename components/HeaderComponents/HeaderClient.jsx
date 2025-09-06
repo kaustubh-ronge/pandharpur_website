@@ -145,6 +145,12 @@ export function HeaderClient({ user }) {
                                         ))}
                                     </div>
                                 </div>
+                                {/* CORRECTED: Added a close button for better accessibility */}
+                                <SheetClose asChild>
+                                    <Button variant="outline" className="mt-4 w-full">
+                                        Close
+                                    </Button>
+                                </SheetClose>
                             </SheetContent>
                         </Sheet>
                     </div>
