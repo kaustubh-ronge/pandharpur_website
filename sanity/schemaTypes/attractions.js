@@ -1,8 +1,5 @@
 /**
  * Sanity Schema for Individual Attractions
- *
- * This schema defines the data structure for each tourist attraction.
- * It includes fields for title, slug, images, location, and a detailed description.
  */
 import { MdPlace } from "react-icons/md";
 
@@ -16,7 +13,6 @@ export default {
       name: "title",
       title: "Title",
       type: "string",
-      description: 'The name of the attraction (e.g., "Naldurg Fort").',
       validation: (rule) => rule.required(),
     },
     {
@@ -27,8 +23,6 @@ export default {
         source: "title",
         maxLength: 96,
       },
-      description:
-        'The unique URL path for this attraction. Click "Generate" to create it from the title.',
       validation: (rule) => rule.required(),
     },
     {
@@ -36,8 +30,6 @@ export default {
       title: "Category",
       type: "reference",
       to: { type: "category" },
-      description:
-        'The category this attraction belongs to (e.g., "Historical Sites & Forts").',
       validation: (rule) => rule.required(),
     },
     {
@@ -45,16 +37,14 @@ export default {
       title: "Main Image",
       type: "image",
       options: {
-        hotspot: true, // Allows for better image cropping
+        hotspot: true,
       },
-      description: "The primary image used in listings and as the header.",
       validation: (rule) => rule.required(),
       fields: [
         {
           name: "alt",
           type: "string",
           title: "Alternative Text",
-          description: "Important for SEO and accessibility.",
           validation: (rule) => rule.required(),
         },
       ],
@@ -82,7 +72,6 @@ export default {
           ],
         },
       ],
-      description: "Upload additional images for a gallery display.",
     },
     {
       name: "location",
@@ -93,45 +82,37 @@ export default {
           name: "address",
           title: "Address or General Location",
           type: "string",
-          description:
-            'A short address or general area (e.g., "Near Solapur City").',
         },
         {
           name: "googleMapsUrl",
           title: "Google Maps Embed URL",
           type: "url",
-          description:
-            "Paste the SRC URL from the Google Maps embed code here.",
         },
       ],
     },
-    // ⬇️ THIS FIELD IS NEW ⬇️
     {
       name: "distance",
       title: "Distance from Main Temple",
       type: "string",
-      description:
-        'A short description of the distance (e.g., "5 km" or "15-minute walk").',
+    },
+    // ⬇️ THE MISSING FIELDS THAT MUST BE ADDED ⬇️
+    {
+      name: "bestTimeToVisit",
+      title: "Best Time to Visit",
+      type: "string",
+      description: 'e.g., "October to February"',
+    },
+    {
+      name: "visitDuration",
+      title: "Recommended Visit Duration",
+      type: "string",
+      description: 'e.g., "1-2 hours"',
     },
     {
       name: "description",
       title: "Description",
       type: "array",
-      of: [
-        {
-          type: "block",
-          styles: [{ title: "Normal", value: "normal" }],
-          lists: [{ title: "Bullet", value: "bullet" }],
-          marks: {
-            decorators: [
-              { title: "Strong", value: "strong" },
-              { title: "Emphasis", value: "em" },
-            ],
-          },
-        },
-      ],
-      description:
-        "A detailed description of the attraction. You can add paragraphs, bullet points, and bold/italic text.",
+      of: [{ type: "block" }],
       validation: (rule) => rule.required(),
     },
   ],

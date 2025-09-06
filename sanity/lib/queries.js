@@ -209,14 +209,21 @@ export const attractionsQuery = `
     "slug": slug.current,
     "mainImageUrl": mainImage.asset->url,
     "mainImageAlt": mainImage.alt,
-    description, 
-    distance    
+    description,
+    distance
   }
 }
 `;
 
+// Query to get all attraction slugs. This is used by Next.js to generate static pages.
+export const attractionPathsQuery = `
+*[_type == "attraction" && defined(slug.current)][]{
+  "params": { "slug": slug.current }
+}
+`;
+
 // Query to get a single attraction by its unique slug for the detail page.
-// Query to get a single attraction by its unique slug for the detail page.
+// ⬇️ THIS IS THE CORRECTED QUERY ⬇️
 export const attractionBySlugQuery = `
 *[_type == "attraction" && slug.current == $slug][0] {
   _id,
@@ -234,16 +241,8 @@ export const attractionBySlugQuery = `
     googleMapsUrl
   },
   description,
-  distance,         
-  bestTimeToVisit,  
-  visitDuration     
-  }
-
-`;
-
-// Query to get all attraction slugs. This is used by Next.js to generate static pages.
-export const attractionPathsQuery = `
-*[_type == "attraction" && defined(slug.current)][]{
-  "params": { "slug": slug.current }
+  distance,
+  bestTimeToVisit,
+  visitDuration
 }
 `;
