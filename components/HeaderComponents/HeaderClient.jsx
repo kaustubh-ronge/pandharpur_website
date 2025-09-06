@@ -1,3 +1,4 @@
+
 'use client'
 
 import { useState } from "react"
@@ -11,7 +12,11 @@ import {
     DropdownMenu,
     DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+// CORRECTED: Imported missing components for accessibility
+import {
+    Sheet, SheetContent, SheetTrigger, SheetClose,
+    SheetHeader, SheetTitle, SheetDescription
+} from "@/components/ui/sheet"
 import { navItems, quickLinks } from "@/data/HeaderData/headerData"
 
 export function HeaderClient({ user }) {
@@ -21,12 +26,12 @@ export function HeaderClient({ user }) {
     return (
         <header className="fixed top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md shadow-sm md:pb-1">
             <div className="w-full max-w-screen-2xl mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
-                {/* Logo - Always visible */}
+                {/* Logo */}
                 <Link href="/" className="flex-shrink-0">
                     <Image src={'/hero-logo-1.png'} height={200} width={320} className=" lg:w-full ml-[-100px] md:h-[100%] md:ml-[-30px] md:w-full" alt="logo" priority />
                 </Link>
 
-                {/* Desktop Navigation - Center, visible only on large screens */}
+                {/* Desktop Navigation */}
                 <nav className="hidden lg:flex items-center gap-8 mx-auto">
                     {navItems.map((item) => (
                         <Link
@@ -45,7 +50,7 @@ export function HeaderClient({ user }) {
 
                 {/* Right Side Actions */}
                 <div className="flex items-center gap-4">
-                    {/* Desktop-Only Actions - A wrapper for all buttons visible on large screens */}
+                    {/* Desktop-Only Actions */}
                     <div className="hidden lg:flex items-center gap-4">
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
@@ -86,7 +91,7 @@ export function HeaderClient({ user }) {
                         </SignedOut>
                     </div>
 
-                    {/* Mobile-Only Menu Trigger - Visible only on small and medium screens */}
+                    {/* Mobile-Only Menu Trigger */}
                     <div className="lg:hidden">
                         <Sheet>
                             <SheetTrigger asChild>
@@ -94,8 +99,15 @@ export function HeaderClient({ user }) {
                                     <Menu className="h-6 w-6" />
                                 </Button>
                             </SheetTrigger>
-                            <SheetContent side="right" className="w-[300px] bg-white shadow-lg p-6">
-                                <div className="flex flex-col gap-y-4">
+                            <SheetContent side="right" className="w-[300px] bg-white shadow-lg px-4">
+                                {/* CORRECTED: Added a visually hidden header for screen readers */}
+                                <SheetHeader>
+                                    <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
+                                    <SheetDescription className="sr-only">
+                                        A list of navigation links and quick access options.
+                                    </SheetDescription>
+                                </SheetHeader>
+                                <div className="flex flex-col gap-y-4 mt-4"> {/* Added margin-top for spacing */}
                                     <div className="pb-4 border-b">
                                         <SignedIn>
                                             <div className="flex items-center gap-4">
@@ -114,18 +126,22 @@ export function HeaderClient({ user }) {
                                     </div>
                                     <nav className="flex flex-col gap-y-2">
                                         {navItems.map((item) => (
-                                            <Link key={item.href} href={item.href} className="flex items-center gap-3 py-2 px-3 rounded-md text-gray-700 hover:bg-gray-100">
-                                                {item.icon}{item.name}
-                                            </Link>
+                                            <SheetClose asChild key={item.href}>
+                                                <Link href={item.href} className="flex items-center gap-3 py-2 px-3 rounded-md text-gray-700 hover:bg-gray-100">
+                                                    {item.icon}{item.name}
+                                                </Link>
+                                            </SheetClose>
                                         ))}
                                     </nav>
                                     <hr />
                                     <div className="flex flex-col gap-y-2 text-sm">
                                         <h3 className="font-semibold px-3 text-gray-500 text-xs uppercase">Quick Access</h3>
                                         {quickLinks.map((link) => (
-                                            <Link key={link.href} href={link.href} className="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-md">
-                                                {link.icon}{link.name}
-                                            </Link>
+                                            <SheetClose asChild key={link.href}>
+                                                <Link href={link.href} className="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-md">
+                                                    {link.icon}{link.name}
+                                                </Link>
+                                            </SheetClose>
                                         ))}
                                     </div>
                                 </div>
