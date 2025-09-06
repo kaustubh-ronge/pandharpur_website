@@ -4,6 +4,7 @@ import { getAllHotelsQuery } from "@/sanity/lib/queries";
 import Link from "next/link";
 import Image from "next/image";
 import { Star, Award, MapPin, ExternalLink, ArrowRight, BedDouble } from "lucide-react";
+import { SharedBackground } from "@/components/SharedBackGround";
 
 // --- NEW UI Components (Redesigned from scratch within this file) ---
 
@@ -17,15 +18,13 @@ function PageHeader({ title, subtitle }) {
       <p className="max-w-3xl mx-auto text-lg text-slate-500">
         {subtitle}
       </p>
-      {/* Decorative line to add a touch of class */}
       <div className="mt-6 w-24 h-1 bg-orange-500 mx-auto rounded-full" />
     </div>
   );
 }
 
 function HotelCard({ hotel }) {
-  // Redesigned Hotel Card: Modern aesthetics, better spacing, clear hierarchy, and aligned buttons.
-  // We use the "group" utility from Tailwind for the image hover effect.
+ 
   return (
     <div className="group bg-white rounded-2xl border border-slate-200/80 shadow-lg shadow-slate-300/30 overflow-hidden h-full flex flex-col transition-all duration-300 ease-in-out hover:shadow-2xl hover:shadow-slate-400/30 hover:-translate-y-2">
       
@@ -39,11 +38,9 @@ function HotelCard({ hotel }) {
           className="transition-transform duration-500 ease-in-out group-hover:scale-110"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        {/* A subtle gradient overlay to make the badge pop */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
         
         {hotel.isFeatured && (
-          // Redesigned "Featured" Badge: Looks more premium.
           <div className="absolute top-4 left-4 bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-md">
             <Award className="h-4 w-4" />
             <span>FEATURED STAY</span>
@@ -75,17 +72,13 @@ function HotelCard({ hotel }) {
           <p className="text-slate-600 text-base leading-relaxed line-clamp-3">{hotel.description}</p>
         </div>
 
-        {/* --- Footer with Aligned Buttons --- */}
-        {/* "mt-auto" is key for aligning buttons at the bottom of the card */}
         <div className="mt-auto pt-6 grid grid-cols-2 gap-3">
-          {/* Secondary Button Style: Outline */}
           <Link href={`/information-page/hotels/${hotel.slug}`} className="col-span-1">
             <button className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold text-sm border-2 border-slate-700 text-slate-700 hover:bg-slate-700 hover:text-white transition-colors">
               Details <ArrowRight className="h-4 w-4" />
             </button>
           </Link>
 
-          {/* Primary Button Style: Solid Color */}
           {hotel.website ? (
             <a href={hotel.website} target="_blank" rel="noopener noreferrer" className="col-span-1">
               <button className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold text-sm bg-orange-500 text-white hover:bg-orange-600 transition-colors shadow-lg shadow-orange-500/30">
@@ -110,8 +103,9 @@ export default async function HotelsPage() {
 
   return (
     // New page background: A soft, two-tone gradient instead of a flat color.
-    <div className="bg-slate-50 min-h-screen">
-       <div className="bg-gradient-to-b from-orange-50 to-slate-50">
+    <div className="min-h-screen">
+      <SharedBackground />
+       <div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
           <PageHeader
             title="Accommodations in Pandharpur"

@@ -2,7 +2,8 @@ import { client } from "@/sanity/lib/client";
 import { getAllBhaktaniwasQuery } from "@/sanity/lib/queries";
 import Link from "next/link";
 import Image from "next/image";
-import { Home, Award } from "lucide-react";
+import { Home, Award, Share } from "lucide-react";
+import { SharedBackground } from "@/components/SharedBackGround";
 
 // --- UI Components ---
 
@@ -60,7 +61,8 @@ export default async function BhaktaniwasPage() {
   const allBhaktaniwas = await client.fetch(getAllBhaktaniwasQuery);
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="min-h-screen">
+      <SharedBackground />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         <PageHeader
           title="Bhaktaniwas in Pandharpur"

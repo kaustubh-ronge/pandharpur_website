@@ -13,6 +13,7 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { MapPin, Star, Clock } from "lucide-react"
+import { SharedBackground } from '@/components/SharedBackGround'
 
 // Fetch data from Sanity
 async function getAttractions() {
@@ -24,7 +25,8 @@ export default async function AttractionsPage() {
   const categories = await getAttractions()
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-white">
+    <div className="min-h-screen">
+      <SharedBackground />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header Section */}
         <div className="text-center mb-16">
