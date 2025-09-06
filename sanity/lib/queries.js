@@ -215,8 +215,8 @@ export const attractionsQuery = `
     "slug": slug.current,
     "mainImageUrl": mainImage.asset->url,
     "mainImageAlt": mainImage.alt,
-    description, // ⬅️ ADDED
-    distance     // ⬅️ ADDED
+    description, 
+    distance    
   }
 }
 `

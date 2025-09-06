@@ -25,20 +25,6 @@ function AiRoutePlanner({ setMapLocations, onPlanCreated, useFetch, zodResolver,
   const { fn: generate, loading, error } = useFetch(generateAiRoute);
   const form = useForm({ resolver: zodResolver(aiRouteSchema), defaultValues: { startLocation: "" } });
 
-  // const onSubmit = async (values) => {
-  //   const result = await generate(values);
-  //   if (result?.success) {
-  //     toast.success("AI Routes generated successfully! Viewing details below.");
-  //     const locs = result.route.response.routes.flatMap(r => r.steps.map(s => ({ position: s.coordinates, title: s.instruction })));
-  //     console.log("_______LOCS______ FOR AI ROUTE PLANNER",locs)
-  //     setMapLocations(locs);
-  //     onPlanCreated(result.route, 'ai_route');
-  //     form.reset();
-  //   }else{
-  //     toast.error("Failed to generate AI Routes. Please try again.");
-  //   }
-  // };
-
 
   const onSubmit = async (values) => {
     const result = await generate(values);
