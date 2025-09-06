@@ -84,7 +84,6 @@ export const getBhaktaniwasBySlugQuery = `
 // --- EXISTING QUERIES ---
 // (Keep your hotel and bhaktaniwas queries here)
 
-
 // --- NEW TEMPLE QUERIES ---
 
 // This query fetches all temples for the list view
@@ -124,7 +123,6 @@ export const getTempleBySlugQuery = `
 // --- EXISTING QUERIES ---
 // (It's good practice to keep all queries in one file)
 
-
 // --- NEW RESTAURANT QUERIES ---
 
 // This query fetches all restaurants for the list view
@@ -162,10 +160,8 @@ export const getRestaurantBySlugQuery = `
   }
 `;
 
-
 // --- EXISTING QUERIES ---
 // (It's good practice to keep all your queries in one file)
-
 
 // --- NEW TRAVEL QUERIES ---
 
@@ -202,8 +198,6 @@ export const getTravelBySlugQuery = `
   }
 `;
 
-
-
 // Query to get all attractions, grouped by their category, for the main listing page.
 export const attractionsQuery = `
 *[_type == "category"] | order(title asc) {
@@ -219,8 +213,9 @@ export const attractionsQuery = `
     distance    
   }
 }
-`
+`;
 
+// Query to get a single attraction by its unique slug for the detail page.
 // Query to get a single attraction by its unique slug for the detail page.
 export const attractionBySlugQuery = `
 *[_type == "attraction" && slug.current == $slug][0] {
@@ -238,13 +233,17 @@ export const attractionBySlugQuery = `
     address,
     googleMapsUrl
   },
-  description
-}
-`
+  description,
+  distance,         
+  bestTimeToVisit,  
+  visitDuration     
+  }
+
+`;
 
 // Query to get all attraction slugs. This is used by Next.js to generate static pages.
 export const attractionPathsQuery = `
 *[_type == "attraction" && defined(slug.current)][]{
   "params": { "slug": slug.current }
 }
-`
+`;
