@@ -120,10 +120,7 @@ export const getTempleBySlugQuery = `
   }
 `;
 
-// --- EXISTING QUERIES ---
-// (It's good practice to keep all queries in one file)
 
-// --- NEW RESTAURANT QUERIES ---
 
 // This query fetches all restaurants for the list view
 export const getAllRestaurantsQuery = `
@@ -160,10 +157,7 @@ export const getRestaurantBySlugQuery = `
   }
 `;
 
-// --- EXISTING QUERIES ---
-// (It's good practice to keep all your queries in one file)
 
-// --- NEW TRAVEL QUERIES ---
 
 // This query fetches all travel options for the list view
 export const getAllTravelsQuery = `
@@ -198,51 +192,47 @@ export const getTravelBySlugQuery = `
   }
 `;
 
-// Query to get all attractions, grouped by their category, for the main listing page.
-export const attractionsQuery = `
-*[_type == "category"] | order(title asc) {
-  _id,
-  title,
-  "attractions": *[_type == "attraction" && references(^._id)] | order(title asc) {
+// --- NEW OTHER ATTRACTION QUERIES ---
+
+// Fetches all categories and their associated attractions for the list page.
+export const getAttractionsByCategoryQuery = `
+  *[_type == "otherAttractionCategory"] | order(title asc) {
     _id,
     title,
-    "slug": slug.current,
-    "mainImageUrl": mainImage.asset->url,
-    "mainImageAlt": mainImage.alt,
     description,
-    distance
+    "attractions": *[_type == "otherAttraction" && references(^._id)] | order(isFeatured desc, name asc) {
+      _id,
+      name,
+      "slug": slug.current,
+      description,
+      "image": image.asset->url,
+      isFeatured
+    }
   }
-}
 `;
 
-// Query to get all attraction slugs. This is used by Next.js to generate static pages.
-export const attractionPathsQuery = `
-*[_type == "attraction" && defined(slug.current)][]{
-  "params": { "slug": slug.current }
-}
-`;
-
-// Query to get a single attraction by its unique slug for the detail page.
-// ⬇️ THIS IS THE CORRECTED QUERY ⬇️
-export const attractionBySlugQuery = `
-*[_type == "attraction" && slug.current == $slug][0] {
-  _id,
-  title,
-  "category": category->title,
-  "mainImageUrl": mainImage.asset->url,
-  "mainImageAlt": mainImage.alt,
-  gallery[] {
-    "imageUrl": asset->url,
-    alt,
-    caption
-  },
-  location {
+// Fetches one specific attraction by its slug for the detail page.
+export const getAttractionBySlugQuery = `
+  *[_type == "otherAttraction" && slug.current == $slug][0] {
+    _id,
+    name,
+    "slug": slug.current,
+    "category": category->title,
+    isFeatured,
     address,
-    googleMapsUrl
-  },
-  description,
-  distance,
-  bestTimeToVisit,
-  visitDuration
-}
+    website,
+    description,
+    detailedDescription,
+    "image": image.asset->url,
+    phoneNumber,
+    googleMapsEmbedUrl,
+    timings,
+    entryFee,
+    "gallery": gallery[].asset->url
+  }
+`;
+
+// Fetches only the slugs for all attractions to generate static pages.
+export const getAttractionSlugsQuery = `
+*[_type == "otherAttraction" && defined(slug.current)][].slug.current
 `;
