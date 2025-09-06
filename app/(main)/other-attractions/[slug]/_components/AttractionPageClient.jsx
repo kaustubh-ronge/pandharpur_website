@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -8,14 +9,13 @@ import { useState, useEffect, useCallback } from "react";
 
 // ICONS (Adapted for Attractions)
 import {
-    MapPin, Phone, CheckCircle, Users, Globe, ChevronRight, Sparkles,
-    Clock, Calendar, Ticket, Landmark, Info
+    MapPin, Phone, Globe, ChevronRight, Sparkles,
+    Clock, Ticket, Landmark, Info
 } from "lucide-react";
 
 // --- SHADCN UI IMPORTS ---
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 
 // --- ANIMATION WRAPPER (Re-used) ---
@@ -36,7 +36,7 @@ function AnimatedSection({ children, className = "" }) {
 
 // --- UI SUB-COMPONENTS (Adapted for Attractions) ---
 
-function Breadcrumbs({ itemName, itemCategory }) {
+function Breadcrumbs({ itemName }) {
     return (
         <nav className="flex items-center text-sm font-medium text-stone-500 mb-6">
             <Link href="/" className="hover:text-orange-600 transition-colors">Home</Link>
@@ -85,9 +85,8 @@ function GallerySlider({ images = [], itemName }) {
                             src={img}
                             alt={`Gallery image ${idx + 1} of ${itemName}`}
                             fill
-                            style={{ objectFit: 'cover' }}
+                            className="object-cover" // Ensure image covers the area
                             sizes="(max-width: 768px) 100vw, 50vw"
-                            className="rounded-xl"
                         />
                     </div>
                 ))}
@@ -108,6 +107,31 @@ function GallerySlider({ images = [], itemName }) {
     );
 }
 
+// CORRECTED MainImage component to use a fixed aspect ratio
+function MainImage({ src, alt }) {
+    // Show a placeholder if no image source is provided
+    if (!src) {
+        return (
+            <div className="relative w-full aspect-video rounded-xl bg-stone-100 flex items-center justify-center text-stone-500 shadow-md">
+                No Image
+            </div>
+        );
+    }
+    
+    return (
+        <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-md">
+            <Image
+                src={src}
+                alt={alt}
+                fill
+                className="object-cover" // This is key: it makes the image fill the container without distortion
+                sizes="(max-width: 768px) 100vw, 50vw"
+                priority
+            />
+        </div>
+    );
+}
+
 function OverviewSection({ item }) {
     return (
         <div className="mt-12">
@@ -124,7 +148,6 @@ function OverviewSection({ item }) {
                         </div>
                     </CardContent>
                 </Card>
-
                 <div className="flex flex-col gap-6">
                     <Card className="bg-white shadow-md border-stone-200 transition-all duration-300 hover:shadow-lg">
                         <CardHeader className="pb-4">
@@ -187,7 +210,7 @@ export default function AttractionPageClient({ item }) {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
                 <AnimatedSection className="mb-10">
                     <header>
-                        <Breadcrumbs itemName={item.name} itemCategory={item.category} />
+                        <Breadcrumbs itemName={item.name} />
                         <div className="mt-4">
                             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-stone-900 tracking-tight">{item.name}</h1>
                             <div className="mt-4 flex items-center flex-wrap gap-x-6 gap-y-2 text-stone-600">
@@ -208,38 +231,42 @@ export default function AttractionPageClient({ item }) {
                 </AnimatedSection>
 
                 <AnimatedSection className="mb-12">
+                    {/* CORRECTED LAYOUT: Main Image and Gallery now have a fixed aspect ratio */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                        <div className="w-full h-full min-h-[400px]">
-                            <GallerySlider images={[item.image, ...(item.gallery || [])]} itemName={item.name} />
-                        </div>
-                        <div className="rounded-xl overflow-hidden shadow-md border border-stone-200">
-                            {item.googleMapsEmbedUrl ? (
-                                <iframe
-                                    src={item.googleMapsEmbedUrl}
-                                    width="100%"
-                                    height="100%"
-                                    style={{ border: 0, minHeight: '400px' }}
-                                    allowFullScreen=""
-                                    loading="lazy"
-                                    referrerPolicy="no-referrer-when-downgrade"
-                                />
-                            ) : (
-                                <div className="bg-stone-100 h-full min-h-[400px] w-full flex flex-col items-center justify-center text-stone-400">
-                                    <MapPin className="h-12 w-12 mb-4 opacity-50" />
-                                    <p>Map not available</p>
-                                </div>
-                            )}
+                        <MainImage src={item.image} alt={`Main image of ${item.name}`} />
+                        
+                        {/* The Gallery now sits inside a container that also has a fixed aspect ratio */}
+                        <div className="relative w-full aspect-video">
+                           <GallerySlider images={item.gallery} itemName={item.name} />
                         </div>
                     </div>
-                </AnimatedSection>
 
+                    <div className="rounded-xl overflow-hidden shadow-md border border-stone-200 mt-6">
+                        {item.googleMapsEmbedUrl ? (
+                            <iframe
+                                src={item.googleMapsEmbedUrl}
+                                width="100%"
+                                height="450"
+                                style={{ border: 0 }}
+                                allowFullScreen=""
+                                loading="lazy"
+                                referrerPolicy="no-referrer-when-downgrade"
+                            />
+                        ) : (
+                            <div className="bg-stone-100 h-96 w-full flex flex-col items-center justify-center text-stone-400">
+                                <MapPin className="h-12 w-12 mb-4 opacity-50" />
+                                <p>Map not available</p>
+                            </div>
+                        )}
+                    </div>
+                </AnimatedSection>
+                
                 <AnimatedSection className="mb-12">
                     <OverviewSection item={item} />
                 </AnimatedSection>
                 
                 <AnimatedSection>
                     <Separator className="my-12 bg-stone-200" />
-                    {/* You can add a "Nearby Attractions" component here if you wish */}
                 </AnimatedSection>
             </div>
         </div>
