@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Star, Award, MapPin, ExternalLink, ArrowRight, BedDouble } from "lucide-react";
 import { SharedBackground } from "@/components/SharedBackGround";
+import { BlueBackground } from "@/components/BlueSharedBackGround";
 
 // --- NEW UI Components (Redesigned from scratch within this file) ---
 
@@ -104,7 +105,7 @@ export default async function HotelsPage() {
   return (
     // New page background: A soft, two-tone gradient instead of a flat color.
     <div className="min-h-screen">
-      <SharedBackground />
+      <BlueBackground />
        <div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
           <PageHeader

@@ -1,10 +1,10 @@
-
 "use client";
 
 import Image from "next/image";
 import Link from "next/link";
 import { PortableText } from "@portabletext/react";
 import { motion } from "framer-motion";
+import { useState, useEffect, useCallback } from "react"; // Added for new component
 
 // ICONS
 import { MapPin, Phone, Clock, Route, Globe, ChevronRight, Sparkles } from "lucide-react";
@@ -39,6 +39,66 @@ function Breadcrumbs({ itemName }) {
         </nav>
     );
 }
+
+// --- NEW MainImage Component ---
+// This component was created to add the granular aspect ratio conditions to this page.
+function MainImage({ src, alt }) {
+    const [aspectRatioClass, setAspectRatioClass] = useState('aspect-[4/3]'); // Default aspect ratio
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        if (!src) {
+            setIsLoading(false);
+            return;
+        }
+
+        setIsLoading(true);
+        const img = new window.Image();
+        img.src = src;
+
+        img.onload = () => {
+            const ratio = img.naturalWidth / img.naturalHeight;
+
+            // --- Extended Conditions ---
+            if (ratio > 2) setAspectRatioClass('aspect-[21/9]');      // Panoramic
+            else if (ratio > 1.6) setAspectRatioClass('aspect-video');   // 16:9 Widescreen
+            else if (ratio > 1.2) setAspectRatioClass('aspect-[4/3]');   // 4:3 Landscape
+            else if (ratio > 0.9) setAspectRatioClass('aspect-square');  // Square-ish
+            else if (ratio > 0.7) setAspectRatioClass('aspect-[3/4]');   // 3:4 Portrait
+            else setAspectRatioClass('aspect-[9/16]');                 // 9:16 Tall Portrait
+
+            setIsLoading(false);
+        };
+
+        img.onerror = () => {
+            // Keep default aspect ratio on error
+            setIsLoading(false);
+        };
+
+    }, [src]);
+
+    return (
+        <div className={`relative w-full ${aspectRatioClass} rounded-xl overflow-hidden shadow-lg bg-stone-100 border-2 border-amber-200/50`}>
+            {isLoading ? (
+                <div className="w-full h-full flex items-center justify-center">
+                    <div className="animate-pulse text-stone-400">Loading image...</div>
+                </div>
+            ) : (
+                <Image
+                    src={src}
+                    alt={alt}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="transition-opacity duration-300 opacity-0"
+                    onLoadingComplete={(image) => image.classList.remove('opacity-0')}
+                    priority
+                />
+            )}
+        </div>
+    );
+}
+
 
 function RichTextContent({ content }) {
     if (!content) return null;
@@ -78,11 +138,14 @@ export default function TravelPageClient({ item }) {
                 </AnimatedSection>
 
                 <AnimatedSection>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-[450px]">
-                        <div className="relative h-full w-full rounded-xl overflow-hidden shadow-lg border-2 border-amber-200/50">
-                            <Image src={item.image} alt={`Main image of ${item.name}`} fill style={{ objectFit: 'cover' }} priority />
+                    {/* --- UPDATED LAYOUT --- */}
+                    {/* The fixed height has been removed and the layout now uses the new MainImage component */}
+                    {/* to dynamically set the height, ensuring the map aligns correctly. */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div className="w-full">
+                            <MainImage src={item.image} alt={`Main image of ${item.name}`} />
                         </div>
-                        <div className="h-full w-full rounded-xl overflow-hidden shadow-lg border-2 border-amber-200/50">
+                        <div className="w-full h-full min-h-[400px] rounded-xl overflow-hidden shadow-lg border-2 border-amber-200/50">
                             {item.googleMapsEmbedUrl ? (
                                 <iframe src={item.googleMapsEmbedUrl} width="100%" height="100%" style={{ border: 0 }} allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
                             ) : (
@@ -92,7 +155,6 @@ export default function TravelPageClient({ item }) {
                     </div>
                 </AnimatedSection>
 
-                {/* --- SECTIONS BELOW ARE STRUCTURALLY UNCHANGED, ONLY STYLES & ANIMATIONS ADDED --- */}
                 <AnimatedSection>
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 mt-12">
                         <div className="lg:col-span-2">

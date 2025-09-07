@@ -5,7 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+// UPDATED: Import the necessary icons
+import { ArrowLeft, FilePenLine, Sparkles, Route, Calendar } from "lucide-react";
 import ManualTripDetails from './ManualTripDetails';
 import AllDetailsList from '../ListComponents/AllDetailsList';
 import AiTripDetails from './AiTripDetails';
@@ -38,11 +39,24 @@ function DetailedItinerariesSection({ detailedViewData, onShowAll, refreshTrigge
       </CardHeader>
       <CardContent className="pt-4">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          {/* UPDATED: TabsList with responsive icons and text */}
           <TabsList className="grid w-full grid-cols-4 h-12 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
-            <TabsTrigger value="manual_trip">Manual</TabsTrigger>
-            <TabsTrigger value="ai_trip">AI Trips</TabsTrigger>
-            <TabsTrigger value="ai_route">AI Routes</TabsTrigger>
-            <TabsTrigger value="ai_schedule">AI Schedules</TabsTrigger>
+            <TabsTrigger value="manual_trip">
+              <FilePenLine className="h-5 w-5 md:hidden" />
+              <span className="hidden md:inline">Manual</span>
+            </TabsTrigger>
+            <TabsTrigger value="ai_trip">
+              <Sparkles className="h-5 w-5 md:hidden" />
+              <span className="hidden md:inline">AI Trips</span>
+            </TabsTrigger>
+            <TabsTrigger value="ai_route">
+              <Route className="h-5 w-5 md:hidden" />
+              <span className="hidden md:inline">AI Routes</span>
+            </TabsTrigger>
+            <TabsTrigger value="ai_schedule">
+              <Calendar className="h-5 w-5 md:hidden" />
+              <span className="hidden md:inline">AI Schedules</span>
+            </TabsTrigger>
           </TabsList>
           <div className="mt-4">
             <AnimatePresence mode="wait">

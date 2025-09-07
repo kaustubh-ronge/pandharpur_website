@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { client } from '@/sanity/lib/client';
 import { getAttractionsByCategoryQuery } from '@/sanity/lib/queries';
+import { BlueBackground } from '@/components/BlueSharedBackGround';
 
 export const revalidate = 60;
 
@@ -9,7 +10,8 @@ export default async function OtherAttractionsPage() {
   const categories = await client.fetch(getAttractionsByCategoryQuery);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-10 py-8 mt-20">
+      <BlueBackground />
       <div className="text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Other Attractions</h1>
         <p className="text-lg text-gray-600 max-w-2xl mx-auto">

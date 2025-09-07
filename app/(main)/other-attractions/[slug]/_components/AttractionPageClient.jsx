@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -17,6 +16,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { AmberBackground } from "@/components/AmberSharedBackground";
 
 // --- ANIMATION WRAPPER (Re-used) ---
 function AnimatedSection({ children, className = "" }) {
@@ -107,27 +107,61 @@ function GallerySlider({ images = [], itemName }) {
     );
 }
 
-// CORRECTED MainImage component to use a fixed aspect ratio
+// --- ENHANCED MainImage Component ---
+// This component has been updated with the more granular aspect ratio conditions.
 function MainImage({ src, alt }) {
-    // Show a placeholder if no image source is provided
-    if (!src) {
-        return (
-            <div className="relative w-full aspect-video rounded-xl bg-stone-100 flex items-center justify-center text-stone-500 shadow-md">
-                No Image
-            </div>
-        );
-    }
-    
+    const [aspectRatioClass, setAspectRatioClass] = useState('aspect-[4/3]'); // Default aspect ratio
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        if (!src) {
+            setIsLoading(false);
+            return;
+        }
+
+        setIsLoading(true);
+        const img = new window.Image();
+        img.src = src;
+
+        img.onload = () => {
+            const ratio = img.naturalWidth / img.naturalHeight;
+
+            // --- Extended Conditions ---
+            if (ratio > 2) setAspectRatioClass('aspect-[21/9]');      // Panoramic
+            else if (ratio > 1.6) setAspectRatioClass('aspect-video');   // 16:9 Widescreen
+            else if (ratio > 1.2) setAspectRatioClass('aspect-[4/3]');   // 4:3 Landscape
+            else if (ratio > 0.9) setAspectRatioClass('aspect-square');  // Square-ish
+            else if (ratio > 0.7) setAspectRatioClass('aspect-[3/4]');   // 3:4 Portrait
+            else setAspectRatioClass('aspect-[9/16]');                 // 9:16 Tall Portrait
+
+            setIsLoading(false);
+        };
+
+        img.onerror = () => {
+            // Keep default aspect ratio on error
+            setIsLoading(false);
+        };
+
+    }, [src]);
+
     return (
-        <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-md">
-            <Image
-                src={src}
-                alt={alt}
-                fill
-                className="object-cover" // This is key: it makes the image fill the container without distortion
-                sizes="(max-width: 768px) 100vw, 50vw"
-                priority
-            />
+        <div className={`relative w-full ${aspectRatioClass} rounded-xl overflow-hidden shadow-md bg-stone-100`}>
+            {isLoading ? (
+                <div className="w-full h-full flex items-center justify-center">
+                    <div className="animate-pulse text-stone-400">Loading image...</div>
+                </div>
+            ) : (
+                <Image
+                    src={src}
+                    alt={alt}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="transition-opacity duration-300 opacity-0"
+                    onLoadingComplete={(image) => image.classList.remove('opacity-0')}
+                    priority
+                />
+            )}
         </div>
     );
 }
@@ -137,7 +171,7 @@ function OverviewSection({ item }) {
         <div className="mt-12">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <Card className="bg-white shadow-md border-stone-200 transition-all duration-300 hover:shadow-lg">
-                    <CardHeader className="pb-4">
+                    <CardHeader>
                         <CardTitle className="text-2xl font-bold text-stone-800 flex items-center gap-2">
                             <Landmark className="h-6 w-6 text-orange-500" /> About this Attraction
                         </CardTitle>
@@ -150,7 +184,7 @@ function OverviewSection({ item }) {
                 </Card>
                 <div className="flex flex-col gap-6">
                     <Card className="bg-white shadow-md border-stone-200 transition-all duration-300 hover:shadow-lg">
-                        <CardHeader className="pb-4">
+                        <CardHeader>
                             <CardTitle className="text-lg font-bold text-stone-800 flex items-center gap-2">
                                 <Info className="h-5 w-5 text-orange-500" /> Key Information
                             </CardTitle>
@@ -177,7 +211,7 @@ function OverviewSection({ item }) {
                         </CardContent>
                     </Card>
                     <Card className="bg-white shadow-md border-stone-200 transition-all duration-300 hover:shadow-lg">
-                        <CardHeader className="pb-4">
+                        <CardHeader>
                             <CardTitle className="text-lg font-bold text-stone-800 flex items-center gap-2">
                                 <Phone className="h-5 w-5 text-orange-500" /> Quick Contact
                             </CardTitle>
@@ -207,6 +241,7 @@ function OverviewSection({ item }) {
 export default function AttractionPageClient({ item }) {
     return (
         <div className="min-h-screen">
+            <AmberBackground />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
                 <AnimatedSection className="mb-10">
                     <header>
@@ -231,13 +266,16 @@ export default function AttractionPageClient({ item }) {
                 </AnimatedSection>
 
                 <AnimatedSection className="mb-12">
-                    {/* CORRECTED LAYOUT: Main Image and Gallery now have a fixed aspect ratio */}
+                    {/* --- UPDATED LAYOUT --- */}
+                    {/* The fixed aspect ratio has been removed from the gallery's container to allow for */}
+                    {/* dynamic alignment with the new MainImage component. */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                        <MainImage src={item.image} alt={`Main image of ${item.name}`} />
-                        
-                        {/* The Gallery now sits inside a container that also has a fixed aspect ratio */}
-                        <div className="relative w-full aspect-video">
-                           <GallerySlider images={item.gallery} itemName={item.name} />
+                        <div className="w-full">
+                            <MainImage src={item.image} alt={`Main image of ${item.name}`} />
+                        </div>
+
+                        <div className="w-full h-full min-h-[300px] md:min-h-[400px] lg:min-h-full">
+                            <GallerySlider images={item.gallery} itemName={item.name} />
                         </div>
                     </div>
 
@@ -260,11 +298,11 @@ export default function AttractionPageClient({ item }) {
                         )}
                     </div>
                 </AnimatedSection>
-                
+
                 <AnimatedSection className="mb-12">
                     <OverviewSection item={item} />
                 </AnimatedSection>
-                
+
                 <AnimatedSection>
                     <Separator className="my-12 bg-stone-200" />
                 </AnimatedSection>

@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -119,40 +118,47 @@ function GallerySlider({ images = [], itemName }) {
     );
 }
 
-// Improved Main Image component with responsive sizing
+// --- EXTENDED & ENHANCED MainImage Component ---
+// This component now includes the more granular aspect ratio conditions.
 function MainImage({ src, alt }) {
-    const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
+    const [aspectRatioClass, setAspectRatioClass] = useState('aspect-[4/3]'); // Default aspect ratio
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        if (!src) return;
+        if (!src) {
+            setIsLoading(false);
+            return;
+        }
 
+        setIsLoading(true);
         const img = new window.Image();
         img.src = src;
+
         img.onload = () => {
-            setImageSize({ width: img.width, height: img.height });
+            const ratio = img.naturalWidth / img.naturalHeight;
+
+            // --- Extended Conditions ---
+            if (ratio > 2) setAspectRatioClass('aspect-[21/9]');       // Panoramic
+            else if (ratio > 1.6) setAspectRatioClass('aspect-video');   // 16:9 Widescreen
+            else if (ratio > 1.2) setAspectRatioClass('aspect-[4/3]');   // 4:3 Landscape
+            else if (ratio > 0.9) setAspectRatioClass('aspect-square');  // Square-ish
+            else if (ratio > 0.7) setAspectRatioClass('aspect-[3/4]');   // 3:4 Portrait
+            else setAspectRatioClass('aspect-[9/16]');                 // 9:16 Tall Portrait
+
             setIsLoading(false);
         };
+
         img.onerror = () => {
+            // Keep default aspect ratio on error
             setIsLoading(false);
         };
+
     }, [src]);
 
-    // Calculate aspect ratio class
-    const getAspectRatioClass = () => {
-        if (!imageSize.width || !imageSize.height) return 'aspect-video';
-
-        const ratio = imageSize.width / imageSize.height;
-
-        if (ratio > 1.5) return 'aspect-video';        // Wide images
-        if (ratio > 0.8 && ratio <= 1.5) return 'aspect-square'; // Square-ish images
-        return 'aspect-[3/4]';                         // Tall images
-    };
-
     return (
-        <div className={`relative w-full ${getAspectRatioClass()} rounded-xl overflow-hidden shadow-md`}>
+        <div className={`relative w-full ${aspectRatioClass} rounded-xl overflow-hidden shadow-md bg-stone-100`}>
             {isLoading ? (
-                <div className="w-full h-full bg-stone-100 flex items-center justify-center">
+                <div className="w-full h-full flex items-center justify-center">
                     <div className="animate-pulse text-stone-400">Loading image...</div>
                 </div>
             ) : (
@@ -162,7 +168,7 @@ function MainImage({ src, alt }) {
                     fill
                     style={{ objectFit: 'cover' }}
                     sizes="(max-width: 768px) 100vw, 50vw"
-                    className="rounded-xl transition-opacity duration-300 opacity-0"
+                    className="transition-opacity duration-300 opacity-0"
                     onLoadingComplete={(image) => image.classList.remove('opacity-0')}
                     priority
                 />
@@ -176,7 +182,7 @@ function OverviewSection({ item }) {
         <div className="mt-12">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <Card className="bg-white shadow-md border-stone-200 transition-all duration-300 hover:shadow-lg">
-                    <CardHeader className="pb-4">
+                    <CardHeader>
                         <CardTitle className="text-2xl font-bold text-stone-800 flex items-center gap-2">
                             <Home className="h-6 w-6 text-orange-500" /> About this Bhaktaniwas
                         </CardTitle>
@@ -190,7 +196,7 @@ function OverviewSection({ item }) {
 
                 <div className="flex flex-col gap-6">
                     <Card className="bg-white shadow-md border-stone-200 transition-all duration-300 hover:shadow-lg">
-                        <CardHeader className="pb-4">
+                        <CardHeader>
                             <CardTitle className="text-lg font-bold text-stone-800 flex items-center gap-2">
                                 <Sparkles className="h-5 w-5 text-orange-500" /> Top Facilities
                             </CardTitle>
@@ -205,7 +211,7 @@ function OverviewSection({ item }) {
                     </Card>
 
                     <Card className="bg-white shadow-md border-stone-200 transition-all duration-300 hover:shadow-lg">
-                        <CardHeader className="pb-4">
+                        <CardHeader>
                             <CardTitle className="text-lg font-bold text-stone-800 flex items-center gap-2">
                                 <Users className="h-5 w-5 text-orange-500" /> Key Information
                             </CardTitle>
@@ -231,7 +237,7 @@ function OverviewSection({ item }) {
                     </Card>
 
                     <Card className="bg-white shadow-md border-stone-200 transition-all duration-300 hover:shadow-lg">
-                        <CardHeader className="pb-4">
+                        <CardHeader>
                             <CardTitle className="text-lg font-bold text-stone-800 flex items-center gap-2">
                                 <Phone className="h-5 w-5 text-orange-500" /> Quick Contact
                             </CardTitle>
@@ -368,20 +374,14 @@ export default function BhaktaniwasPageClient({ item }) {
                 </AnimatedSection>
 
                 <AnimatedSection className="mb-12">
-                    {/* Updated layout with main image on left, gallery on right, and map below */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                        {/* Left column - Main image */}
                         <div className="w-full">
                             <MainImage src={item.image} alt={`Main image of ${item.name}`} />
                         </div>
-
-                        {/* Right column - Gallery slider */}
-                        <div className="w-full h-full min-h-[400px]">
+                        <div className="w-full h-full min-h-[300px] md:min-h-[400px] lg:min-h-full">
                             <GallerySlider images={item.gallery} itemName={item.name} />
                         </div>
                     </div>
-
-                    {/* Map spanning both columns */}
                     <div className="rounded-xl overflow-hidden shadow-md border border-stone-200">
                         {item.googleMapsEmbedUrl ? (
                             <iframe
@@ -415,11 +415,20 @@ export default function BhaktaniwasPageClient({ item }) {
                     <div className="bg-white rounded-xl shadow-md p-6 border border-stone-200">
                         <h2 className="text-3xl font-bold text-stone-800 mb-6">Full Details</h2>
                         <Tabs defaultValue="facilities" className="w-full">
-                            <TabsList className="bg-stone-100 p-1 h-auto">
-                                <TabsTrigger value="facilities" className="data-[state=active]:bg-white data-[state=active]:shadow-sm py-2 px-4">All Facilities</TabsTrigger>
-                                <TabsTrigger value="contact" className="data-[state=active]:bg-white data-[state=active]:shadow-sm py-2 px-4">Contact & Info</TabsTrigger>
-                                <TabsTrigger value="policies" className="data-[state=active]:bg-white data-[state=active]:shadow-sm py-2 px-4">Policies</TabsTrigger>
+                            
+                            {/* FIXED: Added responsive classes to stack tabs on mobile */}
+                            <TabsList className="flex h-auto w-full flex-col rounded-lg bg-stone-100 p-1 sm:w-auto sm:flex-row">
+                                <TabsTrigger value="facilities" className="w-full justify-center py-2 px-4 data-[state=active]:bg-white data-[state=active]:shadow-sm sm:w-auto">
+                                    All Facilities
+                                </TabsTrigger>
+                                <TabsTrigger value="contact" className="w-full justify-center py-2 px-4 data-[state=active]:bg-white data-[state=active]:shadow-sm sm:w-auto">
+                                    Contact & Info
+                                </TabsTrigger>
+                                <TabsTrigger value="policies" className="w-full justify-center py-2 px-4 data-[state=active]:bg-white data-[state=active]:shadow-sm sm:w-auto">
+                                    Policies
+                                </TabsTrigger>
                             </TabsList>
+
                             <TabsContent value="facilities" className="mt-6">
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                     {item.facilities?.map(facility => (

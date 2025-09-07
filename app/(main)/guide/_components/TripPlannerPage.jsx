@@ -29,6 +29,7 @@ import { format } from "date-fns";
 import PlannerColumn from './ColumnComponents/PlannerColumn';
 import DisplayColumn from './ColumnComponents/DisplayColumn';
 import DetailedItinerariesSection from './DetailsComponents/DetailedItinerariesSection';
+import { BlueBackground } from '@/components/BlueSharedBackGround';
 
 /**
  * TripPlannerPage (Client Component)
@@ -87,6 +88,7 @@ export default function TripPlannerPage({ GOOGLE_MAPS_API_KEY, ppur_attractions 
           />
         </div>
         <div className="lg:col-span-2">
+          <BlueBackground />
           <DisplayColumn
             activeTab={activeDisplayTab}
             setActiveTab={setActiveDisplayTab}

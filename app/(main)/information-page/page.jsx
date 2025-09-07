@@ -3,7 +3,7 @@ import { PageHeader } from "./_components/PageHeader";
 
 export default function InformationPage() {
   return (
-    <section className="relative py-20 px-6 md:px-12 ">
+    <section className="relative py-20 px-6 md:px-12 mt-15">
       <div className="relative z-10 max-w-6xl mx-auto">
         <PageHeader 
           badge="Pilgrim Information"

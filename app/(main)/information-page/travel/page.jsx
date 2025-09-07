@@ -61,7 +61,7 @@ export default async function TravelPage() {
   const travelOptions = await client.fetch(getAllTravelsQuery);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen mt-10">
       <SharedBackground />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         <PageHeader

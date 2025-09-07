@@ -4,10 +4,12 @@ import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Users, Heart } from "lucide-react";
+import { AmberBackground } from "../AmberSharedBackground";
 
 const PilgrimageInfoSection = () => {
   return (
-    <section className="relative py-20 px-6 md:px-12 bg-white overflow-hidden">
+    <section className="relative py-20 px-6 md:px-12 overflow-hidden">
+      <AmberBackground />
       <div className="relative z-10 max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

@@ -5,10 +5,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import faqs from "@/data/HeroData/faqsData";
+import { BlueBackground } from "../BlueSharedBackGround";
 
 const FaqSection = () => {
   return (
-    <section className="relative py-20 px-6 md:px-12 bg-white overflow-hidden">
+    <section className="relative py-20 px-6 md:px-12 overflow-hidden">
+      <BlueBackground />
       <div className="relative z-10 max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
