@@ -5,10 +5,22 @@ import React, { useEffect } from 'react';
 const GoogleTranslateManager = () => {
   // This function sets a cookie that the Google Translate script reads on page load.
   // This is the most reliable method and requires a single page refresh.
-  const changeLanguage = (langCode) => {
-    // document.cookie = `googtrans=/en/${langCode};path=/;domain=${window.location.hostname};`;
-    // New, corrected line
-document.cookie = `googtrans=/en/${langCode};path=/;`;
+  // const changeLanguage = (langCode) => {
+  //   // document.cookie = `googtrans=/en/${langCode};path=/;domain=${window.location.hostname};`;
+  //   // New, corrected line
+  //   document.cookie = `googtrans=/en/${langCode};path=/;`;
+  //   window.location.reload();
+  // };
+
+const changeLanguage = (langCode) => {
+    // 1. Force expire any existing cookie by setting its date to the past
+    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;';
+    
+    // 2. Set the new cookie with the desired language
+    // We are still omitting the domain attribute for best compatibility
+    document.cookie = `googtrans=/en/${langCode};path=/;`;
+    
+    // 3. Reload the page
     window.location.reload();
   };
 
@@ -66,7 +78,7 @@ document.cookie = `googtrans=/en/${langCode};path=/;`;
 
         const tooltip = document.getElementById('goog-gt-tt');
         if (tooltip) tooltip.style.display = 'none';
-      } catch (_) {}
+      } catch (_) { }
     };
 
     // Run immediately, then a few times after load to catch late insertions
@@ -105,7 +117,7 @@ document.cookie = `googtrans=/en/${langCode};path=/;`;
         clearInterval(intervalId);
         clearTimeout(timeoutId);
         observer.disconnect();
-      } catch (_) {}
+      } catch (_) { }
     };
   }, []);
 
