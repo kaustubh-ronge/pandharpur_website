@@ -3,14 +3,10 @@ import { client } from "@/sanity/lib/client";
 import { getAllHotelsQuery } from "@/sanity/lib/queries";
 import Link from "next/link";
 import Image from "next/image";
-import { Star, Award, MapPin, ExternalLink, ArrowRight, BedDouble } from "lucide-react";
-import { SharedBackground } from "@/components/SharedBackGround";
+import { Star, Award, MapPin, ExternalLink, ArrowRight, BedDouble, ShieldCheck, Gem } from "lucide-react";
 import { BlueBackground } from "@/components/BlueSharedBackGround";
 
-// --- NEW UI Components (Redesigned from scratch within this file) ---
-
 function PageHeader({ title, subtitle }) {
-  // Redesigned Header: More spacing, elegant serif font for the title, and a decorative element.
   return (
     <div className="text-center mb-16 md:mb-20">
       <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight text-slate-800">
@@ -24,8 +20,35 @@ function PageHeader({ title, subtitle }) {
   );
 }
 
+// +++ REVERTED TO THE OLD, BETTER DESIGN (WITHOUT 'absolute' POSITIONING) +++
+const SubscriptionBadge = ({ plan }) => {
+  if (plan === 'premium') {
+    return (
+      <div className="bg-gradient-to-r from-amber-500 to-yellow-400 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-lg shadow-yellow-500/30 w-fit">
+        <Gem className="h-4 w-4" />
+        <span>PREMIUM</span>
+      </div>
+    );
+  }
+  if (plan === 'standard') {
+    return (
+      <div className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-md shadow-blue-500/20 w-fit">
+        <ShieldCheck className="h-4 w-4" />
+        <span>STANDARD</span>
+      </div>
+    );
+  }
+  if (plan === 'basic') {
+    return (
+      <div className="bg-slate-100 text-slate-700 border border-slate-300 text-xs font-bold px-3 py-1.5 rounded-full w-fit">
+        <span>BASIC</span>
+      </div>
+    );
+  }
+  return null;
+};
+
 function HotelCard({ hotel }) {
- 
   return (
     <div className="group bg-white rounded-2xl border border-slate-200/80 shadow-lg shadow-slate-300/30 overflow-hidden h-full flex flex-col transition-all duration-300 ease-in-out hover:shadow-2xl hover:shadow-slate-400/30 hover:-translate-y-2">
       
@@ -42,7 +65,7 @@ function HotelCard({ hotel }) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
         
         {hotel.isFeatured && (
-          <div className="absolute top-4 left-4 bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-md">
+          <div className="absolute top-4 left-4 bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-md z-10">
             <Award className="h-4 w-4" />
             <span>FEATURED STAY</span>
           </div>
@@ -55,15 +78,19 @@ function HotelCard({ hotel }) {
           <div className="flex justify-between items-center mb-2">
             <p className="text-sm font-semibold text-orange-600 uppercase tracking-wider">{hotel.category || 'Hotel'}</p>
             {hotel.rating && (
-              // Redesigned Rating Badge: Cleaner look.
-              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 border border-amber-300/70 text-sm font-bold">
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 border border-amber-300/70 text-sm font-bold flex-shrink-0">
                 <span>{hotel.rating}</span>
                 <Star className="h-4 w-4 text-amber-500 fill-current" />
               </div>
             )}
           </div>
+
+          {/* +++ The badge is now here, with the old design +++ */}
+          <div className="my-3">
+            <SubscriptionBadge plan={hotel.subscriptionPlan} />
+          </div>
           
-          <h3 className=" text-2xl font-bold text-slate-800 mb-2">{hotel.name}</h3>
+          <h3 className="text-2xl font-bold text-slate-800 mb-2">{hotel.name}</h3>
           
           <div className="flex items-center gap-2 text-slate-500 text-sm mb-4">
             <MapPin className="h-4 w-4 flex-shrink-0" />
@@ -87,7 +114,7 @@ function HotelCard({ hotel }) {
               </button>
             </a>
           ) : (
-             <div className="col-span-1"></div> // Keeps the grid consistent
+             <div className="col-span-1"></div>
           )}
         </div>
       </div>
@@ -95,18 +122,14 @@ function HotelCard({ hotel }) {
   );
 }
 
-
 // --- Main Page Component ---
-
 export default async function HotelsPage() {
-  // THIS CORE LOGIC IS UNCHANGED
   const hotels = await client.fetch(getAllHotelsQuery);
 
   return (
-    // New page background: A soft, two-tone gradient instead of a flat color.
     <div className="min-h-screen">
       <BlueBackground />
-       <div>
+      <div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
           <PageHeader
             title="Accommodations in Pandharpur"
@@ -120,10 +143,9 @@ export default async function HotelsPage() {
               ))}
             </div>
           ) : (
-            // Redesigned "No hotels found" state: More informative and visually appealing.
             <div className="text-center mt-16 text-slate-600 bg-white border border-slate-200 rounded-2xl p-12 max-w-lg mx-auto">
               <BedDouble className="mx-auto h-16 w-16 text-slate-400 mb-4" />
-              <h3 className="text-2xl font-semibold  text-slate-800">No Accommodations Found</h3>
+              <h3 className="text-2xl font-semibold text-slate-800">No Accommodations Found</h3>
               <p className="mt-3 text-slate-500">We couldn't find any available places to stay at the moment. Please check back again soon as we are constantly updating our listings.</p>
             </div>
           )}

@@ -1,12 +1,8 @@
-
-
-// This is the updated and more descriptive schema for hotels.
 const hotel = {
   name: "hotel",
   title: "Hotels",
   type: "document",
   fields: [
-    // --- Basic Information ---
     {
       name: "name",
       title: "Hotel Name",
@@ -19,6 +15,24 @@ const hotel = {
       type: "slug",
       options: { source: "name", maxLength: 96 },
       validation: (Rule) => Rule.required(),
+    },
+    {
+      name: "subscriptionPlan",
+      title: "Subscription Plan 🌟",
+      type: "string",
+      options: {
+        list: [
+          { title: "Premium", value: "premium" },
+          { title: "Standard", value: "standard" },
+          { title: "Basic", value: "basic" },
+          { title: "None / Free", value: "none" },
+        ],
+        layout: "radio",
+        direction: "horizontal",
+      },
+      initialValue: "none",
+      description:
+        "Select the subscription tier. Premium listings will appear first on the main hotels page.",
     },
     {
       name: "image",
@@ -40,8 +54,6 @@ const hotel = {
       type: "array",
       of: [{ type: "block" }],
     },
-
-    // --- Contact & Location ---
     {
       name: "address",
       title: "Address",
@@ -62,17 +74,16 @@ const hotel = {
       name: "website",
       title: "Website URL (for 'Book Now' button)",
       type: "url",
-      description: "If you leave this empty, the 'Book Now' button will not appear.",
+      description:
+        "If you leave this empty, the 'Book Now' button will not appear.",
     },
-    // --- NEW: Replaced geopoint with a simple URL field for the map embed ---
     {
       name: "googleMapsEmbedUrl",
       title: "Google Maps Embed URL",
       type: "url",
-      description: "Go to Google Maps, find the hotel, click Share > Embed a map, and copy ONLY the URL from the src attribute of the iframe code.",
+      description:
+        "Go to Google Maps, find the hotel, click Share > Embed a map, and copy ONLY the URL from the src attribute of the iframe code.",
     },
-
-    // --- Details & Amenities ---
     {
       name: "category",
       title: "Category",
@@ -103,23 +114,33 @@ const hotel = {
       title: "Facilities & Amenities",
       type: "array",
       of: [{ type: "string" }],
-      options: { layout: 'tags' }
+      options: { layout: "tags" },
     },
     {
-        name: 'roomTypes',
-        title: 'Room Types',
-        type: 'array',
-        of: [{
-            type: 'object',
-            fields: [
-                { name: 'typeName', title: 'Type Name (e.g., AC Deluxe)', type: 'string' },
-                { name: 'price', title: 'Price per night', type: 'number' },
-                { name: 'amenities', title: 'Room Amenities', type: 'array', of: [{type: 'string'}], options: { layout: 'tags' } }
-            ]
-        }]
+      name: "roomTypes",
+      title: "Room Types",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            {
+              name: "typeName",
+              title: "Type Name (e.g., AC Deluxe)",
+              type: "string",
+            },
+            { name: "price", title: "Price per night", type: "number" },
+            {
+              name: "amenities",
+              title: "Room Amenities",
+              type: "array",
+              of: [{ type: "string" }],
+              options: { layout: "tags" },
+            },
+          ],
+        },
+      ],
     },
-
-    // --- Media ---
     {
       name: "gallery",
       title: "Image Gallery",

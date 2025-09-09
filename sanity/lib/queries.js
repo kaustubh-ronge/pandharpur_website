@@ -1,22 +1,19 @@
-// This query fetches all hotels for the list view.
-// It's updated to sort featured hotels to the top.
+// This query now FILTERS OUT the 'none' plan and then sorts the rest.
 export const getAllHotelsQuery = `
-  *[_type == "hotel"] | order(isFeatured desc, _createdAt desc) {
-    _id,
-    name,
+  *[_type == "hotel" && subscriptionPlan != 'none']{
+    ...,
     "slug": slug.current,
-    address,
-    website,
-    description,
     "image": image.asset->url,
-    category,
-    rating,
-    isFeatured
-  }
+    "gallery": gallery[].asset->url,
+    "sortOrder": select(
+      subscriptionPlan == 'premium' => 1,
+      subscriptionPlan == 'standard' => 2,
+      subscriptionPlan == 'basic' => 3
+    )
+  } | order(sortOrder asc, isFeatured desc, _createdAt desc)
 `;
 
-// This query fetches one specific hotel by its slug for the detail page.
-// It's updated to include all the new descriptive fields.
+// This query remains unchanged.
 export const getHotelBySlugQuery = `
   *[_type == "hotel" && slug.current == $slug][0] {
     _id,
@@ -40,10 +37,10 @@ export const getHotelBySlugQuery = `
     "gallery": gallery[].asset->url,
     rating,
     roomTypes,
-    nearbyAttractions
+    nearbyAttractions,
+    subscriptionPlan
   }
 `;
-
 // / --- NEW BHAKTANIWAS QUERIES ---
 
 // Fetches all bhaktaniwas for the list view
@@ -120,8 +117,6 @@ export const getTempleBySlugQuery = `
   }
 `;
 
-
-
 // This query fetches all restaurants for the list view
 export const getAllRestaurantsQuery = `
   *[_type == "restaurant"] | order(isFeatured desc, _createdAt desc) {
@@ -156,8 +151,6 @@ export const getRestaurantBySlugQuery = `
     "gallery": gallery[].asset->url
   }
 `;
-
-
 
 // This query fetches all travel options for the list view
 export const getAllTravelsQuery = `

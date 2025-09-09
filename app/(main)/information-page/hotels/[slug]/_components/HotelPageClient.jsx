@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -6,22 +7,18 @@ import { PortableText } from "@portabletext/react";
 import { motion } from "framer-motion";
 import { useState, useEffect, useCallback } from "react";
 
-// --- ICONS ---
 import {
     Star, MapPin, Phone, Mail, CheckCircle, ChevronRight, BedDouble,
     Sparkles, Wallet, Building, Mountain, Train, Globe, Clock, Users, Wifi, 
-    Car, Utensils, Coffee, Home, Bath
+    Car, Utensils, Coffee, Home, Bath, Gem, ShieldCheck
 } from "lucide-react";
 
-// --- SHADCN UI IMPORTS ---
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Separator } from "@/components/ui/separator";
 
-// --- ANIMATION WRAPPER ---
 function AnimatedSection({ children, className = "" }) {
     return (
         <motion.section
@@ -36,7 +33,23 @@ function AnimatedSection({ children, className = "" }) {
     );
 }
 
-// --- UI SUB-COMPONENTS ---
+const SubscriptionBadgeHeader = ({ plan }) => {
+    if (plan === 'premium') {
+        return (
+            <Badge className="text-base font-bold gap-1.5 py-1.5 px-3 bg-gradient-to-r from-amber-500 to-yellow-400 text-white border-none rounded-full shadow-lg shadow-yellow-500/30">
+                <Gem className="h-5 w-5" /> PREMIUM LISTING
+            </Badge>
+        );
+    }
+    if (plan === 'standard') {
+        return (
+            <Badge className="text-base font-bold gap-1.5 py-1.5 px-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white border-none rounded-full shadow-md shadow-blue-500/20">
+                <ShieldCheck className="h-5 w-5" /> STANDARD LISTING
+            </Badge>
+        );
+    }
+    return null; 
+};
 
 function Breadcrumbs({ hotelName }) {
     return (
@@ -109,9 +122,8 @@ function GallerySlider({ images = [], hotelName }) {
     );
 }
 
-
 function MainImage({ src, alt }) {
-    const [aspectRatioClass, setAspectRatioClass] = useState('aspect-[4/3]'); // Default aspect ratio
+    const [aspectRatioClass, setAspectRatioClass] = useState('aspect-[4/3]');
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -126,20 +138,16 @@ function MainImage({ src, alt }) {
 
         img.onload = () => {
             const ratio = img.naturalWidth / img.naturalHeight;
-            
-            // --- MORE GRANULAR CONDITIONS AS REQUESTED ---
-            if (ratio > 2) setAspectRatioClass('aspect-[21/9]');    // Panoramic (e.g., 2.39:1)
-            else if (ratio > 1.6) setAspectRatioClass('aspect-video');   // Standard widescreen (16:9)
-            else if (ratio > 1.2) setAspectRatioClass('aspect-[4/3]');   // Common camera landscape (4:3)
-            else if (ratio > 0.9) setAspectRatioClass('aspect-square');  // Square-ish images (1:1)
-            else if (ratio > 0.7) setAspectRatioClass('aspect-[3/4]');   // Common camera portrait (3:4)
-            else setAspectRatioClass('aspect-[9/16]');                 // Tall portrait / stories (9:16)
-            
+            if (ratio > 2) setAspectRatioClass('aspect-[21/9]');
+            else if (ratio > 1.6) setAspectRatioClass('aspect-video');
+            else if (ratio > 1.2) setAspectRatioClass('aspect-[4/3]');
+            else if (ratio > 0.9) setAspectRatioClass('aspect-square');
+            else if (ratio > 0.7) setAspectRatioClass('aspect-[3/4]');
+            else setAspectRatioClass('aspect-[9/16]');
             setIsLoading(false);
         };
         
         img.onerror = () => {
-            // If the image fails to load, we keep the default aspect ratio
             setIsLoading(false);
         };
 
@@ -155,7 +163,7 @@ function MainImage({ src, alt }) {
     
     return (
         <div className={`relative w-full ${aspectRatioClass} rounded-xl overflow-hidden shadow-md bg-stone-100`}>
-             {isLoading ? (
+            {isLoading ? (
                 <div className="w-full h-full flex items-center justify-center">
                     <div className="animate-pulse text-stone-400">Loading image...</div>
                 </div>
@@ -339,7 +347,6 @@ function FacilityIcons({ facility }) {
     return iconMap[facility.toLowerCase()] || defaultIcon;
 }
 
-// --- MAIN PAGE COMPONENT ---
 export default function HotelPageClient({ hotel }) {
     if (!hotel) {
         return <div className="flex items-center justify-center min-h-screen bg-white text-stone-700">Hotel not found.</div>;
@@ -355,7 +362,8 @@ export default function HotelPageClient({ hotel }) {
                             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-stone-900 tracking-tight">
                                 {hotel.name}
                             </h1>
-                            <div className="mt-4 flex items-center flex-wrap gap-x-6 gap-y-2 text-stone-600">
+                            <div className="mt-4 flex items-center flex-wrap gap-x-6 gap-y-3 text-stone-600">
+                                <SubscriptionBadgeHeader plan={hotel.subscriptionPlan} />
                                 {hotel.rating && (
                                     <Badge className="text-base font-bold gap-1.5 py-1.5 px-3 bg-amber-500 text-white border-none rounded-full">
                                         <Star className="h-5 w-5 text-yellow-200 fill-current" /> {hotel.rating}.0
@@ -375,22 +383,14 @@ export default function HotelPageClient({ hotel }) {
                 </AnimatedSection>
 
                 <AnimatedSection className="mb-12">
-                     {/* --- UPDATED LAYOUT --- */}
-                     {/* This new grid layout ensures the GallerySlider aligns vertically with the MainImage, */}
-                     {/* even when the MainImage has a dynamic aspect ratio. */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                        {/* Main Image Container */}
                         <div className="w-full">
                             <MainImage src={hotel.image} alt={`Main image of ${hotel.name}`} />
                         </div>
-                        
-                        {/* Gallery Slider Container */}
-                        {/* Using `h-full` and `min-h` ensures this column matches the image's height while having a fallback. */}
                         <div className="w-full h-full min-h-[300px] md:min-h-[400px] lg:min-h-full">
-                           <GallerySlider images={hotel.gallery} hotelName={hotel.name} />
+                            <GallerySlider images={hotel.gallery} hotelName={hotel.name} />
                         </div>
                     </div>
-
                     <div className="rounded-xl overflow-hidden shadow-md border border-stone-200">
                         {hotel.googleMapsEmbedUrl ? (
                             <iframe
