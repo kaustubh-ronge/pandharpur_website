@@ -1,3 +1,4 @@
+
 'use client'
 
 import { useState } from "react"
@@ -109,7 +110,7 @@ export function HeaderClient({ user }) {
                         </SignedOut>
                     </div>
 
-                    {/* --- THIS IS THE FULL, UNSKIPPED MOBILE MENU CODE --- */}
+                    {/* --- MOBILE MENU --- */}
                     <div className="lg:hidden">
                         <Sheet>
                             <SheetTrigger asChild>
@@ -162,20 +163,33 @@ export function HeaderClient({ user }) {
                                         ))}
                                     </div>
                                     <hr />
-                                    {/* --- ADDED LANGUAGE SWITCHER TO MOBILE MENU --- */}
+                                    {/* --- LANGUAGE DROPDOWN FOR MOBILE MENU --- */}
                                     <div className="flex flex-col gap-y-2 text-sm">
                                         <h3 className="font-semibold px-3 text-gray-500 text-xs uppercase">Language</h3>
-                                        {supportedLanguages.map((lang) => (
-                                            <SheetClose asChild key={lang.code}>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
                                                 <Button
                                                     variant="ghost"
-                                                    className="w-full justify-start gap-3 px-3 text-gray-600 hover:bg-gray-100"
-                                                    onClick={() => handleLanguageChange(lang.name, lang.code)}
+                                                    className="w-full justify-between items-center px-3 py-2 text-gray-600 hover:bg-gray-100"
                                                 >
-                                                    {lang.name}
+                                                    <span className="flex items-center gap-3">
+                                                        <Languages className="h-4 w-4" />
+                                                        {selectedLang}
+                                                    </span>
+                                                    <ChevronDown className="h-4 w-4" />
                                                 </Button>
-                                            </SheetClose>
-                                        ))}
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent className="w-[260px]">
+                                                {supportedLanguages.map((lang) => (
+                                                    <DropdownMenuItem
+                                                        key={lang.code}
+                                                        onClick={() => handleLanguageChange(lang.name, lang.code)}
+                                                    >
+                                                        {lang.name}
+                                                    </DropdownMenuItem>
+                                                ))}
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
                                     </div>
                                 </div>
                                 <SheetClose asChild>
