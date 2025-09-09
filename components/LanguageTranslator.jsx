@@ -6,7 +6,9 @@ const GoogleTranslateManager = () => {
   // This function sets a cookie that the Google Translate script reads on page load.
   // This is the most reliable method and requires a single page refresh.
   const changeLanguage = (langCode) => {
-    document.cookie = `googtrans=/en/${langCode};path=/;domain=${window.location.hostname};`;
+    // document.cookie = `googtrans=/en/${langCode};path=/;domain=${window.location.hostname};`;
+    // New, corrected line
+document.cookie = `googtrans=/en/${langCode};path=/;`;
     window.location.reload();
   };
 
