@@ -12,14 +12,14 @@ const GoogleTranslateManager = () => {
   //   window.location.reload();
   // };
 
-const changeLanguage = (langCode) => {
+  const changeLanguage = (langCode) => {
     // 1. Force expire any existing cookie by setting its date to the past
     document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;';
-    
+
     // 2. Set the new cookie with the desired language
     // We are still omitting the domain attribute for best compatibility
     document.cookie = `googtrans=/en/${langCode};path=/;`;
-    
+
     // 3. Reload the page
     window.location.reload();
   };
