@@ -1,4 +1,3 @@
-
 'use client'
 
 import { useState } from "react"
@@ -12,34 +11,49 @@ import {
     DropdownMenu,
     DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
-// CORRECTED: Imported missing components for accessibility
 import {
     Sheet, SheetContent, SheetTrigger, SheetClose,
     SheetHeader, SheetTitle, SheetDescription
 } from "@/components/ui/sheet"
 import { navItems, quickLinks } from "@/data/HeaderData/headerData"
 
+// Define the languages and their codes for the translator
+const supportedLanguages = [
+    { name: "English", code: "en" },
+    { name: "हिंदी", code: "hi" },
+    { name: "मराठी", code: "mr" },
+    { name: "ಕನ್ನಡ", code: "kn" }
+];
+
 export function HeaderClient({ user }) {
     const pathname = usePathname()
     const [selectedLang, setSelectedLang] = useState("English")
 
+    // This function calls the global function from our GoogleTranslateManager
+    const handleLanguageChange = (langName, langCode) => {
+        setSelectedLang(langName);
+        if (window.changeGoogleTranslateLanguage) {
+            window.changeGoogleTranslateLanguage(langCode);
+        } else {
+            console.error("Google Translate function not available.");
+        }
+    };
+
     return (
         <header className="fixed top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md shadow-sm md:pb-1">
             <div className="w-full max-w-screen-2xl mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
-                {/* Logo */}
                 <Link href="/" className="flex-shrink-0">
                     <Image src={'/hero-logo-1.png'} height={200} width={320} className=" lg:w-full ml-[-100px] md:h-[100%] md:ml-[-30px] md:w-full" alt="logo" priority />
                 </Link>
 
-                {/* Desktop Navigation */}
                 <nav className="hidden lg:flex items-center gap-8 mx-auto">
                     {navItems.map((item) => (
                         <Link
                             key={item.href}
                             href={item.href}
                             className={`flex items-center gap-2 whitespace-nowrap text-sm font-medium transition-colors ${pathname === item.href
-                                    ? "text-orange-600 border-b-2 border-orange-500 pb-1"
-                                    : "text-gray-700 hover:text-orange-600"
+                                ? "text-orange-600 border-b-2 border-orange-500 pb-1"
+                                : "text-gray-700 hover:text-orange-600"
                                 }`}
                         >
                             {item.icon}
@@ -48,9 +62,7 @@ export function HeaderClient({ user }) {
                     ))}
                 </nav>
 
-                {/* Right Side Actions */}
                 <div className="flex items-center gap-4">
-                    {/* Desktop-Only Actions */}
                     <div className="hidden lg:flex items-center gap-4">
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
@@ -67,6 +79,7 @@ export function HeaderClient({ user }) {
                             </DropdownMenuContent>
                         </DropdownMenu>
 
+                        {/* This dropdown now correctly controls the Google Translator */}
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" size="sm" className="gap-1 text-gray-700 hover:bg-gray-100">
@@ -75,8 +88,13 @@ export function HeaderClient({ user }) {
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                                {["English", "हिंदी", "मराठी", "ಕನ್ನಡ"].map((lang) => (
-                                    <DropdownMenuItem key={lang} onClick={() => setSelectedLang(lang)}>{lang}</DropdownMenuItem>
+                                {supportedLanguages.map((lang) => (
+                                    <DropdownMenuItem
+                                        key={lang.code}
+                                        onClick={() => handleLanguageChange(lang.name, lang.code)}
+                                    >
+                                        {lang.name}
+                                    </DropdownMenuItem>
                                 ))}
                             </DropdownMenuContent>
                         </DropdownMenu>
@@ -91,7 +109,7 @@ export function HeaderClient({ user }) {
                         </SignedOut>
                     </div>
 
-                    {/* Mobile-Only Menu Trigger */}
+                    {/* --- THIS IS THE FULL, UNSKIPPED MOBILE MENU CODE --- */}
                     <div className="lg:hidden">
                         <Sheet>
                             <SheetTrigger asChild>
@@ -100,14 +118,13 @@ export function HeaderClient({ user }) {
                                 </Button>
                             </SheetTrigger>
                             <SheetContent side="right" className="w-[300px] bg-white shadow-lg px-4">
-                                {/* CORRECTED: Added a visually hidden header for screen readers */}
                                 <SheetHeader>
                                     <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
                                     <SheetDescription className="sr-only">
                                         A list of navigation links and quick access options.
                                     </SheetDescription>
                                 </SheetHeader>
-                                <div className="flex flex-col gap-y-4 mt-4"> {/* Added margin-top for spacing */}
+                                <div className="flex flex-col gap-y-4 mt-4">
                                     <div className="pb-4 border-b">
                                         <SignedIn>
                                             <div className="flex items-center gap-4">
@@ -144,8 +161,23 @@ export function HeaderClient({ user }) {
                                             </SheetClose>
                                         ))}
                                     </div>
+                                    <hr />
+                                    {/* --- ADDED LANGUAGE SWITCHER TO MOBILE MENU --- */}
+                                    <div className="flex flex-col gap-y-2 text-sm">
+                                        <h3 className="font-semibold px-3 text-gray-500 text-xs uppercase">Language</h3>
+                                        {supportedLanguages.map((lang) => (
+                                            <SheetClose asChild key={lang.code}>
+                                                <Button
+                                                    variant="ghost"
+                                                    className="w-full justify-start gap-3 px-3 text-gray-600 hover:bg-gray-100"
+                                                    onClick={() => handleLanguageChange(lang.name, lang.code)}
+                                                >
+                                                    {lang.name}
+                                                </Button>
+                                            </SheetClose>
+                                        ))}
+                                    </div>
                                 </div>
-                                {/* CORRECTED: Added a close button for better accessibility */}
                                 <SheetClose asChild>
                                     <Button variant="outline" className="mt-4 w-full">
                                         Close
@@ -157,5 +189,5 @@ export function HeaderClient({ user }) {
                 </div>
             </div>
         </header>
-    )
+    );
 }
