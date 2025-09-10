@@ -41,7 +41,7 @@ function Breadcrumbs({ itemName }) {
         <nav className="flex items-center text-sm font-medium text-stone-500 mb-6">
             <Link href="/" className="hover:text-orange-600 transition-colors">Home</Link>
             <ChevronRight className="h-4 w-4 mx-1.5" />
-            <Link href="/other-attractions" className="hover:text-orange-600 transition-colors">Other Attractions</Link>
+            <Link href="/other-attractions" className="hover:text-orange-600 transition-colors">Pandharpur Attractions</Link>
             <ChevronRight className="h-4 w-4 mx-1.5" />
             <span className="text-stone-700 font-semibold">{itemName}</span>
         </nav>
