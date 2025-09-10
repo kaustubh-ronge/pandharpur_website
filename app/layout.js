@@ -2,8 +2,9 @@ import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 
 export const metadata = {
-  title: "ppur",
-  description: "ppur",
+  title: "Pandharpur Darshan",
+  description: "Pandharpur Darshan",
+  content:"Plan your Pandharpur Darshan – find details about the yatra, temple timings, festivals, accommodation, travel guide, and booking options."
 };
 
 export default function RootLayout({ children }) {

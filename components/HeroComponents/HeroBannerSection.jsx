@@ -94,10 +94,10 @@ const HeroBannerSection = () => {
           transition={{ duration: 0.8 }}
           className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight mb-4 max-w-4xl"
         >
-          Discover the <span className="text-orange-500">Magic</span> of 
+          Feel the<span className="text-orange-500">Blessings</span> of 
           <br />
           <span className="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent">
-            Pandharpur Yatra
+            Pandharpur Darshan
           </span>
         </motion.h1>
 
