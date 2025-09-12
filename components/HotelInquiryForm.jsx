@@ -1,3 +1,4 @@
+
 // FILE: components/HotelInquiryForm.jsx
 "use client";
 
@@ -34,27 +35,30 @@ export function HotelInquiryForm({ hotel, onFormSubmit }) {
     event.preventDefault();
     if (!isSignedIn) return;
 
-    await logInquiryLead({ name, phone, hotelSlug: hotel.slug }, user.id);
+    const result = await logInquiryLead({ name, phone, hotelSlug: hotel.slug });
 
-    const whatsappNumber = hotel.whatsappNumber;
+    if (result.success) {
+      const whatsappNumber = hotel.whatsappNumber;
+      let message = `🛎️ *New Booking Inquiry via PandharpurDarshan.com*\n\n`;
+      message += `Hello, I saw the details for *${hotel.name}* on the Pandharpur Darshan website (pandharpurdarshan.com) and would like to inquire about the following:\n\n`;
+      message += `👤 *Guest Details:*\n`;
+      message += `  • *Name:* ${name}\n`;
+      message += `  • *Phone:* ${phone}\n\n`;
+      message += `🗓️ *Booking Details:*\n`;
+      message += `  • *Check-in:* ${checkIn ? format(checkIn, "PPP") : 'Not specified'}\n`;
+      message += `  • *Check-out:* ${checkOut ? format(checkOut, "PPP") : 'Not specified'}\n`;
+      message += `  • *Guests:* ${guests || 'Not specified'}\n\n`;
+      message += `Please confirm availability and the next steps. Thank you.\n\n`;
+      message += `--- \n_This lead was generated from PandharpurDarshan.com_`;
 
-    let message = `🛎️ *New Booking Inquiry via PandharpurDarshan.com*\n\n`;
-    message += `Hello, I saw the details for *${hotel.name}* on the Pandharpur Darshan website (pandharpurdarshan.com) and would like to inquire about the following:\n\n`;
-    message += `👤 *Guest Details:*\n`;
-    message += `  • *Name:* ${name}\n`;
-    message += `  • *Phone:* ${phone}\n\n`;
-    message += `🗓️ *Booking Details:*\n`;
-    message += `  • *Check-in:* ${checkIn ? format(checkIn, "PPP") : 'Not specified'}\n`;
-    message += `  • *Check-out:* ${checkOut ? format(checkOut, "PPP") : 'Not specified'}\n`;
-    message += `  • *Guests:* ${guests || 'Not specified'}\n\n`;
-    message += `Please confirm availability and the next steps. Thank you.\n\n`;
-    message += `--- \n_This lead was generated from PandharpurDarshan.com_`;
+      const encodedMessage = encodeURIComponent(message);
+      const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${encodedMessage}`;
 
-    const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${encodedMessage}`;
-
-    window.open(whatsappUrl, '_blank');
-    if (onFormSubmit) onFormSubmit();
+      window.open(whatsappUrl, '_blank');
+      if (onFormSubmit) onFormSubmit();
+    } else {
+      console.error("Failed to log inquiry:", result.error);
+    }
   };
 
   const today = new Date();
@@ -84,10 +88,10 @@ export function HotelInquiryForm({ hotel, onFormSubmit }) {
               <Label htmlFor="name" className="flex items-center gap-2 text-gray-700 font-semibold text-base">
                 <User size={18} className="text-gray-600" /> Full Name
               </Label>
-              <Input 
-                id="name" 
-                required 
-                value={name} 
+              <Input
+                id="name"
+                required
+                value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="h-14 rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500 text-lg px-4 w-full"
               />
@@ -97,12 +101,12 @@ export function HotelInquiryForm({ hotel, onFormSubmit }) {
               <Label htmlFor="phone" className="flex items-center gap-2 text-gray-700 font-semibold text-base">
                 <Phone size={18} className="text-gray-600" /> Phone Number
               </Label>
-              <Input 
-                id="phone" 
-                type="tel" 
-                required 
-                value={phone} 
-                onChange={(e) => setPhone(e.target.value)} 
+              <Input
+                id="phone"
+                type="tel"
+                required
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
                 placeholder="Your contact number"
                 className="h-14 rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500 text-lg px-4 w-full"
               />
@@ -123,8 +127,11 @@ export function HotelInquiryForm({ hotel, onFormSubmit }) {
                       !checkIn && "text-gray-500"
                     )}
                   >
-                    <CalendarIcon className="mr-3 h-5 w-5 text-gray-600" />
-                    {checkIn ? format(checkIn, "PPP") : <span>Select check-in date</span>}
+                    {/* CORRECTED: Wrapped the icon and text in a single div */}
+                    <div className="flex items-center gap-3">
+                        <CalendarIcon className="h-5 w-5 text-gray-600" />
+                        <span>{checkIn ? format(checkIn, "PPP") : 'Select check-in date'}</span>
+                    </div>
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0 rounded-lg" align="start">
@@ -160,8 +167,11 @@ export function HotelInquiryForm({ hotel, onFormSubmit }) {
                     )}
                     disabled={!checkIn}
                   >
-                    <CalendarIcon className="mr-3 h-5 w-5 text-gray-600" />
-                    {checkOut ? format(checkOut, "PPP") : <span>Select check-out date</span>}
+                    {/* CORRECTED: Wrapped the icon and text in a single div */}
+                    <div className="flex items-center gap-3">
+                        <CalendarIcon className="h-5 w-5 text-gray-600" />
+                        <span>{checkOut ? format(checkOut, "PPP") : 'Select check-out date'}</span>
+                    </div>
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0 rounded-lg" align="start">
@@ -185,20 +195,20 @@ export function HotelInquiryForm({ hotel, onFormSubmit }) {
             <Label htmlFor="guests" className="flex items-center gap-2 text-gray-700 font-semibold text-base">
               <Users size={18} className="text-gray-600" /> Number of Guests
             </Label>
-            <Input 
-              id="guests" 
-              type="number" 
+            <Input
+              id="guests"
+              type="number"
               min="1"
-              placeholder="e.g., 2" 
-              value={guests} 
+              placeholder="e.g., 2"
+              value={guests}
               onChange={(e) => setGuests(e.target.value)}
               className="h-14 rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500 text-lg px-4 w-full"
             />
           </div>
           
-          <Button 
-            type="submit" 
-            className="w-full mt-6 h-14 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg transition-all duration-200" 
+          <Button
+            type="submit"
+            className="w-full mt-6 h-14 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg transition-all duration-200"
             size="lg"
           >
             Inquire Now via WhatsApp

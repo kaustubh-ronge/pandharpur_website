@@ -16,6 +16,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Separator } from "@/components/ui/separator";
 import { InquiryDrawer } from "@/components/InquiryDrawer";
+import { DialogTrigger } from "@/components/ui/dialog"; // Ensure this is imported
 
 function AnimatedSection({ children, className = "" }) {
     return (
@@ -98,6 +99,7 @@ function GallerySlider({ images = [], hotelName }) {
                             src={img}
                             alt={`Gallery image ${idx + 1} of ${hotelName}`}
                             fill
+                            style={{ objectFit: 'cover' }}
                             className="object-cover"
                             sizes="(max-width: 768px) 100vw, 50vw"
                         />
@@ -293,7 +295,8 @@ function BookingBar({ hotel }) {
                     {/* It will only show if the hotel has a phone number */}
                     {(hotel.whatsappNumber && hotel.whatsappNumber.length > 0) ? (
                       <InquiryDrawer type="hotel" data={hotel}>
-                        <Button size="lg">Book Now</Button>
+                          {/* The DialogTrigger component is implicitly passed from InquiryDrawer */}
+                          <Button size="lg">Book Now</Button>
                       </InquiryDrawer>
                     ) : (
                       <Button size="lg" disabled>Booking Unavailable</Button>
@@ -381,11 +384,9 @@ export default function HotelPageClient({ hotel }) {
                                         <Star className="h-5 w-5 text-yellow-200 fill-current" /> {hotel.rating}.0
                                     </Badge>
                                 )}
-                                {hotel.category && (
-                                    <Badge variant="outline" className="text-stone-600 border-stone-400 rounded-full">
-                                        {hotel.category}
-                                    </Badge>
-                                )}
+                                <Badge variant="outline" className="text-stone-600 border-stone-400 rounded-full">
+                                    {hotel.category}
+                                </Badge>
                                 <p className="flex items-center gap-2 font-medium">
                                     <MapPin className="h-5 w-5 text-stone-500" /> {hotel.address}
                                 </p>
@@ -424,26 +425,35 @@ export default function HotelPageClient({ hotel }) {
                     </div>
                 </AnimatedSection>
                 
-                {/* +++ ADDED A NEW EYE-CATCHING BUTTON HERE +++ */}
-                {hotel.whatsappNumber && (
-                    <AnimatedSection className="mt-6">
+                {/* --- This is the section that had the error. Corrected logic below. --- */}
+                <AnimatedSection className="mt-6">
+                    {hotel.whatsappNumber ? (
                         <InquiryDrawer type="hotel" data={hotel}>
-                            <Button 
-                                size="lg" 
-                                className="w-full text-lg font-bold bg-green-400 hover:bg-green-500 text-white shadow-lg shadow-green-500/50 transition-all duration-300"
-                            >
-                                <img 
-                                    src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" 
-                                    alt="WhatsApp" 
-                                    className="h-6 w-6 mr-2" 
-                                /> 
-                                Inquire Now on WhatsApp
-                            </Button>
+                            <DialogTrigger asChild>
+                                <Button 
+                                    size="lg" 
+                                    className="w-full text-lg font-bold bg-green-400 hover:bg-green-500 text-white shadow-lg shadow-green-500/50 transition-all duration-300"
+                                >
+                                    <img 
+                                        src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" 
+                                        alt="WhatsApp" 
+                                        className="h-6 w-6 mr-2" 
+                                    /> 
+                                    Inquire Now on WhatsApp
+                                </Button>
+                            </DialogTrigger>
                         </InquiryDrawer>
-                    </AnimatedSection>
-                )}
+                    ) : (
+                        <Button 
+                            disabled
+                            size="lg"
+                            className="w-full text-lg font-bold bg-gray-300 text-gray-500 cursor-not-allowed"
+                        >
+                            Booking Unavailable
+                        </Button>
+                    )}
+                </AnimatedSection>
 
-                {/* --- 3. THE UPDATED BOOKING BAR IS CALLED HERE --- */}
                 <AnimatedSection className="mb-12">
                     <BookingBar hotel={hotel} />
                 </AnimatedSection>
@@ -564,3 +574,4 @@ export default function HotelPageClient({ hotel }) {
         </div>
     );
 }
+
