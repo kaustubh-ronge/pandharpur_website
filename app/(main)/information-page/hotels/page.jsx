@@ -1,10 +1,63 @@
 
+// import { client } from "@/sanity/lib/client";
+// import { getAllHotelsQuery } from "@/sanity/lib/queries";
+// import Link from "next/link";
+// import { BedDouble } from "lucide-react";
+// import { BlueBackground } from "@/components/BlueSharedBackGround";
+// import HotelCard from "./_components/HotelCard";
+
+// function PageHeader({ title, subtitle }) {
+//   return (
+//     <div className="text-center mb-16 md:mb-20">
+//       <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight text-slate-800">
+//         {title}
+//       </h1>
+//       <p className="max-w-3xl mx-auto text-lg text-slate-500">
+//         {subtitle}
+//       </p>
+//       <div className="mt-6 w-24 h-1 bg-orange-500 mx-auto rounded-full" />
+//     </div>
+//   );
+// }
+
+// // --- Main Page Component ---
+// export default async function HotelsPage() {
+//   const hotels = await client.fetch(getAllHotelsQuery);
+
+//   return (
+//     <div className="min-h-screen">
+//       <BlueBackground />
+//       <div>
+//         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+//           <PageHeader
+//             title="Accommodations in Pandharpur"
+//             subtitle="Find the perfect place to stay, from deluxe hotels to budget-friendly lodges, for a comfortable and blessed pilgrimage."
+//           />
+          
+//           {hotels && hotels.length > 0 ? (
+//             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+//               {hotels.map((hotel) => (
+//                 <HotelCard key={hotel._id} hotel={hotel} />
+//               ))}
+//             </div>
+//           ) : (
+//             <div className="text-center mt-16 text-slate-600 bg-white border border-slate-200 rounded-2xl p-12 max-w-lg mx-auto">
+//               <BedDouble className="mx-auto h-16 w-16 text-slate-400 mb-4" />
+//               <h3 className="text-2xl font-semibold text-slate-800">No Accommodations Found</h3>
+//               <p className="mt-3 text-slate-500">We couldn't find any available places to stay at the moment. Please check back again soon as we are constantly updating our listings.</p>
+//             </div>
+//           )}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
 import { client } from "@/sanity/lib/client";
 import { getAllHotelsQuery } from "@/sanity/lib/queries";
-import Link from "next/link";
-import Image from "next/image";
-import { Star, Award, MapPin, ExternalLink, ArrowRight, BedDouble, ShieldCheck, Gem } from "lucide-react";
+import { BedDouble } from "lucide-react";
 import { BlueBackground } from "@/components/BlueSharedBackGround";
+import HotelCard from "./_components/HotelCard";
 
 function PageHeader({ title, subtitle }) {
   return (
@@ -12,112 +65,8 @@ function PageHeader({ title, subtitle }) {
       <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight text-slate-800">
         {title}
       </h1>
-      <p className="max-w-3xl mx-auto text-lg text-slate-500">
-        {subtitle}
-      </p>
+      <p className="max-w-3xl mx-auto text-lg text-slate-500">{subtitle}</p>
       <div className="mt-6 w-24 h-1 bg-orange-500 mx-auto rounded-full" />
-    </div>
-  );
-}
-
-// +++ REVERTED TO THE OLD, BETTER DESIGN (WITHOUT 'absolute' POSITIONING) +++
-const SubscriptionBadge = ({ plan }) => {
-  if (plan === 'premium') {
-    return (
-      <div className="bg-gradient-to-r from-amber-500 to-yellow-400 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-lg shadow-yellow-500/30 w-fit">
-        <Gem className="h-4 w-4" />
-        <span>PREMIUM</span>
-      </div>
-    );
-  }
-  if (plan === 'standard') {
-    return (
-      <div className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-md shadow-blue-500/20 w-fit">
-        <ShieldCheck className="h-4 w-4" />
-        <span>STANDARD</span>
-      </div>
-    );
-  }
-  if (plan === 'basic') {
-    return (
-      <div className="bg-slate-100 text-slate-700 border border-slate-300 text-xs font-bold px-3 py-1.5 rounded-full w-fit">
-        <span>BASIC</span>
-      </div>
-    );
-  }
-  return null;
-};
-
-function HotelCard({ hotel }) {
-  return (
-    <div className="group bg-white rounded-2xl border border-slate-200/80 shadow-lg shadow-slate-300/30 overflow-hidden h-full flex flex-col transition-all duration-300 ease-in-out hover:shadow-2xl hover:shadow-slate-400/30 hover:-translate-y-2">
-      
-      {/* --- Image Section --- */}
-      <div className="relative w-full h-56 overflow-hidden">
-        <Image
-          src={hotel.image || 'https://placehold.co/600x400/orange/white?text=Hotel'}
-          alt={`Image of ${hotel.name}`}
-          fill
-          style={{ objectFit: 'cover' }}
-          className="transition-transform duration-500 ease-in-out group-hover:scale-110"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-        
-        {hotel.isFeatured && (
-          <div className="absolute top-4 left-4 bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-md z-10">
-            <Award className="h-4 w-4" />
-            <span>FEATURED STAY</span>
-          </div>
-        )}
-      </div>
-
-      {/* --- Content Section --- */}
-      <div className="p-6 flex flex-col flex-grow">
-        <div>
-          <div className="flex justify-between items-center mb-2">
-            <p className="text-sm font-semibold text-orange-600 uppercase tracking-wider">{hotel.category || 'Hotel'}</p>
-            {hotel.rating && (
-              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 border border-amber-300/70 text-sm font-bold flex-shrink-0">
-                <span>{hotel.rating}</span>
-                <Star className="h-4 w-4 text-amber-500 fill-current" />
-              </div>
-            )}
-          </div>
-
-          {/* +++ The badge is now here, with the old design +++ */}
-          <div className="my-3">
-            <SubscriptionBadge plan={hotel.subscriptionPlan} />
-          </div>
-          
-          <h3 className="text-2xl font-bold text-slate-800 mb-2">{hotel.name}</h3>
-          
-          <div className="flex items-center gap-2 text-slate-500 text-sm mb-4">
-            <MapPin className="h-4 w-4 flex-shrink-0" />
-            <span>{hotel.address}</span>
-          </div>
-          
-          <p className="text-slate-600 text-base leading-relaxed line-clamp-3">{hotel.description}</p>
-        </div>
-
-        <div className="mt-auto pt-6 grid grid-cols-2 gap-3">
-          <Link href={`/information-page/hotels/${hotel.slug}`} className="col-span-1">
-            <button className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold text-sm border-2 border-slate-700 text-slate-700 hover:bg-slate-700 hover:text-white transition-colors">
-              Details <ArrowRight className="h-4 w-4" />
-            </button>
-          </Link>
-
-          {hotel.website ? (
-            <a href={hotel.website} target="_blank" rel="noopener noreferrer" className="col-span-1">
-              <button className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold text-sm bg-orange-500 text-white hover:bg-orange-600 transition-colors shadow-lg shadow-orange-500/30">
-                Book Now <ExternalLink className="h-4 w-4" />
-              </button>
-            </a>
-          ) : (
-             <div className="col-span-1"></div>
-          )}
-        </div>
-      </div>
     </div>
   );
 }
@@ -135,7 +84,7 @@ export default async function HotelsPage() {
             title="Accommodations in Pandharpur"
             subtitle="Find the perfect place to stay, from deluxe hotels to budget-friendly lodges, for a comfortable and blessed pilgrimage."
           />
-          
+
           {hotels && hotels.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
               {hotels.map((hotel) => (
@@ -145,8 +94,14 @@ export default async function HotelsPage() {
           ) : (
             <div className="text-center mt-16 text-slate-600 bg-white border border-slate-200 rounded-2xl p-12 max-w-lg mx-auto">
               <BedDouble className="mx-auto h-16 w-16 text-slate-400 mb-4" />
-              <h3 className="text-2xl font-semibold text-slate-800">No Accommodations Found</h3>
-              <p className="mt-3 text-slate-500">We couldn't find any available places to stay at the moment. Please check back again soon as we are constantly updating our listings.</p>
+              <h3 className="text-2xl font-semibold text-slate-800">
+                No Accommodations Found
+              </h3>
+              <p className="mt-3 text-slate-500">
+                We couldn't find any available places to stay at the moment.
+                Please check back again soon as we are constantly updating our
+                listings.
+              </p>
             </div>
           )}
         </div>

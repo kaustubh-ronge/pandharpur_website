@@ -1,3 +1,5 @@
+
+
 const hotel = {
   name: "hotel",
   title: "Hotels",
@@ -60,11 +62,27 @@ const hotel = {
       type: "string",
       validation: (Rule) => Rule.required().min(10),
     },
+    
+    // +++ UPDATED PHONE NUMBER FIELDS +++
     {
-      name: "phoneNumber",
-      title: "Phone Number",
+      name: "whatsappNumber",
+      title: "WhatsApp Phone Number",
       type: "string",
+      description: "Enter a single WhatsApp number (e.g., 919876543210). This number will be used for the 'Book Now' button.",
+      validation: (Rule) => Rule.regex(/^91[0-9]{10}$/, {
+        name: "phone-number",
+        invert: false,
+      }).error("Number must be 12 digits and start with 91."),
     },
+    {
+      name: "contactNumbers",
+      title: "Other Contact Numbers",
+      description: "Add multiple contact numbers for general inquiries.",
+      type: "array",
+      of: [{ type: "string" }],
+    },
+    // +++ END OF CHANGE +++
+
     {
       name: "email",
       title: "Email",
@@ -151,4 +169,3 @@ const hotel = {
 };
 
 export default hotel;
-

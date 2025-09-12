@@ -1,4 +1,6 @@
 
+
+// FILE: app/(main)/information-page/hotels/[slug]/_components/HotelPageClient.jsx
 "use client";
 
 import Image from "next/image";
@@ -6,18 +8,14 @@ import Link from "next/link";
 import { PortableText } from "@portabletext/react";
 import { motion } from "framer-motion";
 import { useState, useEffect, useCallback } from "react";
-
-import {
-    Star, MapPin, Phone, Mail, CheckCircle, ChevronRight, BedDouble,
-    Sparkles, Wallet, Building, Mountain, Train, Globe, Clock, Users, Wifi, 
-    Car, Utensils, Coffee, Home, Bath, Gem, ShieldCheck
-} from "lucide-react";
-
+import { Star, MapPin, Phone, Mail, CheckCircle, ChevronRight, BedDouble, Sparkles, Wallet, Building, Mountain, Train, Globe, Clock, Users, Wifi, Car, Utensils, Coffee, Home, Bath, Gem, ShieldCheck } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Separator } from "@/components/ui/separator";
+import { InquiryDrawer } from "@/components/InquiryDrawer";
 
 function AnimatedSection({ children, className = "" }) {
     return (
@@ -48,7 +46,7 @@ const SubscriptionBadgeHeader = ({ plan }) => {
             </Badge>
         );
     }
-    return null; 
+    return null;
 };
 
 function Breadcrumbs({ hotelName }) {
@@ -131,7 +129,7 @@ function MainImage({ src, alt }) {
             setIsLoading(false);
             return;
         }
-        
+
         setIsLoading(true);
         const img = new window.Image();
         img.src = src;
@@ -146,7 +144,7 @@ function MainImage({ src, alt }) {
             else setAspectRatioClass('aspect-[9/16]');
             setIsLoading(false);
         };
-        
+
         img.onerror = () => {
             setIsLoading(false);
         };
@@ -160,7 +158,7 @@ function MainImage({ src, alt }) {
             </div>
         );
     }
-    
+
     return (
         <div className={`relative w-full ${aspectRatioClass} rounded-xl overflow-hidden shadow-md bg-stone-100`}>
             {isLoading ? (
@@ -241,6 +239,7 @@ function HotelOverviewSection({ hotel }) {
                         </CardContent>
                     </Card>
 
+                    {/* --- UPDATED Quick Contact SECTION --- */}
                     <Card className="bg-white shadow-md border-stone-200 transition-all duration-300 hover:shadow-lg rounded-xl overflow-hidden">
                         <CardHeader>
                             <CardTitle className="text-lg font-bold text-stone-800 flex items-center gap-2">
@@ -248,22 +247,23 @@ function HotelOverviewSection({ hotel }) {
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-3">
-                            {hotel.phoneNumber && (
+                            {hotel.phoneNumber && hotel.phoneNumber.length > 0 && (
                                 <div className="flex items-center gap-3 text-stone-700 text-sm font-medium">
                                     <Phone className="h-4 w-4 text-stone-500 flex-shrink-0" />
-                                    <a href={`tel:${hotel.phoneNumber}`} className="hover:underline hover:text-orange-600 transition-colors">{hotel.phoneNumber}</a>
+                                    {/* We link to the first phone number */}
+                                    <a href={`tel:${hotel.phoneNumber[0]}`} className="font-medium hover:underline hover:text-orange-600 transition-colors">{hotel.phoneNumber.join(' / ')}</a>
                                 </div>
                             )}
                             {hotel.email && (
                                 <div className="flex items-center gap-3 text-stone-700 text-sm font-medium">
                                     <Mail className="h-4 w-4 text-stone-500 flex-shrink-0" />
-                                    <a href={`mailto:${hotel.email}`} className="hover:underline sm:text-sm hover:text-orange-600 transition-colors truncate">{hotel.email}</a>
+                                    <a href={`mailto:${hotel.email}`} className="font-medium hover:underline hover:text-orange-600 transition-colors">{hotel.email}</a>
                                 </div>
                             )}
                             {hotel.website && (
                                 <div className="flex items-center gap-3 text-stone-700 text-sm font-medium">
                                     <Globe className="h-4 w-4 text-stone-500 flex-shrink-0" />
-                                    <a href={hotel.website} target="_blank" rel="noopener noreferrer" className="hover:underline hover:text-orange-600 transition-colors truncate">
+                                    <a href={hotel.website} target="_blank" rel="noopener noreferrer" className="font-medium hover:underline hover:text-orange-600 transition-colors">
                                         Visit Website
                                     </a>
                                 </div>
@@ -276,17 +276,28 @@ function HotelOverviewSection({ hotel }) {
     );
 }
 
+// +++ 2. THIS IS THE UPDATED BookingBar COMPONENT +++
 function BookingBar({ hotel }) {
     const price = hotel.priceRange?.split('-')[0].trim();
     return (
         <Card className="mt-10 bg-white shadow-md border-stone-200">
             <div className="flex flex-col md:flex-row justify-between items-center p-6 gap-4">
                 <div className="text-center md:text-left">
-                    <h3 className="text-2xl font-bold text-stone-900">Book Your Stay</h3>
-                    <p className="text-stone-600 mt-1">Secure the best rates for your visit</p>
+                    <h3 className="text-2xl font-bold text-stone-900">Interested in this Hotel?</h3>
+                    <p className="text-stone-600 mt-1">Send an inquiry directly to the owner.</p>
                 </div>
                 <div className="flex items-center gap-4">
                     {price && <p className="text-2xl font-bold text-stone-900">{price}<span className="text-base font-medium text-stone-600">/night</span></p>}
+                    
+                    {/* --- BOOK NOW BUTTON THAT OPENS THE DRAWER --- */}
+                    {/* It will only show if the hotel has a phone number */}
+                    {(hotel.whatsappNumber && hotel.whatsappNumber.length > 0) ? (
+                      <InquiryDrawer type="hotel" data={hotel}>
+                        <Button size="lg">Book Now</Button>
+                      </InquiryDrawer>
+                    ) : (
+                      <Button size="lg" disabled>Booking Unavailable</Button>
+                    )}
                 </div>
             </div>
         </Card>
@@ -347,6 +358,7 @@ function FacilityIcons({ facility }) {
     return iconMap[facility.toLowerCase()] || defaultIcon;
 }
 
+// --- MAIN PAGE COMPONENT ---
 export default function HotelPageClient({ hotel }) {
     if (!hotel) {
         return <div className="flex items-center justify-center min-h-screen bg-white text-stone-700">Hotel not found.</div>;
@@ -388,7 +400,7 @@ export default function HotelPageClient({ hotel }) {
                             <MainImage src={hotel.image} alt={`Main image of ${hotel.name}`} />
                         </div>
                         <div className="w-full h-full min-h-[300px] md:min-h-[400px] lg:min-h-full">
-                            <GallerySlider images={hotel.gallery} hotelName={hotel.name} />
+                           <GallerySlider images={hotel.gallery} hotelName={hotel.name} />
                         </div>
                     </div>
                     <div className="rounded-xl overflow-hidden shadow-md border border-stone-200">
@@ -411,7 +423,27 @@ export default function HotelPageClient({ hotel }) {
                         )}
                     </div>
                 </AnimatedSection>
+                
+                {/* +++ ADDED A NEW EYE-CATCHING BUTTON HERE +++ */}
+                {hotel.whatsappNumber && (
+                    <AnimatedSection className="mt-6">
+                        <InquiryDrawer type="hotel" data={hotel}>
+                            <Button 
+                                size="lg" 
+                                className="w-full text-lg font-bold bg-green-400 hover:bg-green-500 text-white shadow-lg shadow-green-500/50 transition-all duration-300"
+                            >
+                                <img 
+                                    src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" 
+                                    alt="WhatsApp" 
+                                    className="h-6 w-6 mr-2" 
+                                /> 
+                                Inquire Now on WhatsApp
+                            </Button>
+                        </InquiryDrawer>
+                    </AnimatedSection>
+                )}
 
+                {/* --- 3. THE UPDATED BOOKING BAR IS CALLED HERE --- */}
                 <AnimatedSection className="mb-12">
                     <BookingBar hotel={hotel} />
                 </AnimatedSection>
@@ -489,10 +521,11 @@ export default function HotelPageClient({ hotel }) {
                             </TabsContent>
                             <TabsContent value="contact" className="mt-6">
                                 <div className="space-y-4 text-stone-700">
-                                    {hotel.phoneNumber && (
+                                    {hotel.phoneNumber && hotel.phoneNumber.length > 0 && (
                                         <p className="flex items-center gap-3 p-3 bg-stone-50 rounded-lg border border-stone-200">
                                             <Phone className="h-5 w-5 text-orange-500 flex-shrink-0" />
-                                            <a href={`tel:${hotel.phoneNumber}`} className="font-medium hover:underline hover:text-orange-600 transition-colors">{hotel.phoneNumber}</a>
+                                            {/* We link to the first phone number */}
+                                            <a href={`tel:${hotel.phoneNumber[0]}`} className="font-medium hover:underline hover:text-orange-600 transition-colors">{hotel.phoneNumber.join(' / ')}</a>
                                         </p>
                                     )}
                                     {hotel.email && (

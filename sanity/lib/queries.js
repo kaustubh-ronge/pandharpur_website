@@ -1,10 +1,11 @@
-// This query now FILTERS OUT the 'none' plan and then sorts the rest.
 export const getAllHotelsQuery = `
   *[_type == "hotel" && subscriptionPlan != 'none']{
     ...,
     "slug": slug.current,
     "image": image.asset->url,
     "gallery": gallery[].asset->url,
+    whatsappNumber, 
+    contactNumbers, 
     "sortOrder": select(
       subscriptionPlan == 'premium' => 1,
       subscriptionPlan == 'standard' => 2,
@@ -14,6 +15,7 @@ export const getAllHotelsQuery = `
 `;
 
 // This query remains unchanged.
+// It also now fetches both the single whatsappNumber and the contactNumbers array.
 export const getHotelBySlugQuery = `
   *[_type == "hotel" && slug.current == $slug][0] {
     _id,
@@ -25,7 +27,8 @@ export const getHotelBySlugQuery = `
     description,
     detailedDescription,
     "image": image.asset->url,
-    phoneNumber,
+    whatsappNumber,
+    contactNumbers,
     email,
     googleMapsEmbedUrl,
     priceRange,
