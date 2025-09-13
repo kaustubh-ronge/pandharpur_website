@@ -127,13 +127,14 @@
 
 // export default GoogleTranslateManager;
 
-
 'use client';
 
 import React, { useEffect } from 'react';
 
 const GoogleTranslateManager = () => {
-    // Helper function to forcefully delete cookies by trying all common variations.
+    // --- THIS IS THE STRONGER COOKIE IMPLEMENTATION YOU REQUESTED ---
+
+    // A helper function to forcefully delete cookies by trying all common variations.
     const deleteCookie = (name) => {
         const domain = window.location.hostname;
         const baseDomain = domain.replace(/^www\./, '');
@@ -143,21 +144,18 @@ const GoogleTranslateManager = () => {
         document.cookie = `${name}=; path=/; domain=${domain}${expires}`;
         document.cookie = `${name}=; path=/; domain=.${baseDomain}${expires}`;
         document.cookie = `${name}=; path=/;${expires}`;
-        
-        console.log(`Attempted to forcefully delete cookie: ${name}`);
     };
 
     const changeLanguage = (langCode) => {
         // Step 1: Forcefully delete any old 'googtrans' cookie to prevent conflicts.
         deleteCookie('googtrans');
 
-        // Step 2: After a short delay, set the new cookie using multiple methods for maximum reliability.
+        // Step 2: After a short delay, set the new cookie using multiple methods for reliability.
         setTimeout(() => {
-            // --- ADDED OLD LINE BACK AS A BACKUP ---
             // Method A (Old, more specific): Sets the cookie with the exact hostname.
             document.cookie = `googtrans=/en/${langCode};path=/;domain=${window.location.hostname};`;
             
-            // Method B (New, more general): Sets the cookie without the domain, which is often more reliable.
+            // Method B (New, more general): Sets the cookie without the domain.
             document.cookie = `googtrans=/en/${langCode};path=/;`;
             
             // Step 3: Reload the page to apply the translation.
@@ -165,18 +163,26 @@ const GoogleTranslateManager = () => {
         }, 100);
     };
 
+
     useEffect(() => {
+        // Expose the changeLanguage function to the global window object
         window.changeGoogleTranslateLanguage = changeLanguage;
 
-        // Inject CSS to Hide the Google Translate Banner and the space it creates
+        // --- YOUR EXISTING CSS AND JS LOGIC TO HIDE THE BANNER ---
         const styleId = 'google-translate-banner-fix';
         if (!document.getElementById(styleId)) {
             const css = `
-                .goog-te-banner-frame.skiptranslate { display: none !important; }
-                body { top: 0px !important; }
-                html { top: 0px !important; }
-                #goog-gt-tt, .goog-te-balloon-frame { display: none !important; } 
-                .goog-text-highlight { background: none !important; box-shadow: none !important; }
+              .goog-te-banner-frame.skiptranslate { display: none !important; }
+              body { top: 0 !important; position: static !important; }
+              html { top: 0 !important; }
+              .goog-te-banner-frame { display: none !important; height: 0 !important; visibility: hidden !important; opacity: 0 !important; z-index: -1 !important; }
+              .skiptranslate { z-index: 0 !important; }
+              .goog-te-balloon-frame { display: none !important; }
+              #goog-gt-tt, .goog-te-balloon-frame { display: none !important; } 
+              .goog-text-highlight { background: none !important; box-shadow: none !important; }
+              .goog-te-menu-frame.skiptranslate { display: none !important; }
+              .goog-tooltip { display: none !important; }
+              .goog-tooltip:hover { display: none !important; }
             `;
             const style = document.createElement('style');
             style.id = styleId;
@@ -184,6 +190,23 @@ const GoogleTranslateManager = () => {
             style.appendChild(document.createTextNode(css));
             document.head.appendChild(style);
         }
+
+        const forceHideBanner = () => {
+            try {
+                const htmlEl = document.documentElement;
+                if (htmlEl && (htmlEl.style.top && htmlEl.style.top !== '0px')) htmlEl.style.top = '0px';
+                
+                const bannerFrames = document.querySelectorAll('iframe.goog-te-banner-frame');
+                bannerFrames.forEach(frame => {
+                    frame.style.setProperty('display', 'none', 'important');
+                });
+            } catch (_) { }
+        };
+
+        const intervalId = setInterval(forceHideBanner, 300);
+        const timeoutId = setTimeout(() => clearInterval(intervalId), 4000);
+        const observer = new MutationObserver(() => forceHideBanner());
+        observer.observe(document.documentElement, { childList: true, subtree: true });
 
         // Initialize the Google Translate script
         const googleTranslateElementInit = () => {
@@ -207,6 +230,11 @@ const GoogleTranslateManager = () => {
         return () => {
             delete window.changeGoogleTranslateLanguage;
             delete window.googleTranslateElementInit;
+            try {
+                clearInterval(intervalId);
+                clearTimeout(timeoutId);
+                observer.disconnect();
+            } catch (_) { }
         };
     }, []);
 
