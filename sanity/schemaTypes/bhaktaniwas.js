@@ -1,5 +1,6 @@
 const bhaktaniwas = {
   name: "bhaktaniwas",
+  
   title: "Bhaktaniwas",
   type: "document",
   fields: [
@@ -55,11 +56,25 @@ const bhaktaniwas = {
       type: "string",
       validation: (Rule) => Rule.required(),
     },
+    // +++ UPDATED PHONE NUMBER FIELDS +++
     {
-      name: "phoneNumber",
-      title: "Contact Phone Number",
+      name: "whatsappNumber",
+      title: "WhatsApp Phone Number",
       type: "string",
+      description: "Enter a single WhatsApp number (e.g., 919876543210). This number will be used for the 'WhatsApp Inquiry' button.",
+      validation: (Rule) => Rule.regex(/^91[0-9]{10}$/, {
+        name: "phone-number",
+        invert: false,
+      }).error("Number must be 12 digits and start with 91."),
     },
+    {
+      name: "contactNumbers",
+      title: "Other Contact Numbers",
+      description: "Add multiple contact numbers for general inquiries.",
+      type: "array",
+      of: [{ type: "string" }],
+    },
+    // +++ END OF CHANGE +++
     {
       name: "website",
       title: "Official Website or Booking Link",

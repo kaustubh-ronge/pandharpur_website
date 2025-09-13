@@ -19,8 +19,11 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { DialogTrigger } from "@/components/ui/dialog";
+import { InquiryDrawer } from "@/components/InquiryForms/InquiryDrawer";
 
-// --- ANIMATION WRAPPER ---
+// --- (All sub-components like AnimatedSection, Breadcrumbs, GallerySlider, etc. remain the same) ---
+
 function AnimatedSection({ children, className = "" }) {
     return (
         <motion.section
@@ -34,8 +37,6 @@ function AnimatedSection({ children, className = "" }) {
         </motion.section>
     );
 }
-
-// --- UI SUB-COMPONENTS ---
 
 function Breadcrumbs({ itemName }) {
     return (
@@ -53,14 +54,11 @@ function GallerySlider({ images = [], itemName }) {
     const validImages = images?.filter(Boolean) || [];
     const [currentSlide, setCurrentSlide] = useState(0);
 
-    // Auto slide functionality
     useEffect(() => {
         if (validImages.length <= 1) return;
-
         const interval = setInterval(() => {
             setCurrentSlide((prev) => (prev + 1) % validImages.length);
         }, 5000);
-
         return () => clearInterval(interval);
     }, [validImages.length]);
 
@@ -79,7 +77,6 @@ function GallerySlider({ images = [], itemName }) {
 
     return (
         <div className="relative h-full w-full overflow-hidden rounded-xl shadow-md">
-            {/* Slides container */}
             <div
                 className="flex h-full transition-transform duration-500 ease-in-out"
                 style={{ transform: `translateX(-${currentSlide * 100}%)` }}
@@ -97,8 +94,6 @@ function GallerySlider({ images = [], itemName }) {
                     </div>
                 ))}
             </div>
-
-            {/* Navigation dots */}
             {validImages.length > 1 && (
                 <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
                     {validImages.map((_, idx) => (
@@ -118,10 +113,8 @@ function GallerySlider({ images = [], itemName }) {
     );
 }
 
-// --- EXTENDED & ENHANCED MainImage Component ---
-// This component now includes the more granular aspect ratio conditions.
 function MainImage({ src, alt }) {
-    const [aspectRatioClass, setAspectRatioClass] = useState('aspect-[4/3]'); // Default aspect ratio
+    const [aspectRatioClass, setAspectRatioClass] = useState('aspect-[4/3]');
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -129,30 +122,22 @@ function MainImage({ src, alt }) {
             setIsLoading(false);
             return;
         }
-
         setIsLoading(true);
         const img = new window.Image();
         img.src = src;
-
         img.onload = () => {
             const ratio = img.naturalWidth / img.naturalHeight;
-
-            // --- Extended Conditions ---
-            if (ratio > 2) setAspectRatioClass('aspect-[21/9]');       // Panoramic
-            else if (ratio > 1.6) setAspectRatioClass('aspect-video');   // 16:9 Widescreen
-            else if (ratio > 1.2) setAspectRatioClass('aspect-[4/3]');   // 4:3 Landscape
-            else if (ratio > 0.9) setAspectRatioClass('aspect-square');  // Square-ish
-            else if (ratio > 0.7) setAspectRatioClass('aspect-[3/4]');   // 3:4 Portrait
-            else setAspectRatioClass('aspect-[9/16]');                 // 9:16 Tall Portrait
-
+            if (ratio > 2) setAspectRatioClass('aspect-[21/9]');
+            else if (ratio > 1.6) setAspectRatioClass('aspect-video');
+            else if (ratio > 1.2) setAspectRatioClass('aspect-[4/3]');
+            else if (ratio > 0.9) setAspectRatioClass('aspect-square');
+            else if (ratio > 0.7) setAspectRatioClass('aspect-[3/4]');
+            else setAspectRatioClass('aspect-[9/16]');
             setIsLoading(false);
         };
-
         img.onerror = () => {
-            // Keep default aspect ratio on error
             setIsLoading(false);
         };
-
     }, [src]);
 
     return (
@@ -243,12 +228,15 @@ function OverviewSection({ item }) {
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-3">
-                            {item.phoneNumber && (
+                           
+                            {/* ======================= FIX #1 APPLIED HERE ======================= */}
+                            {item.contactNumbers && item.contactNumbers.length > 0 && (
                                 <div className="flex items-center gap-3 text-stone-700 text-sm font-medium">
                                     <Phone className="h-4 w-4 text-stone-500 flex-shrink-0" />
-                                    <a href={`tel:${item.phoneNumber}`} className="hover:underline hover:text-orange-600 transition-colors">{item.phoneNumber}</a>
+                                    <a href={`tel:${item.contactNumbers[0]}`} className="hover:underline hover:text-orange-600 transition-colors">{item.contactNumbers.join(' / ')}</a>
                                 </div>
                             )}
+
                             {item.email && (
                                 <div className="flex items-center gap-3 text-stone-700 text-sm font-medium">
                                     <span className="font-bold w-24">Email:</span>
@@ -272,31 +260,59 @@ function BookingBar({ item }) {
 
     return (
         <Card className="mt-10 bg-white shadow-md border-stone-200">
-            <div className="flex flex-col md:flex-row justify-between items-center p-6 gap-4">
+            <div className="flex flex-col md:flex-row justify-between items-center p-6 gap-6 md:gap-4">
                 <div className="text-center md:text-left">
-                    <h3 className="text-2xl font-bold text-stone-900">Booking Information</h3>
+                    <h3 className="text-2xl font-bold text-stone-900">Interested in this Bhaktaniwas?</h3>
+                    <p className="text-stone-600 mt-1">Send an inquiry directly to the management.</p>
                     {bookingInfo && (
                         <Badge className={`mt-2 font-semibold text-base py-1.5 px-3 ${bookingInfo.color} border`}>
                             {bookingInfo.text}
                         </Badge>
                     )}
                 </div>
-                {item.bookingType === 'online' && item.website && (
-                    <Button asChild size="lg" className="font-bold bg-orange-600 hover:bg-orange-700 text-white text-base shadow-md hover:shadow-lg transition-all">
-                        <a href={item.website} target="_blank" rel="noopener noreferrer">
-                            <Globe className="mr-2 h-5 w-5" />
-                            Visit Booking Website
-                        </a>
-                    </Button>
-                )}
-                {(item.bookingType === 'offline' || item.bookingType === 'walk-in') && (
-                    <Button asChild size="lg" className="font-bold bg-stone-800 hover:bg-stone-900 text-white text-base shadow-md hover:shadow-lg transition-all">
-                        <a href={`tel:${item.phoneNumber}`}>
-                            <Phone className="mr-2 h-5 w-5" />
-                            Call for Information
-                        </a>
-                    </Button>
-                )}
+                <div className="flex w-full flex-col gap-4 md:w-auto md:flex-row md:items-center">
+                    {item.whatsappNumber ? (
+                        <InquiryDrawer type="bhaktaniwas" data={item}>
+                            <DialogTrigger asChild>
+                                <Button size="lg" className="font-bold bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white text-lg shadow-xl shadow-green-500/40 hover:shadow-2xl hover:shadow-green-500/50 transform hover:scale-105 transition-all duration-300 px-8 py-4">
+                                    <img 
+                                        src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" 
+                                        alt="WhatsApp" 
+                                        className="h-6 w-6 mr-3" 
+                                    />
+                                    Inquire Now on WhatsApp
+                                </Button>
+                            </DialogTrigger>
+                        </InquiryDrawer>
+                    ) : (
+                        <Button 
+                            disabled
+                            size="lg"
+                            className="font-bold bg-gray-300 text-gray-500 cursor-not-allowed text-lg px-8 py-4"
+                        >
+                            WhatsApp Inquiry Unavailable
+                        </Button>
+                    )}
+                    
+                    {item.bookingType === 'online' && item.website && (
+                        <Button asChild size="lg" className="font-bold bg-orange-600 hover:bg-orange-700 text-white text-base shadow-md hover:shadow-lg transition-all">
+                            <a href={item.website} target="_blank" rel="noopener noreferrer">
+                                <Globe className="mr-2 h-5 w-5" />
+                                Visit Website
+                            </a>
+                        </Button>
+                    )}
+                    
+                    {/* ======================= FIX #2 APPLIED HERE ======================= */}
+                    {(item.bookingType === 'offline' || item.bookingType === 'walk-in') && item.contactNumbers && item.contactNumbers.length > 0 && (
+                        <Button asChild size="lg" className="font-bold bg-stone-800 hover:bg-stone-900 text-white text-base shadow-md hover:shadow-lg transition-all">
+                            <a href={`tel:${item.contactNumbers[0]}`}>
+                                <Phone className="mr-2 h-5 w-5" />
+                                Call for Booking
+                            </a>
+                        </Button>
+                    )}
+                </div>
             </div>
         </Card>
     );
@@ -340,16 +356,14 @@ function FacilityIcons({ facility }) {
         'ac': <Bath className="h-5 w-5 text-purple-500" />,
         'hot water': <Coffee className="h-5 w-5 text-red-500" />,
     };
-
     const defaultIcon = <CheckCircle className="h-5 w-5 text-green-500" />;
-
     return iconMap[facility.toLowerCase()] || defaultIcon;
 }
 
 // --- Main Client Component ---
 export default function BhaktaniwasPageClient({ item }) {
     return (
-        <div className="min-h-screen">
+        <div className="min-h-screen mt-[70px]">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
                 <AnimatedSection className="mb-10">
                     <header>
@@ -416,7 +430,6 @@ export default function BhaktaniwasPageClient({ item }) {
                         <h2 className="text-3xl font-bold text-stone-800 mb-6">Full Details</h2>
                         <Tabs defaultValue="facilities" className="w-full">
                             
-                            {/* FIXED: Added responsive classes to stack tabs on mobile */}
                             <TabsList className="flex h-auto w-full flex-col rounded-lg bg-stone-100 p-1 sm:w-auto sm:flex-row">
                                 <TabsTrigger value="facilities" className="w-full justify-center py-2 px-4 data-[state=active]:bg-white data-[state=active]:shadow-sm sm:w-auto">
                                     All Facilities
@@ -441,7 +454,17 @@ export default function BhaktaniwasPageClient({ item }) {
                             </TabsContent>
                             <TabsContent value="contact" className="mt-6">
                                 <div className="space-y-4 text-stone-700">
-                                    {item.phoneNumber && <p className="flex items-center gap-3"><Phone className="h-5 w-5 text-orange-500" /> <a href={`tel:${item.phoneNumber}`} className="font-medium hover:underline hover:text-orange-600 transition-colors">{item.phoneNumber}</a></p>}
+
+                                    {/* ======================= FIX #3 APPLIED HERE ======================= */}
+                                    {item.contactNumbers && item.contactNumbers.length > 0 && (
+                                        <p className="flex items-center gap-3">
+                                            <Phone className="h-5 w-5 text-orange-500" />
+                                            <a href={`tel:${item.contactNumbers[0]}`} className="font-medium hover:underline hover:text-orange-600 transition-colors">
+                                                {item.contactNumbers.join(' / ')}
+                                            </a>
+                                        </p>
+                                    )}
+
                                     {item.email && <p className="flex items-center gap-3"><span className="font-medium w-24">Email:</span> <a href={`mailto:${item.email}`} className="font-medium hover:underline hover:text-orange-600 transition-colors">{item.email}</a></p>}
                                     {item.website && <p className="flex items-center gap-3"><Globe className="h-5 w-5 text-orange-500" /> <a href={item.website} target="_blank" rel="noopener noreferrer" className="font-medium hover:underline hover:text-orange-600 transition-colors">Official Website</a></p>}
                                     {item.address && <p className="flex items-center gap-3"><MapPin className="h-5 w-5 text-orange-500" /> <span className="font-medium">{item.address}</span></p>}

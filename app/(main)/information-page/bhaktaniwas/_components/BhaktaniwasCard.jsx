@@ -1,9 +1,10 @@
 
+
 "use client";
 
 import Image from "next/image";
 import Link from "next/link";
-import { Star, Award, MapPin, ExternalLink, ShieldCheck, Gem } from "lucide-react";
+import { Star, Award, MapPin, ExternalLink, ShieldCheck, Gem, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FaWhatsapp } from "react-icons/fa";
 import { DialogTrigger } from "@/components/ui/dialog";
@@ -38,11 +39,11 @@ const SubscriptionBadge = ({ plan }) => {
   return null;
 };
 
-// HotelCard component to display hotel information and booking options
-export default function HotelCard({ hotel }) {
+// BhaktaniwasCard component to display bhaktaniwas information and booking options
+export default function BhaktaniwasCard({ bhaktaniwas }) {
   const handleDetailsClick = async () => {
     try {
-      await logDetailsView(hotel.slug, "hotel");
+      await logDetailsView(bhaktaniwas.slug, "bhaktaniwas");
     } catch (error) {
       console.error("Failed to log details view:", error);
     }
@@ -54,8 +55,8 @@ export default function HotelCard({ hotel }) {
       {/* Image Section with hover effect */}
       <div className="relative w-full h-56 overflow-hidden">
         <Image
-          src={hotel.image || 'https://placehold.co/600x400/orange/white?text=Hotel'}
-          alt={`Image of ${hotel.name}`}
+          src={bhaktaniwas.image || 'https://placehold.co/600x400/blue/white?text=Bhaktaniwas'}
+          alt={`Image of ${bhaktaniwas.name}`}
           fill
           style={{ objectFit: 'cover' }}
           className="transition-transform duration-500 ease-in-out group-hover:scale-110"
@@ -63,7 +64,7 @@ export default function HotelCard({ hotel }) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
 
-        {hotel.isFeatured && (
+        {bhaktaniwas.isFeatured && (
           <div className="absolute top-4 left-4 bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-md z-10">
             <Award className="h-4 w-4" />
             <span>FEATURED STAY</span>
@@ -71,37 +72,48 @@ export default function HotelCard({ hotel }) {
         )}
       </div>
 
-      {/* Content Section with hotel details */}
+      {/* Content Section with bhaktaniwas details */}
       <div className="p-6 flex flex-col flex-grow">
         <div>
           <div className="flex justify-between items-center mb-2">
-            <p className="text-sm font-semibold text-orange-600 uppercase tracking-wider">{hotel.category || 'Hotel'}</p>
-            {hotel.rating && (
+            <p className="text-sm font-semibold text-blue-600 uppercase tracking-wider flex items-center gap-1">
+              <Home className="h-4 w-4" />
+              {bhaktaniwas.managedBy || 'Bhaktaniwas'}
+            </p>
+            {bhaktaniwas.rating && (
               <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 border border-amber-300/70 text-sm font-bold flex-shrink-0">
-                <span>{hotel.rating}</span>
+                <span>{bhaktaniwas.rating}</span>
                 <Star className="h-4 w-4 text-amber-500 fill-current" />
               </div>
             )}
           </div>
 
           <div className="my-3">
-            <SubscriptionBadge plan={hotel.subscriptionPlan} />
+            <SubscriptionBadge plan={bhaktaniwas.subscriptionPlan} />
           </div>
 
-          <h3 className="text-2xl font-bold text-slate-800 mb-2">{hotel.name}</h3>
+          <h3 className="text-2xl font-bold text-slate-800 mb-2">{bhaktaniwas.name}</h3>
 
           <div className="flex items-center gap-2 text-slate-500 text-sm mb-4">
             <MapPin className="h-4 w-4 flex-shrink-0" />
-            <span>{hotel.address}</span>
+            <span>{bhaktaniwas.address}</span>
           </div>
 
-          <p className="text-slate-600 text-base leading-relaxed line-clamp-3">{hotel.description}</p>
+          {bhaktaniwas.capacity && (
+            <div className="text-sm text-slate-600 mb-3">
+              <span className="font-semibold">Capacity:</span> {bhaktaniwas.capacity}
+            </div>
+          )}
+
+          <p className="text-slate-600 text-base leading-relaxed line-clamp-3">{bhaktaniwas.description}</p>
         </div>
 
-        {/* Buttons Section with conditional and responsive rendering */}
+        {/* ==========================================================
+            //  FIX APPLIED HERE 
+            // ========================================================== */}
         <div className="mt-auto pt-6 flex flex-col sm:flex-row gap-3">
           {/* Details button */}
-          <Link href={`/information-page/hotels/${hotel.slug}`} passHref className="flex-1">
+          <Link href={`/information-page/bhaktaniwas/${bhaktaniwas.slug}`} passHref className="flex-1">
             <Button
               variant="outline"
               onClick={handleDetailsClick}
@@ -113,9 +125,9 @@ export default function HotelCard({ hotel }) {
           </Link>
 
           {/* Conditional booking button */}
-          {hotel.whatsappNumber ? (
+          {bhaktaniwas.whatsappNumber ? (
             // Render this if a WhatsApp number is available
-            <InquiryDrawer type="hotel" data={hotel}>
+            <InquiryDrawer type="bhaktaniwas" data={bhaktaniwas}>
               <DialogTrigger asChild>
                 <Button
                   className="flex-1 h-12 flex items-center justify-center gap-2 text-base font-bold bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white transition-all duration-300 shadow-xl shadow-green-500/40 hover:shadow-2xl hover:shadow-green-500/50 transform hover:scale-105"

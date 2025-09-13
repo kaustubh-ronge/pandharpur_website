@@ -15,8 +15,8 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Separator } from "@/components/ui/separator";
-import { InquiryDrawer } from "@/components/InquiryDrawer";
 import { DialogTrigger } from "@/components/ui/dialog"; // Ensure this is imported
+import { InquiryDrawer } from "@/components/InquiryForms/InquiryDrawer";
 
 function AnimatedSection({ children, className = "" }) {
     return (
@@ -249,11 +249,11 @@ function HotelOverviewSection({ hotel }) {
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-3">
-                            {hotel.phoneNumber && hotel.phoneNumber.length > 0 && (
+                            {hotel.contactNumbers && hotel.contactNumbers.length > 0 && (
                                 <div className="flex items-center gap-3 text-stone-700 text-sm font-medium">
                                     <Phone className="h-4 w-4 text-stone-500 flex-shrink-0" />
                                     {/* We link to the first phone number */}
-                                    <a href={`tel:${hotel.phoneNumber[0]}`} className="font-medium hover:underline hover:text-orange-600 transition-colors">{hotel.phoneNumber.join(' / ')}</a>
+                                    <a href={`tel:${hotel.contactNumbers[0]}`} className="font-medium hover:underline hover:text-orange-600 transition-colors">{hotel.contactNumbers.join(' / ')}</a>
                                 </div>
                             )}
                             {hotel.email && (
@@ -296,10 +296,17 @@ function BookingBar({ hotel }) {
                     {(hotel.whatsappNumber && hotel.whatsappNumber.length > 0) ? (
                       <InquiryDrawer type="hotel" data={hotel}>
                           {/* The DialogTrigger component is implicitly passed from InquiryDrawer */}
-                          <Button size="lg">Book Now</Button>
+                          <Button size="lg" className="font-bold bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-xl shadow-green-500/40 hover:shadow-2xl hover:shadow-green-500/50 transform hover:scale-105 transition-all duration-300 px-8 py-4">
+                            <img 
+                                src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" 
+                                alt="WhatsApp" 
+                                className="h-5 w-5 mr-2" 
+                            />
+                            Book Now
+                          </Button>
                       </InquiryDrawer>
                     ) : (
-                      <Button size="lg" disabled>Booking Unavailable</Button>
+                      <Button size="lg" disabled className="font-bold bg-gray-300 text-gray-500 cursor-not-allowed px-8 py-4">Booking Unavailable</Button>
                     )}
                 </div>
             </div>
@@ -368,7 +375,7 @@ export default function HotelPageClient({ hotel }) {
     }
 
     return (
-        <div className="min-h-screen">
+        <div className="min-h-screen mt-[70px]">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
                 <AnimatedSection className="mb-10">
                     <header>
@@ -432,12 +439,12 @@ export default function HotelPageClient({ hotel }) {
                             <DialogTrigger asChild>
                                 <Button 
                                     size="lg" 
-                                    className="w-full text-lg font-bold bg-green-400 hover:bg-green-500 text-white shadow-lg shadow-green-500/50 transition-all duration-300"
+                                    className="w-full text-lg font-bold bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-xl shadow-green-500/40 hover:shadow-2xl hover:shadow-green-500/50 transform hover:scale-105 transition-all duration-300 py-4"
                                 >
                                     <img 
                                         src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" 
                                         alt="WhatsApp" 
-                                        className="h-6 w-6 mr-2" 
+                                        className="h-6 w-6 mr-3" 
                                     /> 
                                     Inquire Now on WhatsApp
                                 </Button>
@@ -531,11 +538,11 @@ export default function HotelPageClient({ hotel }) {
                             </TabsContent>
                             <TabsContent value="contact" className="mt-6">
                                 <div className="space-y-4 text-stone-700">
-                                    {hotel.phoneNumber && hotel.phoneNumber.length > 0 && (
+                                    {hotel.contactNumbers && hotel.contactNumbers.length > 0 && (
                                         <p className="flex items-center gap-3 p-3 bg-stone-50 rounded-lg border border-stone-200">
                                             <Phone className="h-5 w-5 text-orange-500 flex-shrink-0" />
                                             {/* We link to the first phone number */}
-                                            <a href={`tel:${hotel.phoneNumber[0]}`} className="font-medium hover:underline hover:text-orange-600 transition-colors">{hotel.phoneNumber.join(' / ')}</a>
+                                            <a href={`tel:${hotel.contactNumbers[0]}`} className="font-medium hover:underline hover:text-orange-600 transition-colors">{hotel.contactNumbers.join(' / ')}</a>
                                         </p>
                                     )}
                                     {hotel.email && (

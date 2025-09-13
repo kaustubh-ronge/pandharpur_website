@@ -99,18 +99,20 @@ model Lead {
   userName   String
   userPhone  String
   actionType String
-  entityId   String
-  entityType String
-  userId     String?
-  user       User?    @relation(fields: [userId], references: [id])
+  entityId   String?   // 👈 allow null
+  entityType String?
+  userId     String?   // 👈 allow null
+  user       User?     @relation(fields: [userId], references: [id])
 }
 
 model Inquiry {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  userName  String
-  userPhone String
-  hotelSlug String
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  id               String   @id @default(cuid())
+  createdAt        DateTime @default(now())
+  userName         String
+  userPhone        String
+  hotelSlug        String?
+  bhaktaniwasSlug  String?
+  travelSlug       String?
+  userId           String?   // 👈 allow null
+  user             User?     @relation(fields: [userId], references: [id])
 }

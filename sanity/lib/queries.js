@@ -55,7 +55,11 @@ export const getAllBhaktaniwasQuery = `
     managedBy,
     description,
     "image": image.asset->url,
-    isFeatured
+    isFeatured,
+    whatsappNumber,
+    contactNumbers,
+    address,
+    capacity
   }
 `;
 
@@ -72,7 +76,8 @@ export const getBhaktaniwasBySlugQuery = `
     description,
     detailedDescription,
     "image": image.asset->url,
-    phoneNumber,
+    whatsappNumber,
+    contactNumbers,
     googleMapsEmbedUrl,
     bookingType,
     capacity,
@@ -80,11 +85,6 @@ export const getBhaktaniwasBySlugQuery = `
     "gallery": gallery[].asset->url
   }
 `;
-
-// --- EXISTING QUERIES ---
-// (Keep your hotel and bhaktaniwas queries here)
-
-// --- NEW TEMPLE QUERIES ---
 
 // This query fetches all temples for the list view
 export const getAllTemplesQuery = `
@@ -164,10 +164,16 @@ export const getAllTravelsQuery = `
     travelType,
     description,
     "image": image.asset->url,
-    isFeatured
+    isFeatured,
+    whatsappNumber,
+    contactNumbers,
+    address,
+    operatingHours,
+    keyRoutes
   }
 `;
 
+// This query fetches one specific travel option by its slug for the detail page
 // This query fetches one specific travel option by its slug for the detail page
 export const getTravelBySlugQuery = `
   *[_type == "travel" && slug.current == $slug][0] {
@@ -180,11 +186,13 @@ export const getTravelBySlugQuery = `
     description,
     detailedDescription,
     "image": image.asset->url,
-    phoneNumber,
+    whatsappNumber,
+    contactNumbers,
     googleMapsEmbedUrl,
     travelType,
     operatingHours,
-    keyRoutes
+    keyRoutes,
+    "gallery": gallery[].asset->url 
   }
 `;
 

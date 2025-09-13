@@ -1,15 +1,14 @@
 import { client } from "@/sanity/lib/client";
 import { getAllTravelsQuery } from "@/sanity/lib/queries";
-import Link from "next/link";
-import Image from "next/image";
-import { Bus, Award } from "lucide-react";
+import { Bus } from "lucide-react";
 import { SharedBackground } from "@/components/SharedBackGround";
+import TravelsCard from "@/app/(main)/information-page/travel/_components/TravelsCard";
 
 // --- UI Components ---
 
 function PageHeader({ title, subtitle }) {
   return (
-    <div className="text-center mb-12 md:mb-16">
+    <div className="text-center mb-12 md:mb-16 mt-5 lg:mt-0 md:mt-5">
       <div className="inline-block bg-purple-100 text-purple-700 p-3 rounded-full mb-4">
         <Bus className="h-8 w-8" />
       </div>
@@ -19,41 +18,6 @@ function PageHeader({ title, subtitle }) {
   );
 }
 
-function TravelCard({ item }) {
-  return (
-    <Link href={`/information-page/travel/${item.slug}`} className="block group">
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden h-full flex flex-col transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1">
-        <div className="relative w-full h-52">
-          <Image
-            src={item.image || 'https://placehold.co/600x400/A855F7/FFFFFF?text=Travel'}
-            alt={`Image of ${item.name}`}
-            fill
-            style={{ objectFit: 'cover' }}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
-          {item.isFeatured && (
-            <div className="absolute top-3 left-3 bg-amber-400 text-gray-900 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 shadow-md">
-              <Award className="h-4 w-4" />
-              <span>MAIN HUB</span>
-            </div>
-          )}
-        </div>
-        <div className="p-5 flex flex-col flex-grow">
-          <div>
-              <p className="text-sm font-semibold text-purple-600 uppercase tracking-wider mb-1">{item.travelType?.replace('-', ' ')}</p>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">{item.name}</h3>
-            <p className="text-gray-600 text-sm leading-relaxed line-clamp-3">{item.description}</p>
-          </div>
-          <div className="mt-auto pt-4">
-              <div className="inline-flex items-center gap-2 font-semibold text-orange-600 group-hover:underline">
-                View Details & Tips
-              </div>
-          </div>
-        </div>
-      </div>
-    </Link>
-  );
-}
 
 // --- Main Page Component ---
 
@@ -72,7 +36,7 @@ export default async function TravelPage() {
         {travelOptions && travelOptions.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {travelOptions.map((item) => (
-              <TravelCard key={item._id} item={item} />
+              <TravelsCard key={item._id} travel={item} />
             ))}
           </div>
         ) : (
