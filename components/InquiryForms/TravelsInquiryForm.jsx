@@ -342,6 +342,7 @@ export function TravelsInquiryForm({ travel, onFormSubmit }) {
           </motion.div>
         </motion.form>
       </CardContent>
+    {/*  */}
     </Card>
   );
 }
