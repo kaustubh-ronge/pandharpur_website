@@ -109,7 +109,7 @@ export default function BhaktaniwasCard({ bhaktaniwas }) {
         </div>
 
         {/* ==========================================================
-            //  FIX APPLIED HERE 
+            //  FIX APPLIED HERE  
             // ========================================================== */}
         <div className="mt-auto pt-6 flex flex-col sm:flex-row gap-3">
           {/* Details button */}

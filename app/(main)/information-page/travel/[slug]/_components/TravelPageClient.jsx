@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -37,7 +38,7 @@ function Breadcrumbs({ itemName }) {
         <nav className="flex items-center text-sm font-medium text-stone-500">
             <Link href="/" className="hover:text-orange-600">Home</Link>
             <ChevronRight className="h-4 w-4 mx-1.5" />
-            <Link href="/information-page/travels" className="hover:text-orange-600">Travel</Link>
+            <Link href="/information-page/travel" className="hover:text-orange-600">Travel</Link>
             <ChevronRight className="h-4 w-4 mx-1.5" />
             <span className="text-stone-700 font-semibold">{itemName}</span>
         </nav>
@@ -95,9 +96,9 @@ function GallerySlider({ images = [], itemName }) {
                             key={idx}
                             onClick={() => goToSlide(idx)}
                             className={`w-3 h-3 rounded-full transition-all ${idx === currentSlide
-                                ? 'bg-orange-500 scale-110'
-                                : 'bg-white/80 hover:bg-white'
-                            }`}
+                                    ? 'bg-orange-500 scale-110'
+                                    : 'bg-white/80 hover:bg-white'
+                                }`}
                             aria-label={`Go to slide ${idx + 1}`}
                         />
                     ))}
@@ -167,7 +168,11 @@ function RichTextContent({ content }) {
 
 // --- MAIN CLIENT COMPONENT ---
 export default function TravelPageClient({ item }) {
-    const travelTypeCapitalized = item.travelType ? item.travelType.charAt(0).toUpperCase() + item.travelType.slice(1).replace('-', ' ') : '';
+    
+    // FIX: Handle both old string data and new array data
+    const travelTypes = Array.isArray(item.travelType)
+      ? item.travelType
+      : (item.travelType ? [item.travelType] : []);
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 mt-[60px]">
@@ -178,9 +183,11 @@ export default function TravelPageClient({ item }) {
                     <div className="mt-4">
                         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-stone-900 tracking-tight">{item.name}</h1>
                         <div className="mt-4 flex items-center flex-wrap gap-x-4 gap-y-2 text-stone-600">
-                            <Badge className="text-base font-bold gap-1.5 py-1 px-3 bg-amber-200/80 text-amber-900 border border-amber-300">
-                                {travelTypeCapitalized}
-                            </Badge>
+                            {travelTypes.map(type => (
+                                <Badge key={type} className="text-base font-bold gap-1.5 py-1 px-3 bg-amber-200/80 text-amber-900 border border-amber-300">
+                                    {type.charAt(0).toUpperCase() + type.slice(1).replace('-', ' ')}
+                                </Badge>
+                            ))}
                             {item.isFeatured && (
                                 <Badge className="text-base font-bold gap-1.5 py-1 px-3 bg-yellow-400/80 text-yellow-900 border border-yellow-500">
                                     <Sparkles className="h-4 w-4" /> Featured Hub

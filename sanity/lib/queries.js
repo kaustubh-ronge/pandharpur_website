@@ -48,7 +48,7 @@ export const getHotelBySlugQuery = `
 
 // Fetches all bhaktaniwas for the list view
 export const getAllBhaktaniwasQuery = `
-  *[_type == "bhaktaniwas"] | order(isFeatured desc, _createdAt desc) {
+  *[_type == "bhaktaniwas" && subscriptionPlan != 'none'] {
     _id,
     name,
     "slug": slug.current,
@@ -59,8 +59,14 @@ export const getAllBhaktaniwasQuery = `
     whatsappNumber,
     contactNumbers,
     address,
-    capacity
-  }
+    capacity,
+    subscriptionPlan,
+    "sortOrder": select(
+      subscriptionPlan == 'premium' => 1,
+      subscriptionPlan == 'standard' => 2,
+      subscriptionPlan == 'basic' => 3
+    )
+  } | order(sortOrder asc, isFeatured desc, _createdAt desc)
 `;
 
 // Fetches one specific bhaktaniwas by its slug for the detail page
@@ -82,7 +88,8 @@ export const getBhaktaniwasBySlugQuery = `
     bookingType,
     capacity,
     facilities,
-    "gallery": gallery[].asset->url
+    "gallery": gallery[].asset->url,
+    subscriptionPlan
   }
 `;
 

@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -39,7 +40,9 @@ const SubscriptionBadge = ({ plan }) => {
 
 // Travel type icon component
 const TravelTypeIcon = ({ travelType }) => {
-  switch (travelType) {
+  // Use a lowercase, trimmed version for matching
+  const type = travelType?.toLowerCase().trim();
+  switch (type) {
     case 'bus':
       return <Bus className="h-4 w-4" />;
     case 'train':
@@ -62,6 +65,16 @@ export default function TravelsCard({ travel }) {
       console.error("Failed to log details view:", error);
     }
   };
+
+  // FIX: Handle both old string data and new array data
+  const travelTypes = Array.isArray(travel.travelType)
+    ? travel.travelType
+    : (travel.travelType ? [travel.travelType] : []);
+
+  const formattedTravelTypes = travelTypes.map(type => 
+    type.charAt(0).toUpperCase() + type.slice(1).replace('-', ' ')
+  ).join(' / ') || 'Travel';
+
 
   return (
     <div className="group bg-white rounded-2xl border border-slate-200/80 shadow-lg shadow-slate-300/30 overflow-hidden h-full flex flex-col transition-all duration-300 ease-in-out hover:shadow-2xl hover:shadow-slate-400/30 hover:-translate-y-2">
@@ -90,9 +103,9 @@ export default function TravelsCard({ travel }) {
       <div className="p-6 flex flex-col flex-grow">
         <div>
           <div className="flex justify-between items-center mb-2">
-            <p className="text-sm font-semibold text-green-600 uppercase tracking-wider flex items-center gap-1">
-              <TravelTypeIcon travelType={travel.travelType} />
-              {travel.travelType ? travel.travelType.charAt(0).toUpperCase() + travel.travelType.slice(1).replace('-', ' ') : 'Travel'}
+            <p className="text-sm font-semibold text-green-600 uppercase tracking-wider flex items-center gap-1.5">
+              <TravelTypeIcon travelType={travelTypes[0]} />
+              <span>{formattedTravelTypes}</span>
             </p>
             {travel.rating && (
               <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 border border-amber-300/70 text-sm font-bold flex-shrink-0">

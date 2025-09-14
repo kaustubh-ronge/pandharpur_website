@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -10,7 +11,7 @@ import { useState, useEffect, useCallback } from "react";
 import {
     MapPin, Phone, CheckCircle, Users, Globe, ChevronRight, Sparkles, Building, Train,
     Clock, Calendar, Wifi, Car, Utensils, Coffee, Home,
-    Bath
+    Bath, Gem, ShieldCheck
 } from "lucide-react";
 
 // --- SHADCN UI IMPORTS ---
@@ -37,6 +38,24 @@ function AnimatedSection({ children, className = "" }) {
         </motion.section>
     );
 }
+
+const SubscriptionBadgeHeader = ({ plan }) => {
+    if (plan === 'premium') {
+        return (
+            <Badge className="text-base font-bold gap-1.5 py-1.5 px-3 bg-gradient-to-r from-amber-500 to-yellow-400 text-white border-none rounded-full shadow-lg shadow-yellow-500/30">
+                <Gem className="h-5 w-5" /> PREMIUM LISTING
+            </Badge>
+        );
+    }
+    if (plan === 'standard') {
+        return (
+            <Badge className="text-base font-bold gap-1.5 py-1.5 px-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white border-none rounded-full shadow-md shadow-blue-500/20">
+                <ShieldCheck className="h-5 w-5" /> STANDARD LISTING
+            </Badge>
+        );
+    }
+    return null;
+};
 
 function Breadcrumbs({ itemName }) {
     return (
@@ -228,7 +247,7 @@ function OverviewSection({ item }) {
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-3">
-                           
+                            
                             {/* ======================= FIX #1 APPLIED HERE ======================= */}
                             {item.contactNumbers && item.contactNumbers.length > 0 && (
                                 <div className="flex items-center gap-3 text-stone-700 text-sm font-medium">
@@ -370,7 +389,8 @@ export default function BhaktaniwasPageClient({ item }) {
                         <Breadcrumbs itemName={item.name} />
                         <div className="mt-4">
                             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-stone-900 tracking-tight">{item.name}</h1>
-                            <div className="mt-4 flex items-center flex-wrap gap-x-6 gap-y-2 text-stone-600">
+                            <div className="mt-4 flex items-center flex-wrap gap-x-6 gap-y-3 text-stone-600">
+                                <SubscriptionBadgeHeader plan={item.subscriptionPlan} />
                                 {item.isFeatured && (
                                     <Badge className="text-base font-bold gap-1.5 py-1.5 px-3 bg-amber-400 text-amber-900 border border-amber-500">
                                         <Sparkles className="h-4 w-4" /> Featured

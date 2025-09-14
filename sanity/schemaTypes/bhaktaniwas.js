@@ -1,3 +1,5 @@
+
+
 const bhaktaniwas = {
   name: "bhaktaniwas",
   
@@ -16,6 +18,22 @@ const bhaktaniwas = {
       type: 'boolean',
       description: 'Set this to ON to feature this on the main page or at the top of lists.',
       initialValue: false,
+    },
+    {
+      name: "subscriptionPlan",
+      title: "Subscription Plan",
+      type: "string",
+      description: "Select the subscription plan for this Bhaktaniwas.",
+      options: {
+        list: [
+          { title: "Premium", value: "premium" },
+          { title: "Standard", value: "standard" },
+          { title: "Basic", value: "basic" },
+          { title: "None (Will not be shown on the website)", value: "none" },
+        ],
+        layout: "dropdown",
+      },
+      initialValue: "none",
     },
     {
       name: "slug",
@@ -120,7 +138,7 @@ const bhaktaniwas = {
       of: [{ type: "image", options: { hotspot: true } }],
     },
   ],
-   icon: () => '🏠',
+    icon: () => '🏠',
 };
 
 export default bhaktaniwas;
