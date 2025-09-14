@@ -4,6 +4,7 @@ const hotel = {
   name: "hotel",
   title: "Hotels",
   type: "document",
+  icon: () => '🏨',
   fields: [
     {
       name: "name",
