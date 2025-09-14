@@ -15,6 +15,7 @@ const bhaktaniwas = {
     {
       name: 'isFeatured',
       title: 'Featured Bhaktaniwas',
+      // 
       type: 'boolean',
       description: 'Set this to ON to feature this on the main page or at the top of lists.',
       initialValue: false,
