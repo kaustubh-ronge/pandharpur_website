@@ -5,15 +5,26 @@ import {
 // Combining your header navItems with other company links
 export const companyLinks = [
   { name: "Home", href: "/" },
+<<<<<<< HEAD
   { name: "Attractions", href: "/pandharpur-attractions" },
   { name: "Festivals", href: "/pandharpur-festivals" },
   { name: "Guide", href: "/pandharpur-darshan-yatra-guide" },
   { name: "Booking", href: "/pandharpur-bookings" },
+=======
+  { name: "Attractions", href: "/other-attractions" },
+  { name: "Festivals", href: "/festivals" },
+  { name: "Guide", href: "/guide" },
+  { name: "Booking", href: "/information-page" },
+>>>>>>> c6bbd87266ab7631edab901ab8763b39a202dbf5
   { name: "About Us", href: "/about" },
 ];
 
 export const legalLinks = [
+<<<<<<< HEAD
   { name: "FAQs & Help", href: "/about" },
+=======
+  { name: "FAQs & Help", href: "/help" },
+>>>>>>> c6bbd87266ab7631edab901ab8763b39a202dbf5
   { name: "Emergency Contacts", href: "/emergency" },
 ]
 
@@ -48,6 +59,10 @@ export const galleryImages = [
 export const footerBottomLinks = [
   { name: "Home", href: "/" },
   { name: "Cookies", href: "/cookies-policy" },
+<<<<<<< HEAD
   { name: "Help", href: "/about" },
+=======
+  { name: "Help", href: "/help" },
+>>>>>>> c6bbd87266ab7631edab901ab8763b39a202dbf5
   { name: "FAQs", href: "/faqs" },
 ];
