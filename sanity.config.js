@@ -1,0 +1,26 @@
+
+
+'use client'
+
+/**
+ * This configuration is used for the Sanity Studio that’s mounted on the `/studio` route
+ */
+
+import { defineConfig } from 'sanity'
+import { visionTool } from '@sanity/vision'
+import { deskTool } from 'sanity/desk'
+
+import { apiVersion, dataset, projectId } from './sanity/env'
+import { schema } from './sanity/schemaTypes'
+import { structure } from './sanity/structure'
+
+export default defineConfig({
+  basePath: '/studio',
+  projectId,
+  dataset,
+  schema,
+  plugins: [
+    deskTool({ structure }), // ✅ Use custom structure here
+    visionTool({ defaultApiVersion: apiVersion }),
+  ],
+})

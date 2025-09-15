@@ -1,0 +1,118 @@
+// FILE: prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  user
+  model
+}
+
+model User {
+  id            String       @id @default(uuid())
+  clerkUserId   String       @unique
+  name          String?
+  email         String?
+  imageUrl      String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  aiRoutes      AiRoute[]
+  aiSchedules   AiSchedule[]
+  aiTrips       AiTrip[]
+  manualTrips   ManualTrip[]
+  chatSessions  ChatSession[]
+  
+  // --- ADD THESE LINES TO YOUR USER MODEL ---
+  leads         Lead[]
+  inquiries     Inquiry[]
+}
+
+model ManualTrip {
+  id          String   @id @default(uuid())
+  title       String
+  startDate   DateTime
+  endDate     DateTime
+  locations   String
+  preferences String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model AiTrip {
+  id        String   @id @default(uuid())
+  prompt    Json
+  response  Json
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model AiRoute {
+  id            String   @id @default(uuid())
+  startLocation String
+  endLocation   String   @default("Pandharpur, Maharashtra, India")
+  response      Json
+  createdAt     DateTime @default(now())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
+}
+
+model AiSchedule {
+  id        String   @id @default(uuid())
+  prompt    Json
+  response  Json
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model ChatSession {
+  id        String        @id @default(uuid())
+  userId    String?
+  guestId   String?       @unique
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  user      User?         @relation(fields: [userId], references: [id])
+  messages  ChatMessage[]
+}
+
+model ChatMessage {
+  id            String      @id @default(uuid())
+  role          Role
+  content       String
+  createdAt     DateTime    @default(now())
+  chatSessionId String
+  chatSession   ChatSession @relation(fields: [chatSessionId], references: [id], onDelete: Cascade)
+}
+
+// --- ADD THESE TWO MODELS FOR TRACKING ---
+model Lead {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  userName   String
+  userPhone  String
+  actionType String
+  entityId   String?   // 👈 allow null
+  entityType String?
+  userId     String?   // 👈 allow null
+  user       User?     @relation(fields: [userId], references: [id])
+}
+
+model Inquiry {
+  id               String   @id @default(cuid())
+  createdAt        DateTime @default(now())
+  userName         String
+  userPhone        String
+  hotelSlug        String?
+  bhaktaniwasSlug  String?
+  travelSlug       String?
+  userId           String?   // 👈 allow null
+  user             User?     @relation(fields: [userId], references: [id])
+}
