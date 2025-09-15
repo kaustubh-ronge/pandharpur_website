@@ -1,6 +1,12 @@
 import {
-  MapPin, Phone, Mail, Twitter, Facebook, Youtube, Linkedin
-} from 'lucide-react';
+  MapPin,
+  Phone,
+  Mail,
+  Linkedin,
+  Instagram,
+  Youtube,
+  Facebook, // Added Instagram and Facebook
+} from "lucide-react";
 
 // Combining your header navItems with other company links
 export const companyLinks = [
@@ -15,7 +21,7 @@ export const companyLinks = [
 export const legalLinks = [
   { name: "FAQs & Help", href: "/about" },
   { name: "Emergency Contacts", href: "/emergency" },
-]
+];
 
 export const contactDetails = {
   address: "Pandharpur, Maharashtra, India",
@@ -25,24 +31,24 @@ export const contactDetails = {
     address: <MapPin className="mr-3 h-5 w-5 flex-shrink-0" />,
     phone: <Phone className="mr-3 h-5 w-5 flex-shrink-0" />,
     email: <Mail className="mr-3 h-5 w-5 flex-shrink-0" />,
-  }
+  },
 };
 
 export const socialLinks = [
-  { href: "#", icon: <Twitter size={20} /> },
-  { href: "#", icon: <Facebook size={20} /> },
-  { href: "#", icon: <Youtube size={20} /> },
   { href: "#", icon: <Linkedin size={20} /> },
+  { href: "#", icon: <Instagram size={20} /> },
+  { href: "#", icon: <Youtube size={20} /> },
+  { href: "#", icon: <Facebook size={20} /> }, // Changed from Twitter to Facebook
 ];
 
 // Placeholder images for the gallery
 export const galleryImages = [
-  '/images/gallery/vitthal-rukmini.jpg',
-  '/images/gallery/chandrabhaga-ghat.jpg',
-  '/images/gallery/pundalik-temple.jpg',
-  '/images/gallery/wari-dindi.jpg',
-  '/images/gallery/gopalpur.jpg',
-  '/images/gallery/vishnupad-temple.jpg',
+  "/footerimages/vitthal-image.jpg",
+  "/footerimages/rukmini-image.jpg",
+  "/footerimages/ppur-temple.jpg",
+  "/footerimages/ppur-temple-2.jpg",
+  "/footerimages/temple-5.jpeg",
+  "/footerimages/ppur-temple-4.jpg",
 ];
 
 export const footerBottomLinks = [

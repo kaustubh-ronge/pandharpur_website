@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Star, PlayCircle, MapPin, Landmark, ArrowDown } from "lucide-react";
+import Link from "next/link";
 
 const HeroBannerSection = () => {
   return (
@@ -16,18 +17,18 @@ const HeroBannerSection = () => {
         {[1, 2, 3, 4, 5].map((i) => (
           <motion.div
             key={i}
-            className={`absolute ${i === 1 ? 'top-10 left-10 w-24 h-24 bg-orange-200' : 
-                         i === 2 ? 'bottom-20 right-20 w-20 h-20 bg-orange-300' :
-                         i === 3 ? 'top-20 left-60 w-32 h-32 bg-orange-400' :
-                         i === 4 ? 'bottom-40 left-24 w-28 h-28 bg-orange-500' :
-                         'top-40 right-10 w-36 h-36 bg-orange-600'} rounded-full opacity-${i === 1 ? 30 : i === 2 ? 20 : i === 3 ? 25 : i === 4 ? 15 : 10}`}
-            animate={{ 
+            className={`absolute ${i === 1 ? 'top-10 left-10 w-24 h-24 bg-orange-200' :
+              i === 2 ? 'bottom-20 right-20 w-20 h-20 bg-orange-300' :
+                i === 3 ? 'top-20 left-60 w-32 h-32 bg-orange-400' :
+                  i === 4 ? 'bottom-40 left-24 w-28 h-28 bg-orange-500' :
+                    'top-40 right-10 w-36 h-36 bg-orange-600'} rounded-full opacity-${i === 1 ? 30 : i === 2 ? 20 : i === 3 ? 25 : i === 4 ? 15 : 10}`}
+            animate={{
               y: i <= 3 ? [0, i === 1 ? 20 : i === 2 ? -20 : 25, 0] : undefined,
               x: i >= 4 ? [0, i === 4 ? 30 : -30, 0] : undefined
             }}
-            transition={{ 
-              repeat: Infinity, 
-              duration: i === 1 ? 6 : i === 2 ? 5 : i === 3 ? 7 : i === 4 ? 6.5 : 8 
+            transition={{
+              repeat: Infinity,
+              duration: i === 1 ? 6 : i === 2 ? 5 : i === 3 ? 7 : i === 4 ? 6.5 : 8
             }}
           />
         ))}
@@ -35,45 +36,45 @@ const HeroBannerSection = () => {
 
       {/* Desktop images using next/image */}
       <div className="hidden md:block absolute top-0 left-0 z-10 p-6">
-        <Image 
-          src="/vitthal-solo-image.png" 
-          alt="Shri Vitthal" 
+        <Image
+          src="/vitthal-solo-image.png"
+          alt="Shri Vitthal"
           width={400}
           height={650}
           // ADDED mt-10 to push Vitthal down, aligning better with Rukmini
-          className="mt-5 h-[300px] lg:h-[420px] xl:h-[520px] w-auto" 
+          className="mt-5 h-[300px] lg:h-[420px] xl:h-[520px] w-auto"
         />
       </div>
       <div className="hidden md:block absolute top-0 right-0 z-10 p-6">
         <Image
-          src="/rukmini-solo-img.png" 
-          alt="Mata Rukmini" 
+          src="/rukmini-solo-img.png"
+          alt="Mata Rukmini"
           width={400}
           height={600}
           // mt-10 was removed previously, ensuring this image starts higher
-          className="mt-6 lg:mt-8 md:mt-7 h-[260px] lg:h-[380px] xl:h-[450px] w-auto" 
+          className="mt-6 lg:mt-8 md:mt-7 h-[260px] lg:h-[380px] xl:h-[450px] w-auto"
         />
       </div>
 
       {/* Main content container */}
       <div className="relative z-20 flex flex-col h-full min-h-screen items-center justify-center px-4 sm:px-8 md:px-16 lg:px-24 text-center text-gray-800">
-        
+
         {/* Mobile Layout using next/image - kept as is for now based on last request*/}
-        <div className="md:hidden flex justify-center items-center gap-6 w-full"> 
-          <Image 
-            src="/vitthal-solo-image.png" 
-            alt="Shri Vitthal" 
+        <div className="md:hidden flex justify-center items-center gap-6 w-full">
+          <Image
+            src="/vitthal-solo-image.png"
+            alt="Shri Vitthal"
             width={250}
             height={400}
-            className="h-[450px] w-auto mt-4" 
-          /> 
-          <Image 
-            src="/rukmini-solo-img.png" 
-            alt="Mata Rukmini" 
+            className="h-[450px] w-auto mt-4"
+          />
+          <Image
+            src="/rukmini-solo-img.png"
+            alt="Mata Rukmini"
             width={250}
             height={375}
-            className="h-[400px] w-auto" 
-          /> 
+            className="h-[400px] w-auto"
+          />
         </div>
 
         <motion.div
@@ -94,7 +95,7 @@ const HeroBannerSection = () => {
           transition={{ duration: 0.8 }}
           className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight mb-4 max-w-4xl"
         >
-          Feel the<span className="text-orange-500"> Blessings</span> of 
+          Feel the<span className="text-orange-500"> Blessings</span> of
           <br />
           <span className="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent">
             Pandharpur Darshan
@@ -116,12 +117,17 @@ const HeroBannerSection = () => {
           transition={{ delay: 0.4, duration: 0.8 }}
           className="flex flex-wrap justify-center gap-6 mb-10"
         >
-          <Button size="lg" className="bg-orange-600 hover:bg-orange-700 text-white shadow-lg">
-            <PlayCircle className="mr-2 h-5 w-5" /> Start Virtual Tour
-          </Button>
-          <Button variant="outline" size="lg" className="border-orange-400 text-orange-600 hover:bg-orange-100">
-            <MapPin className="mr-2 h-5 w-5" /> Plan Your Visit
-          </Button>
+          <Link href={'/pandharpur-bookings'}>
+            <Button size="lg" className="bg-orange-600 hover:bg-orange-700 text-white shadow-lg">
+              <PlayCircle className="mr-2 h-5 w-5" /> Bookings in Pandharpur
+            </Button>
+          </Link>
+
+          <Link href={'/pandharpur-darshan-yatra-guide'}>
+            <Button variant="outline" size="lg" className="border-orange-400 text-orange-600 hover:bg-orange-100">
+              <MapPin className="mr-2 h-5 w-5" /> Plan Your Visit
+            </Button>
+          </Link>
         </motion.div>
 
         <motion.div

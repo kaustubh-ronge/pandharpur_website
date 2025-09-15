@@ -2,15 +2,17 @@ import React from 'react';
 import {
   Home, MapPin, CalendarDays, BookOpen, NotebookPen,
   HelpCircle, Phone,
-  InfoIcon
+  InfoIcon,
+  Landmark
 } from "lucide-react";
 
 export const navItems = [
-  { name: "Pandharpur Darshan", href: "/", icon: <Home className="h-5 w-5" /> },
-  { name: "Pandharpur Attractions", href: "/pandharpur-attractions", icon: <MapPin className="h-5 w-5" /> },
+  { name: "Home", href: "/", icon: <Home className="h-5 w-5" /> },
+  { name: "Attractions", href: "/pandharpur-attractions", icon: <MapPin className="h-5 w-5" /> },
   { name: "Pandharpur Festivals", href: "/pandharpur-festivals", icon: <CalendarDays className="h-5 w-5" /> },
+  { name: "Temples", href: "/pandharpur-bookings/temples", icon: <Landmark className="h-5 w-5" /> },
   { name: "Yatra&Darshan Guide", href: "/pandharpur-darshan-yatra-guide", icon: <BookOpen className="h-5 w-5" /> },
-  { name: "Booking", href: "/pandharpur-bookings", icon: <NotebookPen className="h-5 w-5" /> }
+  { name: "Bookings", href: "/pandharpur-bookings", icon: <NotebookPen className="h-5 w-5" /> },
 ];
 
 export const quickLinks = [

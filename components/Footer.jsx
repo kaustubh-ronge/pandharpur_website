@@ -1,22 +1,22 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react'; // Keep this for quick links
 import {
   companyLinks,
   legalLinks,
   contactDetails,
-  socialLinks,
+  socialLinks, // This will be updated
   galleryImages,
   footerBottomLinks,
-} from '@/data/FooterData/footer'; // Adjust path if needed
+} from '@/data/FooterData/footer';
 
 const Footer = () => {
   return (
     <footer className="container-fluid bg-gray-900 text-gray-300 pt-16 mt-24">
       <div className="container mx-auto px-4 py-5">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          
+
           {/* Column 1: Quick Links */}
           <div>
             <h4 className="text-white text-xl font-semibold mb-4">Quick Links</h4>
@@ -27,7 +27,7 @@ const Footer = () => {
               </Link>
             ))}
           </div>
-          
+
           {/* Column 2: Contact */}
           <div>
             <h4 className="text-white text-xl font-semibold mb-4">Contact</h4>
@@ -36,9 +36,9 @@ const Footer = () => {
             <p className="mb-3 flex items-center">{contactDetails.icons.email}{contactDetails.email}</p>
             <div className="flex pt-2 space-x-2">
               {socialLinks.map((social, index) => (
-                <a 
-                  key={index} 
-                  href={social.href} 
+                <a
+                  key={index}
+                  href={social.href}
                   className="w-9 h-9 border border-gray-400 rounded-full flex items-center justify-center text-gray-300 hover:bg-white hover:text-gray-900 transition-colors duration-300"
                   aria-label={`Link to ${social.href}`}
                 >
@@ -47,25 +47,26 @@ const Footer = () => {
               ))}
             </div>
           </div>
-          
+
           {/* Column 3: Gallery */}
           <div>
             <h4 className="text-white text-xl font-semibold mb-4">Gallery</h4>
-            <div className="grid grid-cols-3 gap-2">
+
+            {/* Add mt-2 (margin-top) here to push the grid down */}
+            <div className="grid grid-cols-3 gap-2 mt-2">
               {galleryImages.map((src, index) => (
-                <div key={index} className="overflow-hidden rounded">
+                <div key={index} className="aspect-square overflow-hidden rounded">
                   <Image
                     src={src}
                     alt={`Gallery image ${index + 1}`}
                     width={100}
                     height={100}
-                    className="w-full h-auto bg-gray-700 p-1 object-cover transform hover:scale-110 transition-transform duration-300"
+                    className="w-full h-full object-cover object-center transform transition-transform duration-300 hover:scale-110"
                   />
                 </div>
               ))}
             </div>
           </div>
-
           {/* Column 4: Legal & Help */}
           <div>
             <h4 className="text-white text-xl font-semibold mb-4">Legal & Help</h4>
@@ -76,7 +77,7 @@ const Footer = () => {
               </Link>
             ))}
           </div>
-          
+
         </div>
       </div>
 
