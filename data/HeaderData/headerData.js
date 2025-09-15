@@ -1,7 +1,8 @@
 import React from 'react';
 import {
   Home, MapPin, CalendarDays, BookOpen, NotebookPen,
-  HelpCircle, Phone
+  HelpCircle, Phone,
+  InfoIcon
 } from "lucide-react";
 
 export const navItems = [
@@ -14,5 +15,5 @@ export const navItems = [
 
 export const quickLinks = [
   { name: "Emergency Contacts", href: "/emergency", icon: <Phone className="h-4 w-4 mr-2" /> },
-  { name: "Help Center", href: "/help", icon: <HelpCircle className="h-4 w-4 mr-2" /> }
+  { name: "Help Center", href: "/help", icon: <InfoIcon className="h-4 w-4 mr-2" /> }
 ];

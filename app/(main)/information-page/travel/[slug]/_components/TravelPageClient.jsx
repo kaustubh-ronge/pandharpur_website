@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import Image from "next/image";
@@ -8,7 +9,9 @@ import { motion } from "framer-motion";
 import { useState, useEffect, useCallback } from "react";
 
 // ICONS
-import { MapPin, Phone, Clock, Route, Globe, ChevronRight, Sparkles } from "lucide-react";
+import {
+    MapPin, Phone, Clock, Route, Globe, ChevronRight, ChevronLeft, Sparkles
+} from "lucide-react";
 
 // --- SHADCN UI IMPORTS ---
 import { Badge } from "@/components/ui/badge";
@@ -61,6 +64,18 @@ function GallerySlider({ images = [], itemName }) {
         setCurrentSlide(index);
     }, []);
 
+    const prevSlide = () => {
+        const isFirstSlide = currentSlide === 0;
+        const newIndex = isFirstSlide ? validImages.length - 1 : currentSlide - 1;
+        setCurrentSlide(newIndex);
+    };
+
+    const nextSlide = () => {
+        const isLastSlide = currentSlide === validImages.length - 1;
+        const newIndex = isLastSlide ? 0 : currentSlide + 1;
+        setCurrentSlide(newIndex);
+    };
+
     if (validImages.length === 0) return (
         <div className="bg-stone-100 rounded-xl flex items-center justify-center text-stone-500 h-full">
             <div className="text-center p-8">
@@ -89,6 +104,28 @@ function GallerySlider({ images = [], itemName }) {
                     </div>
                 ))}
             </div>
+            
+            {/* Navigation Arrows */}
+            {validImages.length > 1 && (
+                <>
+                    <button
+                        onClick={prevSlide}
+                        aria-label="Previous image"
+                        className="absolute top-1/2 left-3 -translate-y-1/2 z-10 p-2 bg-orange-500/80 text-white rounded-full hover:bg-orange-500 transition-colors shadow-lg"
+                    >
+                        <ChevronLeft className="h-6 w-6" />
+                    </button>
+                    <button
+                        onClick={nextSlide}
+                        aria-label="Next image"
+                        className="absolute top-1/2 right-3 -translate-y-1/2 z-10 p-2 bg-orange-500/80 text-white rounded-full hover:bg-orange-500 transition-colors shadow-lg"
+                    >
+                        <ChevronRight className="h-6 w-6" />
+                    </button>
+                </>
+            )}
+
+            {/* Dot indicators */}
             {validImages.length > 1 && (
                 <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
                     {validImages.map((_, idx) => (

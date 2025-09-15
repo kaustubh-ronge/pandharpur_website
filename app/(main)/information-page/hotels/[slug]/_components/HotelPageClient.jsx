@@ -1,5 +1,4 @@
 
-
 // FILE: app/(main)/information-page/hotels/[slug]/_components/HotelPageClient.jsx
 "use client";
 
@@ -8,7 +7,7 @@ import Link from "next/link";
 import { PortableText } from "@portabletext/react";
 import { motion } from "framer-motion";
 import { useState, useEffect, useCallback } from "react";
-import { Star, MapPin, Phone, Mail, CheckCircle, ChevronRight, BedDouble, Sparkles, Wallet, Building, Mountain, Train, Globe, Clock, Users, Wifi, Car, Utensils, Coffee, Home, Bath, Gem, ShieldCheck } from "lucide-react";
+import { Star, MapPin, Phone, Mail, CheckCircle, ChevronRight, ChevronLeft, BedDouble, Sparkles, Wallet, Building, Mountain, Train, Globe, Clock, Users, Wifi, Car, Utensils, Coffee, Home, Bath, Gem, ShieldCheck } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -78,6 +77,18 @@ function GallerySlider({ images = [], hotelName }) {
         setCurrentSlide(index);
     }, []);
 
+    const prevSlide = () => {
+        const isFirstSlide = currentSlide === 0;
+        const newIndex = isFirstSlide ? validImages.length - 1 : currentSlide - 1;
+        setCurrentSlide(newIndex);
+    };
+
+    const nextSlide = () => {
+        const isLastSlide = currentSlide === validImages.length - 1;
+        const newIndex = isLastSlide ? 0 : currentSlide + 1;
+        setCurrentSlide(newIndex);
+    };
+
     if (validImages.length === 0) return (
         <div className="bg-stone-100 rounded-xl flex items-center justify-center text-stone-500 h-full">
             <div className="text-center p-8">
@@ -107,16 +118,35 @@ function GallerySlider({ images = [], hotelName }) {
                 ))}
             </div>
             {validImages.length > 1 && (
-                <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
-                    {validImages.map((_, idx) => (
-                        <button
-                            key={idx}
-                            onClick={() => goToSlide(idx)}
-                            className={`w-3 h-3 rounded-full transition-all ${idx === currentSlide ? 'bg-orange-500 scale-110' : 'bg-white/80 hover:bg-white'}`}
-                            aria-label={`Go to slide ${idx + 1}`}
-                        />
-                    ))}
-                </div>
+                <>
+                    {/* =========== ARROW BUTTONS ADDED HERE =========== */}
+                    <button
+                        onClick={prevSlide}
+                        aria-label="Previous image"
+                        className="absolute top-1/2 left-3 -translate-y-1/2 z-10 p-2 bg-orange-500/80 text-white rounded-full hover:bg-orange-500 transition-colors"
+                    >
+                        <ChevronLeft className="h-6 w-6" />
+                    </button>
+                    <button
+                        onClick={nextSlide}
+                        aria-label="Next image"
+                        className="absolute top-1/2 right-3 -translate-y-1/2 z-10 p-2 bg-orange-500/80 text-white rounded-full hover:bg-orange-500 transition-colors"
+                    >
+                        <ChevronRight className="h-6 w-6" />
+                    </button>
+                    {/* ================================================= */}
+
+                    <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+                        {validImages.map((_, idx) => (
+                            <button
+                                key={idx}
+                                onClick={() => goToSlide(idx)}
+                                className={`w-3 h-3 rounded-full transition-all ${idx === currentSlide ? 'bg-orange-500 scale-110' : 'bg-white/80 hover:bg-white'}`}
+                                aria-label={`Go to slide ${idx + 1}`}
+                            />
+                        ))}
+                    </div>
+                </>
             )}
         </div>
     );
@@ -290,23 +320,23 @@ function BookingBar({ hotel }) {
                 </div>
                 <div className="flex items-center gap-4">
                     {price && <p className="text-2xl font-bold text-stone-900">{price}<span className="text-base font-medium text-stone-600">/night</span></p>}
-                    
+
                     {/* --- BOOK NOW BUTTON THAT OPENS THE DRAWER --- */}
                     {/* It will only show if the hotel has a phone number */}
                     {(hotel.whatsappNumber && hotel.whatsappNumber.length > 0) ? (
-                      <InquiryDrawer type="hotel" data={hotel}>
-                          {/* The DialogTrigger component is implicitly passed from InquiryDrawer */}
-                          <Button size="lg" className="font-bold bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-xl shadow-green-500/40 hover:shadow-2xl hover:shadow-green-500/50 transform hover:scale-105 transition-all duration-300 px-8 py-4">
-                            <img 
-                                src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" 
-                                alt="WhatsApp" 
-                                className="h-5 w-5 mr-2" 
-                            />
-                            Book Now
-                          </Button>
-                      </InquiryDrawer>
+                        <InquiryDrawer type="hotel" data={hotel}>
+                            {/* The DialogTrigger component is implicitly passed from InquiryDrawer */}
+                            <Button size="lg" className="font-bold bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-xl shadow-green-500/40 hover:shadow-2xl hover:shadow-green-500/50 transform hover:scale-105 transition-all duration-300 px-8 py-4">
+                                <img
+                                    src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+                                    alt="WhatsApp"
+                                    className="h-5 w-5 mr-2"
+                                />
+                                Book Now
+                            </Button>
+                        </InquiryDrawer>
                     ) : (
-                      <Button size="lg" disabled className="font-bold bg-gray-300 text-gray-500 cursor-not-allowed px-8 py-4">Booking Unavailable</Button>
+                        <Button size="lg" disabled className="font-bold bg-gray-300 text-gray-500 cursor-not-allowed px-8 py-4">Booking Unavailable</Button>
                     )}
                 </div>
             </div>
@@ -408,7 +438,7 @@ export default function HotelPageClient({ hotel }) {
                             <MainImage src={hotel.image} alt={`Main image of ${hotel.name}`} />
                         </div>
                         <div className="w-full h-full min-h-[300px] md:min-h-[400px] lg:min-h-full">
-                           <GallerySlider images={hotel.gallery} hotelName={hotel.name} />
+                            <GallerySlider images={hotel.gallery} hotelName={hotel.name} />
                         </div>
                     </div>
                     <div className="rounded-xl overflow-hidden shadow-md border border-stone-200">
@@ -431,27 +461,27 @@ export default function HotelPageClient({ hotel }) {
                         )}
                     </div>
                 </AnimatedSection>
-                
+
                 {/* --- This is the section that had the error. Corrected logic below. --- */}
                 <AnimatedSection className="mt-6">
                     {hotel.whatsappNumber ? (
                         <InquiryDrawer type="hotel" data={hotel}>
                             <DialogTrigger asChild>
-                                <Button 
-                                    size="lg" 
+                                <Button
+                                    size="lg"
                                     className="w-full text-lg font-bold bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-xl shadow-green-500/40 hover:shadow-2xl hover:shadow-green-500/50 transform hover:scale-105 transition-all duration-300 py-4"
                                 >
-                                    <img 
-                                        src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" 
-                                        alt="WhatsApp" 
-                                        className="h-6 w-6 mr-3" 
-                                    /> 
+                                    <img
+                                        src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+                                        alt="WhatsApp"
+                                        className="h-6 w-6 mr-3"
+                                    />
                                     Inquire Now on WhatsApp
                                 </Button>
                             </DialogTrigger>
                         </InquiryDrawer>
                     ) : (
-                        <Button 
+                        <Button
                             disabled
                             size="lg"
                             className="w-full text-lg font-bold bg-gray-300 text-gray-500 cursor-not-allowed"
@@ -474,20 +504,20 @@ export default function HotelPageClient({ hotel }) {
                         <h2 className="text-3xl font-bold text-stone-800 mb-6">Full Details</h2>
                         <Tabs defaultValue="amenities" className="w-full">
                             <TabsList className="flex h-auto w-full flex-col rounded-lg bg-stone-100 p-1 sm:w-auto sm:flex-row">
-                                <TabsTrigger 
-                                    value="amenities" 
+                                <TabsTrigger
+                                    value="amenities"
                                     className="w-full justify-center py-2 px-4 data-[state=active]:bg-white data-[state=active]:shadow-sm sm:w-auto"
                                 >
                                     Amenities
                                 </TabsTrigger>
-                                <TabsTrigger 
-                                    value="rooms" 
+                                <TabsTrigger
+                                    value="rooms"
                                     className="w-full justify-center py-2 px-4 data-[state=active]:bg-white data-[state=active]:shadow-sm sm:w-auto"
                                 >
                                     Rooms
                                 </TabsTrigger>
-                                <TabsTrigger 
-                                    value="contact" 
+                                <TabsTrigger
+                                    value="contact"
                                     className="w-full justify-center py-2 px-4 data-[state=active]:bg-white data-[state=active]:shadow-sm sm:w-auto"
                                 >
                                     Contact & Info
@@ -581,4 +611,3 @@ export default function HotelPageClient({ hotel }) {
         </div>
     );
 }
-

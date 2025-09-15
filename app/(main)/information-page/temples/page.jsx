@@ -10,7 +10,7 @@ export default async function TemplePage() {
     const temples = await client.fetch(getAllTemplesQuery);
 
     return (
-        <div>
+        <div className="mt-[80px]">
             <HeroSection />
 
             <TempleList temples={temples} />

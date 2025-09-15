@@ -11,7 +11,7 @@ import { useState, useEffect, useCallback } from "react";
 import {
     MapPin, Phone, CheckCircle, Users, Globe, ChevronRight, Sparkles, Building, Train,
     Clock, Calendar, Wifi, Car, Utensils, Coffee, Home,
-    Bath, Gem, ShieldCheck
+    Bath, Gem, ShieldCheck, ChevronLeft
 } from "lucide-react";
 
 // --- SHADCN UI IMPORTS ---
@@ -23,7 +23,7 @@ import { Button } from "@/components/ui/button";
 import { DialogTrigger } from "@/components/ui/dialog";
 import { InquiryDrawer } from "@/components/InquiryForms/InquiryDrawer";
 
-// --- (All sub-components like AnimatedSection, Breadcrumbs, GallerySlider, etc. remain the same) ---
+// --- (All sub-components like AnimatedSection, Breadcrumbs, etc. remain the same) ---
 
 function AnimatedSection({ children, className = "" }) {
     return (
@@ -85,6 +85,19 @@ function GallerySlider({ images = [], itemName }) {
         setCurrentSlide(index);
     }, []);
 
+    // Handlers for the arrow buttons
+    const prevSlide = () => {
+        const isFirstSlide = currentSlide === 0;
+        const newIndex = isFirstSlide ? validImages.length - 1 : currentSlide - 1;
+        setCurrentSlide(newIndex);
+    };
+
+    const nextSlide = () => {
+        const isLastSlide = currentSlide === validImages.length - 1;
+        const newIndex = isLastSlide ? 0 : currentSlide + 1;
+        setCurrentSlide(newIndex);
+    };
+
     if (validImages.length === 0) return (
         <div className="bg-stone-100 rounded-xl flex items-center justify-center text-stone-500 h-full">
             <div className="text-center p-8">
@@ -113,20 +126,40 @@ function GallerySlider({ images = [], itemName }) {
                     </div>
                 ))}
             </div>
+
             {validImages.length > 1 && (
-                <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
-                    {validImages.map((_, idx) => (
-                        <button
-                            key={idx}
-                            onClick={() => goToSlide(idx)}
-                            className={`w-3 h-3 rounded-full transition-all ${idx === currentSlide
-                                    ? 'bg-orange-500 scale-110'
-                                    : 'bg-white/80 hover:bg-white'
-                                }`}
-                            aria-label={`Go to slide ${idx + 1}`}
-                        />
-                    ))}
-                </div>
+                <>
+                    {/* =========== BUTTONS UPDATED WITH ORANGE BG AND HOVER EFFECT =========== */}
+                    <button
+                        onClick={prevSlide}
+                        aria-label="Previous image"
+                        className="absolute cursor-pointer top-1/2 left-3 -translate-y-1/2 z-10 p-2 bg-orange-500/80 text-white rounded-full hover:bg-orange-500 transition-colors"
+                    >
+                        <ChevronLeft className="h-6 w-6" />
+                    </button>
+                    <button
+                        onClick={nextSlide}
+                        aria-label="Next image"
+                        className="absolute cursor-pointer top-1/2 right-3 -translate-y-1/2 z-10 p-2 bg-orange-500/80 text-white rounded-full hover:bg-orange-500 transition-colors"
+                    >
+                        <ChevronRight className="h-6 w-6" />
+                    </button>
+                    {/* ======================================================================= */}
+                    
+                    <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+                        {validImages.map((_, idx) => (
+                            <button
+                                key={idx}
+                                onClick={() => goToSlide(idx)}
+                                className={`w-3 h-3 rounded-full transition-all ${idx === currentSlide
+                                        ? 'bg-orange-500 scale-110'
+                                        : 'bg-white/80 hover:bg-white'
+                                    }`}
+                                aria-label={`Go to slide ${idx + 1}`}
+                            />
+                        ))}
+                    </div>
+                </>
             )}
         </div>
     );

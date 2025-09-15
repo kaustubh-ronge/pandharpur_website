@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -8,7 +9,7 @@ import { useState, useEffect, useCallback } from "react";
 
 // ICONS (Adapted for Attractions)
 import {
-    MapPin, Phone, Globe, ChevronRight, Sparkles,
+    MapPin, Phone, Globe, ChevronRight, ChevronLeft, Sparkles,
     Clock, Ticket, Landmark, Info
 } from "lucide-react";
 
@@ -17,6 +18,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { AmberBackground } from "@/components/AmberSharedBackground";
+import { SharedBackground } from "@/components/SharedBackGround";
 
 // --- ANIMATION WRAPPER (Re-used) ---
 function AnimatedSection({ children, className = "" }) {
@@ -64,6 +66,18 @@ function GallerySlider({ images = [], itemName }) {
         setCurrentSlide(index);
     }, []);
 
+    const prevSlide = () => {
+        const isFirstSlide = currentSlide === 0;
+        const newIndex = isFirstSlide ? validImages.length - 1 : currentSlide - 1;
+        setCurrentSlide(newIndex);
+    };
+
+    const nextSlide = () => {
+        const isLastSlide = currentSlide === validImages.length - 1;
+        const newIndex = isLastSlide ? 0 : currentSlide + 1;
+        setCurrentSlide(newIndex);
+    };
+
     if (validImages.length === 0) return (
         <div className="bg-stone-100 rounded-xl flex items-center justify-center text-stone-500 h-full">
             <div className="text-center p-8">
@@ -91,6 +105,28 @@ function GallerySlider({ images = [], itemName }) {
                     </div>
                 ))}
             </div>
+
+            {/* Navigation Arrows */}
+            {validImages.length > 1 && (
+                <>
+                    <button
+                        onClick={prevSlide}
+                        aria-label="Previous image"
+                        className="absolute top-1/2 left-3 -translate-y-1/2 z-10 p-2 bg-orange-500/80 text-white rounded-full hover:bg-orange-500 transition-colors shadow-lg"
+                    >
+                        <ChevronLeft className="h-6 w-6" />
+                    </button>
+                    <button
+                        onClick={nextSlide}
+                        aria-label="Next image"
+                        className="absolute top-1/2 right-3 -translate-y-1/2 z-10 p-2 bg-orange-500/80 text-white rounded-full hover:bg-orange-500 transition-colors shadow-lg"
+                    >
+                        <ChevronRight className="h-6 w-6" />
+                    </button>
+                </>
+            )}
+
+            {/* Dot Indicators */}
             {validImages.length > 1 && (
                 <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
                     {validImages.map((_, idx) => (
@@ -107,8 +143,6 @@ function GallerySlider({ images = [], itemName }) {
     );
 }
 
-// --- ENHANCED MainImage Component ---
-// This component has been updated with the more granular aspect ratio conditions.
 function MainImage({ src, alt }) {
     const [aspectRatioClass, setAspectRatioClass] = useState('aspect-[4/3]'); // Default aspect ratio
     const [isLoading, setIsLoading] = useState(true);
@@ -126,19 +160,17 @@ function MainImage({ src, alt }) {
         img.onload = () => {
             const ratio = img.naturalWidth / img.naturalHeight;
 
-            // --- Extended Conditions ---
-            if (ratio > 2) setAspectRatioClass('aspect-[21/9]');      // Panoramic
-            else if (ratio > 1.6) setAspectRatioClass('aspect-video');   // 16:9 Widescreen
-            else if (ratio > 1.2) setAspectRatioClass('aspect-[4/3]');   // 4:3 Landscape
-            else if (ratio > 0.9) setAspectRatioClass('aspect-square');  // Square-ish
-            else if (ratio > 0.7) setAspectRatioClass('aspect-[3/4]');   // 3:4 Portrait
+            if (ratio > 2) setAspectRatioClass('aspect-[21/9]');       // Panoramic
+            else if (ratio > 1.6) setAspectRatioClass('aspect-video');  // 16:9 Widescreen
+            else if (ratio > 1.2) setAspectRatioClass('aspect-[4/3]');  // 4:3 Landscape
+            else if (ratio > 0.9) setAspectRatioClass('aspect-square'); // Square-ish
+            else if (ratio > 0.7) setAspectRatioClass('aspect-[3/4]');  // 3:4 Portrait
             else setAspectRatioClass('aspect-[9/16]');                 // 9:16 Tall Portrait
 
             setIsLoading(false);
         };
 
         img.onerror = () => {
-            // Keep default aspect ratio on error
             setIsLoading(false);
         };
 
@@ -240,8 +272,8 @@ function OverviewSection({ item }) {
 // --- Main Client Component ---
 export default function AttractionPageClient({ item }) {
     return (
-        <div className="min-h-screen">
-            <AmberBackground />
+        <div className="min-h-screen mt-[70px]">
+            <SharedBackground />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
                 <AnimatedSection className="mb-10">
                     <header>
@@ -266,9 +298,6 @@ export default function AttractionPageClient({ item }) {
                 </AnimatedSection>
 
                 <AnimatedSection className="mb-12">
-                    {/* --- UPDATED LAYOUT --- */}
-                    {/* The fixed aspect ratio has been removed from the gallery's container to allow for */}
-                    {/* dynamic alignment with the new MainImage component. */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                         <div className="w-full">
                             <MainImage src={item.image} alt={`Main image of ${item.name}`} />
