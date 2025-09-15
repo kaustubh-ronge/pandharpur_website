@@ -54,11 +54,7 @@ export const pandharpurEvents = [
   },
   {
     id: 6,
-<<<<<<< HEAD
     title: "Shivaji Jayanti",
-=======
-    title: "Chattrapati Shivaji Maharaj Jayanti",
->>>>>>> c6bbd87266ab7631edab901ab8763b39a202dbf5
     description: "Celebrations honoring Chhatrapati Shivaji Maharaj's birth anniversary.",
     location: "Pandharpur",
     startDate: "02-19",
@@ -66,8 +62,4 @@ export const pandharpurEvents = [
     icon: <Landmark className="h-6 w-6" />,
     color: "bg-red-100"
   }
-<<<<<<< HEAD
 ];
-=======
-];
->>>>>>> c6bbd87266ab7631edab901ab8763b39a202dbf5

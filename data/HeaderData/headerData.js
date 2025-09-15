@@ -7,24 +7,13 @@ import {
 
 export const navItems = [
   { name: "Pandharpur Darshan", href: "/", icon: <Home className="h-5 w-5" /> },
-<<<<<<< HEAD
   { name: "Pandharpur Attractions", href: "/pandharpur-attractions", icon: <MapPin className="h-5 w-5" /> },
   { name: "Pandharpur Festivals", href: "/pandharpur-festivals", icon: <CalendarDays className="h-5 w-5" /> },
   { name: "Yatra&Darshan Guide", href: "/pandharpur-darshan-yatra-guide", icon: <BookOpen className="h-5 w-5" /> },
   { name: "Booking", href: "/pandharpur-bookings", icon: <NotebookPen className="h-5 w-5" /> }
-=======
-  { name: "Pandharpur Attractions", href: "/other-attractions", icon: <MapPin className="h-5 w-5" /> },
-  { name: "Pandharpur Festivals", href: "/festivals", icon: <CalendarDays className="h-5 w-5" /> },
-  { name: "Yatra&Darshan Guide", href: "/guide", icon: <BookOpen className="h-5 w-5" /> },
-  { name: "Booking", href: "/information-page", icon: <NotebookPen className="h-5 w-5" /> }
->>>>>>> c6bbd87266ab7631edab901ab8763b39a202dbf5
 ];
 
 export const quickLinks = [
   { name: "Emergency Contacts", href: "/emergency", icon: <Phone className="h-4 w-4 mr-2" /> },
-<<<<<<< HEAD
   { name: "Help Center", href: "/about", icon: <InfoIcon className="h-4 w-4 mr-2" /> }
-=======
-  { name: "Help Center", href: "/help", icon: <InfoIcon className="h-4 w-4 mr-2" /> }
->>>>>>> c6bbd87266ab7631edab901ab8763b39a202dbf5
 ];
