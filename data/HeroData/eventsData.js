@@ -54,7 +54,7 @@ export const pandharpurEvents = [
   },
   {
     id: 6,
-    title: "Shivaji Jayanti",
+    title: "Chattrapati Shivaji Maharaj Jayanti",
     description: "Celebrations honoring Chhatrapati Shivaji Maharaj's birth anniversary.",
     location: "Pandharpur",
     startDate: "02-19",
