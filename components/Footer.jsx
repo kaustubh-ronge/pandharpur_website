@@ -76,6 +76,10 @@ const Footer = () => {
                 {link.name}
               </Link>
             ))}
+            <Link href="/join-us" className="flex items-center text-gray-300 hover:text-white hover:tracking-wider transition-all duration-300 mb-2">
+              <ChevronRight size={16} className="mr-2" />
+              Join Us
+            </Link>
           </div>
 
         </div>

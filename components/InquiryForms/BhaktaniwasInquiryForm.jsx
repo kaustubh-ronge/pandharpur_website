@@ -49,25 +49,25 @@ export function BhaktaniwasInquiryForm({ bhaktaniwas, onFormSubmit }) {
   }, [isSignedIn, user]);
 
   const handleSubmit = async (event) => {
-    event.preventDefault(); 
+    event.preventDefault();
     if (!isSignedIn) return;
 
     const cleanPhoneNumber = bhaktaniwas.whatsappNumber.replace(/\D/g, '');
-    
+
     const message = `🏠 *New Bhaktaniwas Inquiry via PandharpurDarshan.com*\n\n` +
-                    `Hello, I saw the details for *${bhaktaniwas.name}* on the Pandharpur Darshan website (pandharpurdarshan.com) and would like to inquire about the following:\n\n` +
-                    `👤 *Guest Details:*\n` +
-                    `  • *Name:* ${name}\n` +
-                    `  • *Phone:* ${phone}\n\n` +
-                    `🗓️ *Booking Details:*\n` +
-                    `  • *Check-in:* ${checkIn ? format(checkIn, "PPP") : 'Not specified'}\n` +
-                    `  • *Check-out:* ${checkOut ? format(checkOut, "PPP") : 'Not specified'}\n` +
-                    `  • *Guests:* ${guests || 'Not specified'}\n\n` +
-                    `Please confirm availability and the next steps. Thank you.\n\n` +
-                    `--- \n_This lead was generated from PandharpurDarshan.com_`;
+      `Hello, I saw the details for *${bhaktaniwas.name}* on the Pandharpur Darshan website (pandharpurdarshan.com) and would like to inquire about the following:\n\n` +
+      `👤 *Guest Details:*\n` +
+      `  • *Name:* ${name}\n` +
+      `  • *Phone:* ${phone}\n\n` +
+      `🗓️ *Booking Details:*\n` +
+      `  • *Check-in:* ${checkIn ? format(checkIn, "PPP") : 'Not specified'}\n` +
+      `  • *Check-out:* ${checkOut ? format(checkOut, "PPP") : 'Not specified'}\n` +
+      `  • *Guests:* ${guests || 'Not specified'}\n\n` +
+      `Please confirm availability and the next steps. Thank you.\n\n` +
+      `--- \n_This lead was generated from PandharpurDarshan.com_`;
 
     const encodedMessage = encodeURIComponent(message);
-    
+
     let whatsappUrl;
 
     if (isMobileDevice()) {
@@ -79,7 +79,7 @@ export function BhaktaniwasInquiryForm({ bhaktaniwas, onFormSubmit }) {
       // Use the web-specific URL to force open a browser tab.
       whatsappUrl = `https://web.whatsapp.com/send?phone=${cleanPhoneNumber}&text=${encodedMessage}`;
     }
-    
+
     // This part runs for both mobile and desktop
     const link = document.createElement('a');
     link.href = whatsappUrl;
@@ -88,7 +88,7 @@ export function BhaktaniwasInquiryForm({ bhaktaniwas, onFormSubmit }) {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    
+
     logInquiryLead({
       name,
       phone,
@@ -124,8 +124,8 @@ export function BhaktaniwasInquiryForm({ bhaktaniwas, onFormSubmit }) {
   return (
     <Card className="border-none shadow-none bg-transparent">
       <CardContent className="p-0">
-        <motion.form 
-          onSubmit={handleSubmit} 
+        <motion.form
+          onSubmit={handleSubmit}
           className="space-y-6"
           variants={containerVariants}
           initial="hidden"
@@ -153,7 +153,7 @@ export function BhaktaniwasInquiryForm({ bhaktaniwas, onFormSubmit }) {
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar mode="single" selected={checkIn} onSelect={(d) => { setCheckIn(d); setCheckInCalendarOpen(false); if(checkOut && d > checkOut) setCheckOut(null); }} disabled={(d) => d < today} initialFocus />
+                  <Calendar mode="single" selected={checkIn} onSelect={(d) => { setCheckIn(d); setCheckInCalendarOpen(false); if (checkOut && d > checkOut) setCheckOut(null); }} disabled={(d) => d < today} initialFocus />
                 </PopoverContent>
               </Popover>
             </div>

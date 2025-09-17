@@ -77,6 +77,11 @@ export function HeaderClient({ user }) {
                                         <Link href={item.href} className="flex items-center text-sm">{item.icon}{item.name}</Link>
                                     </DropdownMenuItem>
                                 ))}
+                                <DropdownMenuItem asChild>
+                                    <Link href="/join-us" className="flex items-center text-sm">
+                                        <span className="mr-2">🤝</span>Join Us
+                                    </Link>
+                                </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
 
@@ -161,6 +166,11 @@ export function HeaderClient({ user }) {
                                                 </Link>
                                             </SheetClose>
                                         ))}
+                                        <SheetClose asChild>
+                                            <Link href="/join-us" className="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-md">
+                                                <span className="mr-2">🤝</span>Join Us
+                                            </Link>
+                                        </SheetClose>
                                     </div>
                                     <hr />
                                     {/* --- LANGUAGE DROPDOWN FOR MOBILE MENU --- */}

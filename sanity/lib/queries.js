@@ -247,3 +247,5 @@ export const getAttractionBySlugQuery = `
 export const getAttractionSlugsQuery = `
 *[_type == "otherAttraction" && defined(slug.current)][].slug.current
 `;
+
+export const getOwnerWhatsAppNumberQuery = `*[_type == "ownerContact"][0]{whatsappNumber}`;
