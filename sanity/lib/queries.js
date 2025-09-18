@@ -14,7 +14,6 @@ export const getAllHotelsQuery = `
   } | order(sortOrder asc, isFeatured desc, _createdAt desc)
 `;
 
-// This query remains unchanged.
 // It also now fetches both the single whatsappNumber and the contactNumbers array.
 export const getHotelBySlugQuery = `
   *[_type == "hotel" && slug.current == $slug][0] {
@@ -44,7 +43,6 @@ export const getHotelBySlugQuery = `
     subscriptionPlan
   }
 `;
-// / --- NEW BHAKTANIWAS QUERIES ---
 
 // Fetches all bhaktaniwas for the list view
 export const getAllBhaktaniwasQuery = `
@@ -181,7 +179,6 @@ export const getAllTravelsQuery = `
 `;
 
 // This query fetches one specific travel option by its slug for the detail page
-// This query fetches one specific travel option by its slug for the detail page
 export const getTravelBySlugQuery = `
   *[_type == "travel" && slug.current == $slug][0] {
     _id,
@@ -202,8 +199,6 @@ export const getTravelBySlugQuery = `
     "gallery": gallery[].asset->url 
   }
 `;
-
-// --- NEW OTHER ATTRACTION QUERIES ---
 
 // Fetches all categories and their associated attractions for the list page.
 export const getAttractionsByCategoryQuery = `
@@ -249,3 +244,34 @@ export const getAttractionSlugsQuery = `
 `;
 
 export const getOwnerWhatsAppNumberQuery = `*[_type == "ownerContact"][0]{whatsappNumber}`;
+
+// Fetches all Kirtankars for the list view
+export const getAllKirtankarsQuery = `
+  *[_type == "kirtankar" && subscriptionPlan != 'none']{
+    _id,
+    name,
+    "slug": slug.current,
+    "image": image.asset->url,
+    description,
+    hometown,
+    specialization,
+    whatsappNumber,
+    isFeatured,
+    subscriptionPlan,
+    "sortOrder": select(
+      subscriptionPlan == 'premium' => 1,
+      subscriptionPlan == 'standard' => 2,
+      subscriptionPlan == 'basic' => 3
+    )
+  } | order(sortOrder asc, isFeatured desc, _createdAt desc)
+`;
+
+// Fetches one specific Kirtankar by their slug for the detail page
+export const getKirtankarBySlugQuery = `
+  *[_type == "kirtankar" && slug.current == $slug][0] {
+    ...,
+    "slug": slug.current,
+    "image": image.asset->url,
+    "gallery": gallery[].asset->url
+  }
+`;

@@ -28,9 +28,11 @@ model User {
   chatSessions ChatSession[]
 
   // --- ADD THESE LINES TO YOUR USER MODEL ---
-  leads           Lead[]
-  inquiries       Inquiry[]
-  joinUsInquiries JoinUsInquiry[]
+  leads              Lead[]
+  inquiries          Inquiry[]
+  joinUsInquiries    JoinUsInquiry[]
+  kirtankarLeads     KirtankarLead[]
+  kirtankarInquiries KirtankarInquiry[]
 }
 
 model ManualTrip {
@@ -131,4 +133,28 @@ model JoinUsInquiry {
   // ✅ ADD THESE TWO LINES TO ENABLE USER TRACKING
   userId String? // Foreign key to the User model
   user   User?   @relation(fields: [userId], references: [id])
+}
+
+model KirtankarLead {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  userName   String
+  userPhone  String
+  actionType String // e.g., "details_view", "whatsapp_inquiry"
+  entityId   String? // The slug of the kirtankar
+  entityType String? // Will be "kirtankar"
+  userId     String? // Nullable for anonymous "details_view" clicks
+  user       User?    @relation(fields: [userId], references: [id])
+}
+
+model KirtankarInquiry {
+  id            String    @id @default(cuid())
+  createdAt     DateTime  @default(now())
+  userName      String
+  userPhone     String
+  eventDate     DateTime? // The requested date for the kirtan
+  eventType     String? // e.g., "Home Kirtan", "Public Event"
+  kirtankarSlug String
+  userId        String // Non-nullable, as user must be logged in to inquire
+  user          User      @relation(fields: [userId], references: [id])
 }

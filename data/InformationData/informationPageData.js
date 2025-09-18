@@ -1,6 +1,5 @@
-import React from 'react';
-import { client } from "@/sanity/lib/sanity";
-import { Hotel, Utensils, Bus, Home, MapPin } from "lucide-react";
+import React from "react";
+import { Hotel, Utensils, Bus, Home, Mic } from "lucide-react";
 
 // This is the FINAL list of categories for your page.
 export const categories = [
@@ -8,17 +7,9 @@ export const categories = [
     id: "hotel",
     title: "Hotel Information",
     icon: <Hotel className="h-6 w-6" />,
-    descriptionTemplate: "View our {count} partner hotels",
+    description: "Included Hotels, Motels and Lodges",
     color: "bg-blue-100 text-blue-600",
-    link: "/pandharpur-bookings/hotels" // This has a link
-  },
-  {
-    id: "temple",
-    title: "Temple Information",
-    icon: <MapPin className="h-6 w-6" />,
-    descriptionTemplate: "Explore all {count} temples",
-    color: "bg-red-100 text-red-600",
-    link: "/pandharpur-bookings/temples" // This also has a link
+    link: "/pandharpur-bookings/hotels", // This has a link
   },
   {
     id: "bhaktniwas",
@@ -26,7 +17,7 @@ export const categories = [
     icon: <Home className="h-6 w-6" />,
     description: "Affordable pilgrim accommodations",
     color: "bg-orange-100 text-orange-600",
-    link: "/pandharpur-bookings/bhaktaniwas"
+    link: "/pandharpur-bookings/bhaktaniwas",
   },
   {
     id: "restaurant",
@@ -34,7 +25,7 @@ export const categories = [
     icon: <Utensils className="h-6 w-6" />,
     description: "Prasad & Maharashtrian cuisine",
     color: "bg-green-100 text-green-600",
-    link:"/pandharpur-bookings/restaurants"
+    link: "/pandharpur-bookings/restaurants",
   },
   {
     id: "travel",
@@ -42,7 +33,14 @@ export const categories = [
     icon: <Bus className="h-6 w-6" />,
     description: "Buses & taxis to Pandharpur",
     color: "bg-purple-100 text-purple-600",
-    link:"/pandharpur-bookings/travel"
+    link: "/pandharpur-bookings/travel",
+  },
+  {
+    id: "kirtankars",
+    title: "Kirtankars",
+    icon: <Mic className="h-6 w-6" />,
+    description: "Invite the sacred tradition of Kirtan to your home or event.",
+    color: "bg-orange-100 text-orange-600",
+    link: "/pandharpur-bookings/kirtankars",
   },
 ];
-
