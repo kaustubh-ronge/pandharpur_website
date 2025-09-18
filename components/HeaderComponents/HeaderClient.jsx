@@ -130,7 +130,7 @@ export function HeaderClient({ user }) {
                                         A list of navigation links and quick access options.
                                     </SheetDescription>
                                 </SheetHeader>
-                                <div className="flex flex-col gap-y-4 mt-4">
+                                <div className="flex flex-col gap-y-4 mt-4 overflow-y-auto max-h-[calc(100vh-80px)]">
                                     <div className="pb-4 border-b">
                                         <SignedIn>
                                             <div className="flex items-center gap-4">
