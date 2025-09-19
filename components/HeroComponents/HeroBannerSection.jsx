@@ -21,7 +21,7 @@ const HeroBannerSection = () => {
               i === 2 ? 'bottom-20 right-20 w-20 h-20 bg-orange-300' :
                 i === 3 ? 'top-20 left-60 w-32 h-32 bg-orange-400' :
                   i === 4 ? 'bottom-40 left-24 w-28 h-28 bg-orange-500' :
-                    'top-40 right-10 w-36 h-36 bg-orange-600'} rounded-full opacity-${i === 1 ? 30 : i === 2 ? 20 : i === 3 ? 25 : i === 4 ? 15 : 10}`}
+                    'top-40 right-10 w-36 h-36 bg-orange-300'} rounded-full opacity-${i === 1 ? 27 : i === 2 ? 10 : i === 3 ? 25 : i === 4 ? 15 : 10}`}
             animate={{
               y: i <= 3 ? [0, i === 1 ? 20 : i === 2 ? -20 : 25, 0] : undefined,
               x: i >= 4 ? [0, i === 4 ? 30 : -30, 0] : undefined
