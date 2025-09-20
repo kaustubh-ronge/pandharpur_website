@@ -125,40 +125,6 @@ export const getTempleBySlugQuery = `
   }
 `;
 
-// // This query fetches all restaurants for the list view
-// export const getAllRestaurantsQuery = `
-//   *[_type == "restaurant"] | order(isFeatured desc, _createdAt desc) {
-//     _id,
-//     name,
-//     "slug": slug.current,
-//     cuisineType,
-//     priceIndicator,
-//     description,
-//     "image": image.asset->url,
-//     isFeatured
-//   }
-// `;
-
-// // This query fetches one specific restaurant by its slug for the detail page
-// export const getRestaurantBySlugQuery = `
-//   *[_type == "restaurant" && slug.current == $slug][0] {
-//     _id,
-//     name,
-//     "slug": slug.current,
-//     isFeatured,
-//     address,
-//     description,
-//     detailedDescription,
-//     "image": image.asset->url,
-//     phoneNumber,
-//     googleMapsEmbedUrl,
-//     cuisineType,
-//     specialtyDish,
-//     mealTypes,
-//     priceIndicator,
-//     "gallery": gallery[].asset->url
-//   }
-// `;
 
 // This query fetches all travel options for the list view
 export const getAllTravelsQuery = `
