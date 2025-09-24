@@ -26,7 +26,7 @@ export const legalLinks = [
 export const contactDetails = {
   address: "Pandharpur, Maharashtra, India",
   phone: "+91 12345 67890",
-  email: "info@pandharpurdarshan.in",
+  email: "pandharpurdarshan@gmail.com",
   icons: {
     address: <MapPin className="mr-3 h-5 w-5 flex-shrink-0" />,
     phone: <Phone className="mr-3 h-5 w-5 flex-shrink-0" />,
@@ -34,12 +34,15 @@ export const contactDetails = {
   },
 };
 
+
+
 export const socialLinks = [
-  { href: "#", icon: <Linkedin size={20} /> },
-  { href: "#", icon: <Instagram size={20} /> },
-  { href: "#", icon: <Youtube size={20} /> },
-  { href: "#", icon: <Facebook size={20} /> }, // Changed from Twitter to Facebook
+  { name: "LinkedIn", href: "https://www.linkedin.com/company/vithai-software-solutions/", icon: <Linkedin size={20} /> },
+  { name: "Instagram", href: "https://www.instagram.com/pandharpur__darshan", icon: <Instagram size={20} /> },
+  { name: "YouTube", href: "#", icon: <Youtube size={20} /> },
+  { name: "Facebook", href: "#", icon: <Facebook size={20} /> }, // Changed from Twitter to Facebook
 ];
+
 
 // Placeholder images for the gallery
 export const galleryImages = [

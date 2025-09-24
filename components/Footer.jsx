@@ -11,6 +11,14 @@ import {
   footerBottomLinks,
 } from '@/data/FooterData/footer';
 
+//  Define hover colors mapping
+const hoverColors = {
+  LinkedIn: "hover:bg-blue-600 hover:text-white",   // LinkedIn blue
+  Instagram: "hover:bg-pink-500 hover:text-white", // Insta pink
+  YouTube: "hover:bg-red-600 hover:text-white",    // YouTube red
+  Facebook: "hover:bg-blue-500 hover:text-white",  // FB blue
+};
+
 const Footer = () => {
   return (
     <footer className="container-fluid bg-gray-900 text-gray-300 pt-16 mt-24">
@@ -29,7 +37,60 @@ const Footer = () => {
           </div>
 
           {/* Column 2: Contact */}
+
           <div>
+            <h4 className="text-white text-xl font-semibold mb-4">Contact</h4>
+
+            {/* Address (just text) */}
+            <p className="mb-3 flex items-start">
+              {contactDetails.icons.address}
+              {contactDetails.address}
+            </p>
+
+            {/* Phone (clickable) */}
+            <p className="mb-3 flex items-center">
+              {contactDetails.icons.phone}
+              <a
+                href={`tel:${contactDetails.phone.replace(/\s+/g, "")}`}
+                className="hover:text-white transition-colors duration-300"
+              >
+                {contactDetails.phone}
+              </a>
+            </p>
+
+            {/* Email (clickable) */}
+            <p className="mb-3 flex items-center">
+              {contactDetails.icons.email}
+              <a
+                href={`mailto:${contactDetails.email}`}
+                className="hover:text-white transition-colors duration-300"
+              >
+                {contactDetails.email}
+              </a>
+            </p>
+
+            {/* Social Links */}
+            <div className="flex pt-2 space-x-2">
+              {socialLinks.map((social, index) => (
+                <a
+                  key={index}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`w-9 h-9 border border-gray-400 rounded-full flex items-center justify-center text-gray-300 transition-colors duration-300 
+                    ${hoverColors[social.name] || "hover:bg-white hover:text-gray-900"}`}
+                  aria-label={`Link to ${social.name}`}
+                >
+                  {social.icon}
+                </a>
+              ))}
+            </div>
+          </div>
+
+
+
+
+          {/* <div>
             <h4 className="text-white text-xl font-semibold mb-4">Contact</h4>
             <p className="mb-3 flex items-start">{contactDetails.icons.address}{contactDetails.address}</p>
             <p className="mb-3 flex items-center">{contactDetails.icons.phone}{contactDetails.phone}</p>
@@ -39,14 +100,17 @@ const Footer = () => {
                 <a
                   key={index}
                   href={social.href}
-                  className="w-9 h-9 border border-gray-400 rounded-full flex items-center justify-center text-gray-300 hover:bg-white hover:text-gray-900 transition-colors duration-300"
-                  aria-label={`Link to ${social.href}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                 className={`w-9 h-9 border border-gray-400 rounded-full flex items-center justify-center text-gray-300 transition-colors duration-300 
+                    ${hoverColors[social.name] || "hover:bg-white hover:text-gray-900"}`}
+                  aria-label={`Link to ${social.name}`}
                 >
                   {social.icon}
                 </a>
               ))}
             </div>
-          </div>
+          </div> */}
 
           {/* Column 3: Gallery */}
           <div>
