@@ -13,7 +13,7 @@ const fetchSanityDocuments = (schemaType) => {
 };
 
 export default async function sitemap() {
-  const baseUrl = 'https://yourdomain.com'; // ⚠️ Replace with your actual domain
+  const baseUrl = 'https://www.pandharpurdarshan.com'; // ⚠️ Replace with your actual domain
 
   // --- 1. Fetch all dynamic content from Sanity concurrently ---
   const [
