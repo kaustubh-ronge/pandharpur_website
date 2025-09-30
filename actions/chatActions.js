@@ -464,7 +464,7 @@ You are programmed to perform the following 20 key functions seamlessly:
 `;
 
 const model = genAI.getGenerativeModel({
-  model: 'gemini-1.5-flash-latest',
+  model: 'gemini-2.5-flash-latest',
   systemInstruction: BIG_SYSTEM_PROMPT,
 });
 

@@ -25,7 +25,7 @@ export async function generateAiSchedule(formData) {
     );
 
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
     const { prompt, date } = formData;
     const detailedPrompt = `
       You are an expert personal scheduler. A user needs a detailed schedule for the date: ${format(date, "PPPP")}.

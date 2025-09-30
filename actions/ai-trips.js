@@ -25,7 +25,7 @@ export async function generateAiTrip(formData) {
     );
 
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
     const { prompt, duration, people, budget } = formData;
     const detailedPrompt = `
       You are a world-class travel expert for Pandharpur, India. Create a hyper-detailed, step-by-step itinerary.
