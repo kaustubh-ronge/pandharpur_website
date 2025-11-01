@@ -17,7 +17,7 @@ function PageHeader({ title, subtitle }) {
     </div>
   );
 }
-// 
+// git
 // --- Main Page Component ---
 export default async function HotelsPage() {
   const hotels = await client.fetch(getAllHotelsQuery);

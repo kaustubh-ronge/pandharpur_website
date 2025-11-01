@@ -25,7 +25,7 @@ export const legalLinks = [
 
 export const contactDetails = {
   address: "Pandharpur, Maharashtra, India",
-  phone: "+91 12345 67890",
+  phone: "+917498444684",
   email: "pandharpurdarshan@gmail.com",
   icons: {
     address: <MapPin className="mr-3 h-5 w-5 flex-shrink-0" />,

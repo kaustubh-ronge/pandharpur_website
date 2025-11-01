@@ -37,8 +37,8 @@ export const pandharpurEvents = [
     title: "Kartiki Ekadashi",
     description: "Winter pilgrimage of Warkaris with special night prayers.",
     location: "Pandharpur",
-    startDate: "11-15",
-    endDate: "11-20",
+    startDate: "1-11",
+    endDate: "3-11",
     icon: <Droplets className="h-6 w-6" />,
     color: "bg-purple-100"
   },
