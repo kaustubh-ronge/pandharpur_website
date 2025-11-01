@@ -7,11 +7,27 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
 // --- 1. IMPORT THE GOOGLE TRANSLATE MANAGER ---
 
+// export const metadata = {
+//   title: "Pandharpur Darshan",
+//   description: "Pandharpur Darshan",
+//   content:
+//     "Plan your Pandharpur Darshan – find details about the yatra, temple timings, festivals, accommodation, travel guide, and booking options.",
+// };
+
+
 export const metadata = {
   title: "Pandharpur Darshan",
   description: "Pandharpur Darshan",
   content:
     "Plan your Pandharpur Darshan – find details about the yatra, temple timings, festivals, accommodation, travel guide, and booking options.",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
 };
 
 export default function MainLayout({ children }) {
