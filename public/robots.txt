@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /studio
+Sitemap: https://pandharpurdarshan.com/sitemap.xml
