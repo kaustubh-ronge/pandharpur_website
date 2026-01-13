@@ -44,7 +44,7 @@ export default function HotelCard({ hotel }) {
     try {
       await logDetailsView(hotel.slug, "hotel");
     } catch (error) {
-      console.error("Failed to log details view:", error);
+      // Error logging details view - silently fail
     }
   };
 

@@ -1,5 +1,3 @@
-// File: app/(main)/pandharpur-darshan-yatra-guide/_components/DeleteConfirmation.jsx
-
 "use client";
 
 import { Trash2 } from "lucide-react";

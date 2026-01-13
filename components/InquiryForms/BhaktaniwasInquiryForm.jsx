@@ -94,10 +94,6 @@ export function BhaktaniwasInquiryForm({ bhaktaniwas, onFormSubmit }) {
       phone,
       bhaktaniwasSlug: bhaktaniwas.slug,
       entityType: 'bhaktaniwas'
-    }).then(result => {
-      if (!result.success) {
-        console.error("Failed to log inquiry in the background:", result.error);
-      }
     });
 
     if (onFormSubmit) onFormSubmit();

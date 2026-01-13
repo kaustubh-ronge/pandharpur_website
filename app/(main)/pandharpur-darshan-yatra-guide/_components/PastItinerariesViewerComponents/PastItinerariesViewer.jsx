@@ -1,5 +1,3 @@
-// File: app/(main)/pandharpur-darshan-yatra-guide/_components/PastItinerariesViewer.jsx
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";

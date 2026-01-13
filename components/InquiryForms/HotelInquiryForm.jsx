@@ -95,10 +95,6 @@ export function HotelInquiryForm({ hotel, onFormSubmit }) {
       phone,
       hotelSlug: hotel.slug,
       entityType: 'hotel'
-    }).then(result => {
-      if (!result.success) {
-        console.error("Failed to log inquiry in the background:", result.error);
-      }
     });
 
     if (onFormSubmit) onFormSubmit();

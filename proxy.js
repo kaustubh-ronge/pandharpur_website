@@ -1,6 +1,8 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
 
+/**
+ * Defines public routes that don't require authentication
+ */
 const isPublicRoute = createRouteMatcher([
   "/",
   "/about(.*)",
@@ -12,12 +14,14 @@ const isPublicRoute = createRouteMatcher([
   "/pandharpur-festivals(.*)",
 ]);
 
+/**
+ * Clerk middleware that protects non-public routes
+ */
 export default clerkMiddleware(async (auth, req) => {
   if (!isPublicRoute(req)) {
     await auth.protect();
   }
 });
-
 
 export const config = {
   matcher: [

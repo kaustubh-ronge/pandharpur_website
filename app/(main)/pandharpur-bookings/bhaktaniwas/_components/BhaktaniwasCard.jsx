@@ -45,7 +45,7 @@ export default function BhaktaniwasCard({ bhaktaniwas }) {
     try {
       await logDetailsView(bhaktaniwas.slug, "bhaktaniwas");
     } catch (error) {
-      console.error("Failed to log details view:", error);
+      // Error logging details view - silently fail
     }
   };
 

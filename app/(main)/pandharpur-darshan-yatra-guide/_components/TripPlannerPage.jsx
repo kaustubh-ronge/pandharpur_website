@@ -1,5 +1,3 @@
-// File: app/(main)/pandharpur-darshan-yatra-guide/_components/TripPlannerPage.jsx
-
 "use client";
 
 import React, { useState, useRef } from 'react';
@@ -7,22 +5,12 @@ import { useUser } from '@clerk/nextjs';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-
-
-// --- Server Action & Custom Hook Imports ---
 import useFetch from '@/hooks/useFetch';
 import { getManualTrips, deleteManualTrip, createManualTrip } from '@/actions/manual-trips';
 import { generateAiTrip, getAiTrips, deleteAiTrip } from '@/actions/ai-trips';
 import { generateAiRoute, getAiRoutes, deleteAiRoute } from '@/actions/ai-routes';
 import { generateAiSchedule, getAiSchedules, deleteAiSchedule } from '@/actions/ai-schedules';
-
-
-
-
 import { toast } from "sonner";
-
-
-// --- Icon Imports ---
 import {Loader2} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";

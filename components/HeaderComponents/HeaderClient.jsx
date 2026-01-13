@@ -35,8 +35,6 @@ export function HeaderClient({ user }) {
         setSelectedLang(langName);
         if (window.changeGoogleTranslateLanguage) {
             window.changeGoogleTranslateLanguage(langCode);
-        } else {
-            console.error("Google Translate function not available.");
         }
     };
 

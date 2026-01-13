@@ -1,5 +1,3 @@
-// File: app/(main)/pandharpur-darshan-yatra-guide/_components/PlannerColumn.jsx
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { User, Sparkles, Route, Clock4 } from "lucide-react";
 import ManualTripPlanner from "../PlannerComponents/ManualTripPlanner";

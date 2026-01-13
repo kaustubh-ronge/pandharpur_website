@@ -19,7 +19,6 @@ const GoogleMapComponent = ({ locations, GOOGLE_MAPS_API_KEY }) => {
 
   const initMap = useCallback(async () => {
     if (!GOOGLE_MAPS_API_KEY) {
-      console.error("Google Maps API Key is missing.");
       return;
     }
     try {
@@ -47,7 +46,7 @@ const GoogleMapComponent = ({ locations, GOOGLE_MAPS_API_KEY }) => {
         map: mapInstance.current,
       });
     } catch (e) {
-      console.error("Error loading Google Maps:", e);
+      // Error loading Google Maps - silently fail
     }
   }, [GOOGLE_MAPS_API_KEY]);
 

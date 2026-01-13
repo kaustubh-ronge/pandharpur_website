@@ -3,14 +3,17 @@
 import { db } from "@/lib/prisma";
 import { checkUser } from "@/lib/checkUser";
 
-// Action for the Kirtankar Inquiry Form
+/**
+ * Logs a Kirtankar inquiry from an authenticated user
+ * @param {Object} inquiryData - Contains name, phone, eventDate, eventType, and kirtankarSlug
+ * @returns {Object} Success status
+ */
 export async function logKirtankarInquiry(inquiryData) {
   try {
-    // User must be authenticated to make an inquiry
     const user = await checkUser();
     if (!user) {
       return { success: false, error: "User is not authenticated." };
-    } // Log the master lead record
+    }
 
     await db.kirtankarLead.create({
       data: {
@@ -21,7 +24,7 @@ export async function logKirtankarInquiry(inquiryData) {
         entityType: "kirtankar",
         userId: user.id,
       },
-    }); // Log the specific inquiry record
+    });
 
     await db.kirtankarInquiry.create({
       data: {
@@ -36,19 +39,21 @@ export async function logKirtankarInquiry(inquiryData) {
 
     return { success: true };
   } catch (error) {
-    console.error("Failed to log Kirtankar inquiry:", error);
     return { success: false, error: "Database error during inquiry logging." };
   }
 }
 
-// Action for the "Details" button click on a Kirtankar card
+/**
+ * Logs a details view event for a Kirtankar (anonymous users allowed)
+ * @param {string} entitySlug - Kirtankar slug identifier
+ * @returns {Object} Success status
+ */
 export async function logKirtankarDetailsView(entitySlug) {
   if (!entitySlug) {
     return { success: false, error: "Kirtankar slug is required." };
   }
 
   try {
-    // User can be anonymous for viewing details
     const user = await checkUser();
 
     await db.kirtankarLead.create({
@@ -64,7 +69,6 @@ export async function logKirtankarDetailsView(entitySlug) {
 
     return { success: true };
   } catch (error) {
-    console.error("Failed to log Kirtankar details view:", error);
     return {
       success: false,
       error: "Database error during details view logging.",

@@ -8,12 +8,17 @@ import { TravelsInquiryForm } from "./TravelsInquiryForm";
 import { KirtankarInquiryForm } from "./KirtankarInquiryForm";
 import JoinUsInquiryForm from "./JoinUsInquiryForm";
 
-// ✅ Add ownerWhatsAppNumber to props
+/**
+ * Inquiry drawer component that displays different inquiry forms based on type
+ * @param {string} type - Type of inquiry (hotel, bhaktaniwas, travel, kirtankar, join-us)
+ * @param {Object} data - Data object containing entity information
+ * @param {ReactNode} children - Trigger element for opening the drawer
+ * @param {string} ownerWhatsAppNumber - WhatsApp number for the owner
+ */
 export function InquiryDrawer({ type, data, children, ownerWhatsAppNumber }) {
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
 
-  // ✅ Make title and description dynamic based on type
   const title = type === 'join-us' ? "Partner with Us" : `Inquiry for ${data?.name}`;
   const description = type === 'join-us'
     ? "Fill out the form below to get in touch. Your details will be sent to us via WhatsApp."

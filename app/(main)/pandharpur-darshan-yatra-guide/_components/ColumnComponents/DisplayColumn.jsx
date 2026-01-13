@@ -1,5 +1,3 @@
-// File: app/(main)/pandharpur-darshan-yatra-guide/_components/DisplayColumn.jsx
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import { Map, History } from "lucide-react";

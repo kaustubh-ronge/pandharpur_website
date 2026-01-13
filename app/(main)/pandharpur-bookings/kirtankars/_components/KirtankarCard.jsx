@@ -32,7 +32,7 @@ export default function KirtankarCard({ kirtankar }) {
         try {
             await logKirtankarDetailsView(kirtankar.slug);
         } catch (error) {
-            console.error("Failed to log kirtankar details view:", error);
+            // Error logging details view - silently fail
         }
     };
 

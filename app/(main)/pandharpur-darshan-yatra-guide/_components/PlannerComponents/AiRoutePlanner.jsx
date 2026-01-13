@@ -32,8 +32,6 @@ function AiRoutePlanner({ setMapLocations, onPlanCreated, useFetch, zodResolver,
     if (result?.success) {
       toast.success("AI Routes generated successfully! Viewing details below.");
 
-      console.log("DEBUG result.route:", result.route); // 👈 see the structure
-
       const routes = result.route?.response?.routes || result.route?.routes || [];
       const locs = routes.flatMap(r =>
         r.steps?.map(s => ({

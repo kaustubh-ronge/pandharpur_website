@@ -7,8 +7,11 @@ import { motion } from 'framer-motion';
 import LanguageSelection from './LanguageSelection';
 import { useRef, useEffect } from 'react';
 
-// ✅ FIX: "Unique key prop" error
-// Every item returned in the map now has a unique key, including plain text spans.
+/**
+ * Formats text with markdown-style bold formatting
+ * @param {string} text - Text to format
+ * @returns {JSX.Element} Formatted text component
+ */
 const FormattedText = ({ text }) => {
   if (!text) return null;
   const parts = text.split(/(\*\*.*?\*\*)/g);
@@ -18,14 +21,12 @@ const FormattedText = ({ text }) => {
         if (part.startsWith('**') && part.endsWith('**')) {
           return <strong key={index} className="font-bold text-orange-900">{part.slice(2, -2)}</strong>;
         }
-        // Wrap plain text in a span with a key too
         return <span key={index}>{part}</span>;
       })}
     </span>
   );
 };
 
-// --- DATA: Suggested Questions ---
 const SUGGESTIONS = {
   english: ["Darshan Timings", "Best Hotels", "History of Pandharpur", "How to reach?"],
   marathi: ["दर्शन वेळा", "उत्तम हॉटेल्स", "पंढरपूरचा इतिहास", "कसे पोहोचायचे?"],

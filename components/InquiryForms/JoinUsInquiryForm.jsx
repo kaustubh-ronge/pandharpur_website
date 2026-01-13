@@ -88,8 +88,6 @@ const JoinUsInquiryForm = ({ ownerWhatsAppNumber }) => {
             createJoinUsInquiry({ name, phone, entityType, message }).then(result => {
                 if (result.success) {
                     toast.success("Your inquiry has been recorded!");
-                } else {
-                    console.error("Failed to save Join Us inquiry to DB:", result.error);
                 }
             });
 
@@ -99,7 +97,6 @@ const JoinUsInquiryForm = ({ ownerWhatsAppNumber }) => {
             setMessage("");
 
         } catch (error) {
-            console.error(error);
             toast.error("An unexpected error occurred. Please try again.");
         } finally {
             setIsSubmitting(false);

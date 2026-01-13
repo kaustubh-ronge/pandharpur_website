@@ -1,25 +1,23 @@
-
-
-// FILE: actions/leadActions.js
 "use server";
 
 import { db } from "@/lib/prisma";
 import { checkUser } from "@/lib/checkUser";
 
-// Action for the Inquiry Form
+/**
+ * Logs an inquiry lead for hotels, bhaktaniwas, or travel options
+ * @param {Object} leadData - Contains name, phone, entityType, and entity slugs
+ * @returns {Object} Success status
+ */
 export async function logInquiryLead(leadData) {
   try {
-    // Ensure user exists in Prisma (linked to Clerk)
     const user = await checkUser();
     if (!user) {
       return { success: false, error: "User is not authenticated." };
     }
 
-    // Determine entity type and slug based on the data provided
-    let entityType = leadData.entityType || "hotel";
-    let entityId = leadData.hotelSlug || leadData.bhaktaniwasSlug || leadData.travelSlug;
+    const entityType = leadData.entityType || "hotel";
+    const entityId = leadData.hotelSlug || leadData.bhaktaniwasSlug || leadData.travelSlug;
 
-    // Write to the master Lead table
     await db.lead.create({
       data: {
         userName: leadData.name,
@@ -27,11 +25,10 @@ export async function logInquiryLead(leadData) {
         actionType: "whatsapp_inquiry_form",
         entityId: entityId,
         entityType: entityType,
-        userId: user.id, // ✅ guaranteed valid Prisma User ID
+        userId: user.id,
       },
     });
 
-    // Write to the clean Inquiry table
     await db.inquiry.create({
       data: {
         userName: leadData.name,
@@ -39,25 +36,28 @@ export async function logInquiryLead(leadData) {
         hotelSlug: leadData.hotelSlug || null,
         bhaktaniwasSlug: leadData.bhaktaniwasSlug || null,
         travelSlug: leadData.travelSlug || null,
-        userId: user.id, // ✅ guaranteed valid Prisma User ID
+        userId: user.id,
       },
     });
 
     return { success: true };
   } catch (error) {
-    console.error("Failed to log inquiry lead:", error);
     return { success: false, error: "Database error" };
   }
 }
 
-// Action for the "Details" button click
+/**
+ * Logs a details view event for an entity (anonymous users allowed)
+ * @param {string} entitySlug - Entity slug identifier
+ * @param {string} entityType - Type of entity (default: "hotel")
+ * @returns {Object} Success status
+ */
 export async function logDetailsView(entitySlug, entityType = "hotel") {
   if (!entitySlug) {
     return { success: false, error: "Entity slug is required." };
   }
 
   try {
-    // Ensure user exists in Prisma (optional for details)
     const user = await checkUser();
 
     await db.lead.create({
@@ -67,13 +67,12 @@ export async function logDetailsView(entitySlug, entityType = "hotel") {
         actionType: "details_view",
         entityId: entitySlug,
         entityType: entityType,
-        userId: user ? user.id : null, // ✅ nullable FK works for Lead
+        userId: user ? user.id : null,
       },
     });
 
     return { success: true };
   } catch (error) {
-    console.error("Failed to log details view:", error);
     return { success: false, error: "Database error" };
   }
 }

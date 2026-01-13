@@ -1,27 +1,21 @@
-
 "use server";
 import { checkUser } from "@/lib/checkUser";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { db } from "@/lib/prisma";
 
+/**
+ * Generates AI-powered route suggestions from a start location to Pandharpur
+ * @param {Object} formData - Contains startLocation
+ * @returns {Object} Success status and generated route data
+ */
 export async function generateAiRoute(formData) {
-  console.log("\n--- [ACTION: generateAiRoute] Received a new request ---");
   try {
-    console.log("[ACTION: generateAiRoute] Step 1: Checking user...");
     const user = await checkUser();
     if (!user) throw new Error("Authentication failed.");
-    console.log(
-      `[ACTION: generateAiRoute] Step 1 SUCCESS: User authenticated (ID: ${user.id})`
-    );
 
-    console.log(
-      "[ACTION: generateAiRoute] Step 2: Checking for GEMINI_API_KEY..."
-    );
-    if (!process.env.GEMINI_API_KEY)
+    if (!process.env.GEMINI_API_KEY) {
       throw new Error("CRITICAL: GEMINI_API_KEY is not configured.");
-    console.log(
-      "[ACTION: generateAiRoute] Step 2 SUCCESS: GEMINI_API_KEY found."
-    );
+    }
 
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({
@@ -52,45 +46,27 @@ export async function generateAiRoute(formData) {
       CRITICAL: The ENTIRE output must be a single, valid JSON. Mark one route as isCheapest: true. Provide coordinates for each step.
     `;
 
-    console.log(
-      "[ACTION: generateAiRoute] Step 3: Sending prompt to Gemini AI..."
-    );
-    // const result = await model.generateContent(detailedPrompt);
-    // const responseObject = JSON.parse(result.response.text());
-
     const result = await model.generateContent(detailedPrompt);
     const response = result.response;
     const text = response.text();
-    const responseObject = text.replace(/```(?:json)?\n?/g, "").trim();
-    console.log("AIROUTE", responseObject);
+    const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
+    const responseObject = JSON.parse(cleanedText);
 
-    console.log(responseObject)
-
-    console.log(
-      "[ACTION: generateAiRoute] Step 3 SUCCESS: Received and parsed AI response."
-    );
-
-    console.log("[ACTION: generateAiRoute] Step 4: Saving to database...");
     const newRoute = await db.aiRoute.create({
       data: { userId: user.id, startLocation, response: responseObject },
     });
-    console.log(
-      `[ACTION: generateAiRoute] Step 4 SUCCESS: Record created with ID: ${newRoute.id}`
-    );
 
     return { success: true, route: newRoute };
   } catch (error) {
-    console.error("\n--- [ACTION: generateAiRoute] CRITICAL FAILURE ---");
-    console.error(
-      `[ACTION: generateAiRoute] The process failed. Error: ${error.message}`
-    );
-    console.error("----------------------------------------\n");
     return { success: false, error: error.message };
   }
 }
 
+/**
+ * Retrieves all AI-generated routes for the authenticated user
+ * @returns {Object} Success status and array of routes
+ */
 export async function getAiRoutes() {
-  console.log("\n--- [ACTION: getAiRoutes] Received a new request ---");
   try {
     const user = await checkUser();
     if (!user) throw new Error("Authentication required.");
@@ -104,10 +80,12 @@ export async function getAiRoutes() {
   }
 }
 
+/**
+ * Deletes an AI-generated route by ID
+ * @param {string} id - Route ID to delete
+ * @returns {Object} Success status
+ */
 export async function deleteAiRoute(id) {
-  console.log(
-    `\n--- [ACTION: deleteAiRoute] Received a new request for ID: ${id} ---`
-  );
   try {
     const user = await checkUser();
     if (!user) throw new Error("Authentication required.");

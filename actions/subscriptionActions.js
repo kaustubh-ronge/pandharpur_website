@@ -100,7 +100,6 @@ export async function createSubscriptionOrder(formData) {
       subscriptionId: subscription.id,
     };
   } catch (error) {
-    console.error("Failed to create subscription order:", error);
     return { success: false, error: "Failed to create order." };
   }
 }
@@ -173,7 +172,6 @@ export async function verifyAndActivateSubscription(payload) {
 
     return { success: true, subscription: updated };
   } catch (error) {
-    console.error("Failed to verify subscription payment:", error);
     return { success: false, error: "Verification failed." };
   }
 }
@@ -215,7 +213,6 @@ export async function markSubscriptionReviewed(id) {
     });
     return { success: true, subscription: updated };
   } catch (error) {
-    console.error("Failed to mark subscription as reviewed:", error);
     return { success: false, error: "Update failed." };
   }
 }

@@ -62,7 +62,7 @@ export default function TravelsCard({ travel }) {
     try {
       await logDetailsView(travel.slug, "travel");
     } catch (error) {
-      console.error("Failed to log details view:", error);
+      // Error logging details view - silently fail
     }
   };
 

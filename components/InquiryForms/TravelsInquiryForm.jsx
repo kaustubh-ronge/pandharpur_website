@@ -92,10 +92,6 @@ export function TravelsInquiryForm({ travel, onFormSubmit }) {
       phone,
       travelSlug: travel.slug,
       entityType: 'travel'
-    }).then(result => {
-      if (!result.success) {
-        console.error("Failed to log inquiry in the background:", result.error);
-      }
     });
 
     if (onFormSubmit) onFormSubmit();

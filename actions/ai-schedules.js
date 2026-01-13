@@ -1,28 +1,22 @@
-
 "use server";
 import { checkUser } from "@/lib/checkUser";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { db } from "@/lib/prisma";
 import { format } from "date-fns";
 
+/**
+ * Generates an AI-powered schedule for a specific date based on user requirements
+ * @param {Object} formData - Contains prompt and date
+ * @returns {Object} Success status and generated schedule data
+ */
 export async function generateAiSchedule(formData) {
-  console.log("\n--- [ACTION: generateAiSchedule] Received a new request ---");
   try {
-    console.log("[ACTION: generateAiSchedule] Step 1: Checking user...");
     const user = await checkUser();
     if (!user) throw new Error("Authentication failed.");
-    console.log(
-      `[ACTION: generateAiSchedule] Step 1 SUCCESS: User authenticated (ID: ${user.id})`
-    );
 
-    console.log(
-      "[ACTION: generateAiSchedule] Step 2: Checking for GEMINI_API_KEY..."
-    );
-    if (!process.env.GEMINI_API_KEY)
+    if (!process.env.GEMINI_API_KEY) {
       throw new Error("CRITICAL: GEMINI_API_KEY is not configured.");
-    console.log(
-      "[ACTION: generateAiSchedule] Step 2 SUCCESS: GEMINI_API_KEY found."
-    );
+    }
 
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
@@ -47,39 +41,27 @@ export async function generateAiSchedule(formData) {
       CRITICAL: The ENTIRE output must be a single, valid JSON object. Provide coordinates if a location is mentioned.
     `;
 
-    console.log(
-      "[ACTION: generateAiSchedule] Step 3: Sending prompt to Gemini AI..."
-    );
     const result = await model.generateContent(detailedPrompt);
     const response = result.response;
     const text = response.text();
     const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
     const responseObject = JSON.parse(cleanedText);
-    console.log(
-      "[ACTION: generateAiSchedule] Step 3 SUCCESS: Received and parsed AI response."
-    );
 
-    console.log("[ACTION: generateAiSchedule] Step 4: Saving to database...");
     const newSchedule = await db.aiSchedule.create({
       data: { userId: user.id, prompt: formData, response: responseObject },
     });
-    console.log(
-      `[ACTION: generateAiSchedule] Step 4 SUCCESS: Record created with ID: ${newSchedule.id}`
-    );
 
     return { success: true, schedule: newSchedule };
   } catch (error) {
-    console.error("\n--- [ACTION: generateAiSchedule] CRITICAL FAILURE ---");
-    console.error(
-      `[ACTION: generateAiSchedule] The process failed. Error: ${error.message}`
-    );
-    console.error("----------------------------------------\n");
     return { success: false, error: error.message };
   }
 }
 
+/**
+ * Retrieves all AI-generated schedules for the authenticated user
+ * @returns {Object} Success status and array of schedules
+ */
 export async function getAiSchedules() {
-  console.log("\n--- [ACTION: getAiSchedules] Received a new request ---");
   try {
     const user = await checkUser();
     if (!user) throw new Error("Authentication required.");
@@ -93,10 +75,12 @@ export async function getAiSchedules() {
   }
 }
 
+/**
+ * Deletes an AI-generated schedule by ID
+ * @param {string} id - Schedule ID to delete
+ * @returns {Object} Success status
+ */
 export async function deleteAiSchedule(id) {
-  console.log(
-    `\n--- [ACTION: deleteAiSchedule] Received a new request for ID: ${id} ---`
-  );
   try {
     const user = await checkUser();
     if (!user) throw new Error("Authentication required.");

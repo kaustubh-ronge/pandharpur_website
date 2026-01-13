@@ -4,9 +4,6 @@ import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { sendMessage, createNewChatSession, getUserSessions, getSpecificSession, deleteChatSession, updateChatSessionTitle } from '@/actions/chatActions';
 import { motion } from 'framer-motion';
-
-// UI & Components
-// ✅ IMPORT DialogTitle explicitly if it's exported, or we use the primitive
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,31 +16,22 @@ export default function Chatbot() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [isInitializing, setIsInitializing] = useState(false);
-  
-  // ✅ FIX: "window is not defined" error
-  // We initialize with 0 or a safe default, then update on mount
   const [windowWidth, setWindowWidth] = useState(0);
-
-  useEffect(() => {
-    // Set initial width safely after mount
-    setWindowWidth(window.innerWidth);
-    
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  // Data
   const [session, setSession] = useState(null);
   const [messages, setMessages] = useState([]);
   const [sessionList, setSessionList] = useState([]);
   const [input, setInput] = useState('');
   const [language, setLanguage] = useState(null);
-  
-  // Rename & Delete State
   const [isDeleting, setIsDeleting] = useState(null);
   const [editingSessionId, setEditingSessionId] = useState(null);
   const [editTitleInput, setEditTitleInput] = useState("");
+
+  useEffect(() => {
+    setWindowWidth(window.innerWidth);
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
