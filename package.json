@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "seed:plans": "node scripts/seed-subscription-plans.js"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.19.1",

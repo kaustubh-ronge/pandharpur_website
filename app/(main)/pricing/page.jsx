@@ -2,8 +2,8 @@ import { Button } from "@/components/ui/button";
 
 const plans = [
   {
-    name: "Starter",
-    price: "₹2,999",
+    name: "Basic",
+    price: "₹1,000",
     duration: "3 months",
     idealFor: "New listings and seasonal stays",
     features: [
@@ -13,8 +13,8 @@ const plans = [
     ],
   },
   {
-    name: "Growth",
-    price: "₹5,499",
+    name: "Standard",
+    price: "₹1,500",
     duration: "3 months",
     idealFor: "Hotels, bhaktaniwas & restaurants",
     features: [
@@ -26,7 +26,7 @@ const plans = [
   },
   {
     name: "Premium",
-    price: "₹8,499",
+    price: "₹2,000",
     duration: "3 months",
     idealFor: "High-traffic or multi-property owners",
     features: [

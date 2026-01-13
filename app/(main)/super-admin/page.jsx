@@ -1,6 +1,7 @@
 import { checkUser } from "@/lib/checkUser";
 import { db } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
+import { SeedPlansButton } from "./_components/SeedPlansButton";
 
 async function getDashboardData() {
   const subscriptions = await db.subscription.findMany({
@@ -63,18 +64,23 @@ export default async function SuperAdminPage() {
   return (
     <main className="min-h-screen pt-28 pb-16 px-4 bg-slate-50">
       <div className="max-w-6xl mx-auto space-y-10">
-        <header className="space-y-2">
-          <p className="text-xs uppercase tracking-[0.2em] text-orange-500">
-            Super Admin Area
-          </p>
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900">
-            Business Subscriptions
-          </h1>
-          <p className="text-sm text-slate-600 max-w-2xl">
-            Review new hotel, bhaktaniwas, restaurant, and travel subscriptions
-            here. After verifying payment, you can create or update the
-            corresponding entries in Sanity.
-          </p>
+        <header className="space-y-4">
+          <div className="space-y-2">
+            <p className="text-xs uppercase tracking-[0.2em] text-orange-500">
+              Super Admin Area
+            </p>
+            <h1 className="text-3xl font-bold tracking-tight text-slate-900">
+              Business Subscriptions
+            </h1>
+            <p className="text-sm text-slate-600 max-w-2xl">
+              Review new hotel, bhaktaniwas, restaurant, and travel subscriptions
+              here. After verifying payment, you can create or update the
+              corresponding entries in Sanity.
+            </p>
+          </div>
+          <div>
+            <SeedPlansButton />
+          </div>
         </header>
 
         <section className="grid gap-4 md:grid-cols-3">

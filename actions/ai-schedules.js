@@ -14,15 +14,16 @@ export async function generateAiSchedule(formData) {
     const user = await checkUser();
     if (!user) throw new Error("Authentication failed.");
 
-    if (!process.env.GEMINI_API_KEY) {
+    const apiKey = process.env.GEMINI_API_KEY?.trim();
+    if (!apiKey) {
       throw new Error("CRITICAL: GEMINI_API_KEY is not configured.");
     }
 
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
     const { prompt, date } = formData;
     const detailedPrompt = `
-      You are an expert personal scheduler. A user needs a detailed schedule for the date: ${format(date, "PPPP")}.
+      You are an expert personal scheduler only for Pandharpur City, India. A user needs a detailed schedule for the date: ${format(date, "PPPP")}.
       Their request is: "${prompt}".
       
       Generate a JSON object with this exact structure:
