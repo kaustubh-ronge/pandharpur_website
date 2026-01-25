@@ -10,6 +10,14 @@ export async function generateMetadata({ params }) {
     return {
         title: `${temple.name} | Pandharpur Temples`,
         description: `Details about the sacred ${temple.name}, its history, timings, and festivals.`,
+        robots: {
+            index: true,
+            follow: true,
+            googleBot: {
+                index: true,
+                follow: true,
+            },
+        },
     };
 }
 

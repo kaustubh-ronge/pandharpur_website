@@ -21,6 +21,14 @@ export async function generateMetadata(props) {
     return {
         title: `${kirtankar.name} | Kirtankars in Pandharpur`,
         description: `Details and booking inquiry for ${kirtankar.name}. ${kirtankar.description}`,
+        robots: {
+            index: true,
+            follow: true,
+            googleBot: {
+                index: true,
+                follow: true,
+            },
+        },
     };
 }
 

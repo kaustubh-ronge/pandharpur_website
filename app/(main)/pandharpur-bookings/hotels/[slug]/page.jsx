@@ -25,6 +25,14 @@ export async function generateMetadata(props) {
     return {
         title: `${hotel.name} | Pandharpur Hotels`,
         description: `View details and amenities for ${hotel.name}, a hotel in Pandharpur.`,
+        robots: {
+            index: true,
+            follow: true,
+            googleBot: {
+                index: true,
+                follow: true,
+            },
+        },
     };
 }
 

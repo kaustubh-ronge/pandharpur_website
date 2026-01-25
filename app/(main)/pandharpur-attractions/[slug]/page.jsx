@@ -20,6 +20,14 @@ export async function generateMetadata({ params }) {
     return {
         title: `${item.name} | Pandharpur Attractions`,
         description: item.description || `Details about ${item.name}, a point of interest in Pandharpur.`,
+        robots: {
+            index: true,
+            follow: true,
+            googleBot: {
+                index: true,
+                follow: true,
+            },
+        },
     };
 }
 

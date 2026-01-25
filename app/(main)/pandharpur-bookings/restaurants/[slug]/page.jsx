@@ -22,6 +22,14 @@ export async function generateMetadata(props) {
     return {
         title: `${restaurant.name} | Pandharpur Restaurants`,
         description: restaurant.description, // Uses the short description for metadata
+        robots: {
+            index: true,
+            follow: true,
+            googleBot: {
+                index: true,
+                follow: true,
+            },
+        },
     };
 }
 

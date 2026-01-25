@@ -21,6 +21,14 @@ export async function generateMetadata(props) {
     return {
         title: `${item.name} | Pandharpur Bhaktaniwas`,
         description: `Find details about ${item.name}, a place for devotees to stay in Pandharpur.`,
+        robots: {
+            index: true,
+            follow: true,
+            googleBot: {
+                index: true,
+                follow: true,
+            },
+        },
     };
 }
 
