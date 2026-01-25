@@ -1,7 +1,6 @@
 import { checkUser } from "@/lib/checkUser";
 import { db } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
-import { SeedPlansButton } from "./_components/SeedPlansButton";
 
 async function getDashboardData() {
   const subscriptions = await db.subscription.findMany({
@@ -77,9 +76,6 @@ export default async function SuperAdminPage() {
               here. After verifying payment, you can create or update the
               corresponding entries in Sanity.
             </p>
-          </div>
-          <div>
-            <SeedPlansButton />
           </div>
         </header>
 
