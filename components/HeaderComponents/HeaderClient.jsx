@@ -93,7 +93,7 @@ const PAGE_SEO_METADATA = {
 const DEFAULT_METADATA = {
     title: "Pandharpur Darshan - Complete Pilgrimage Services with Booking & Travel Planning",
     description: "Complete Pandharpur pilgrimage services: Live temple darshan, hotel/lodge/restaurant booking, travel planning, temple guides, and tourist information.",
-    keywords: "Pandharpur pilgrimage, Vitthal temple, hotel booking, travel planning, temple guide, tourist information, Maharashtra pilgrimage"
+    keywords: "Pandharpur pilgrimage, Vitthal temple, hotel booking, travel planning, temple guide, tourist information, Maharashtra pilgrimage, religious tourism"
 };
 
 // COMPREHENSIVE KEYWORDS FOR ALL SERVICES
