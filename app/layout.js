@@ -13,6 +13,10 @@ export const metadata = {
   description: "Pandharpur Darshan",
   content:
     "Plan your Pandharpur Darshan – find details about the yatra, temple timings, festivals, accommodation, travel guide, and booking options.",
+  icons: {
+    icon: "/V_logo.png",
+    apple: "/V_logo.png",
+  },
   robots: {
     index: true,
     follow: true,

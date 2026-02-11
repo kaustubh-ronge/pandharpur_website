@@ -1,0 +1,17 @@
+<!-- Replace only the crown section inside both figures with this -->
+
+<defs>
+  <linearGradient id="royalGold" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#FFF176"/>
+    <stop offset="50%" stop-color="#FFD700"/>
+    <stop offset="100%" stop-color="#FFB300"/>
+  </linearGradient>
+</defs>
+
+<!-- Detailed Crown -->
+<path d="M55 55 L95 55 L90 30 L85 20 L75 10 L65 20 L60 30 Z"
+      fill="url(#royalGold)" stroke="#B8860B" stroke-width="2"/>
+
+<circle cx="75" cy="35" r="4" fill="#D32F2F"/>
+<circle cx="65" cy="42" r="3" fill="#1976D2"/>
+<circle cx="85" cy="42" r="3" fill="#2E7D32"/>

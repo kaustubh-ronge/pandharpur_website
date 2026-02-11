@@ -19,10 +19,10 @@ import { navItems, quickLinks } from "@/data/HeaderData/headerData"
 
 // Define the languages and their codes for the translator
 const supportedLanguages = [
-    { name: "English", code: "en" },
-    { name: "हिंदी", code: "hi" },
-    { name: "मराठी", code: "mr" },
-    { name: "ಕನ್ನಡ", code: "kn" }
+    { name: "English", nativeName: "English", code: "en" },
+    { name: "हिंदी", nativeName: "Hindi", code: "hi" },
+    { name: "मराठी", nativeName: "Marathi", code: "mr" },
+    { name: "ಕನ್ನಡ", nativeName: "Kannada", code: "kn" }
 ];
 
 // COMPREHENSIVE SEO METADATA FOR ALL SERVICES
@@ -164,11 +164,19 @@ const ALL_SEO_KEYWORDS = `
 export function HeaderClient({ user }) {
     const pathname = usePathname()
     const [selectedLang, setSelectedLang] = useState("English")
+    const [selectedLangCode, setSelectedLangCode] = useState("en")
     
     // Get SEO metadata for current page
     const currentPageMetadata = PAGE_SEO_METADATA[pathname] || DEFAULT_METADATA
 
-    // Update page metadata dynamically (client-side)
+    // This function calls the global function from our GoogleTranslateManager
+    const handleLanguageChange = (langName, langCode) => {
+        setSelectedLang(langName);
+        setSelectedLangCode(langCode);
+        if (window.changeGoogleTranslateLanguage) {
+            window.changeGoogleTranslateLanguage(langCode);
+        }
+    };
     useEffect(() => {
         // Update page title
         if (currentPageMetadata.title) {
@@ -217,14 +225,6 @@ export function HeaderClient({ user }) {
         }
     }, [pathname, currentPageMetadata])
 
-    // This function calls the global function from our GoogleTranslateManager
-    const handleLanguageChange = (langName, langCode) => {
-        setSelectedLang(langName);
-        if (window.changeGoogleTranslateLanguage) {
-            window.changeGoogleTranslateLanguage(langCode);
-        }
-    };
-
     return (
         <>
             {/* Hidden SEO elements for search engines */}
@@ -246,7 +246,7 @@ export function HeaderClient({ user }) {
                         "telephone": "+91-XXXXXXXXXX",
                         "email": "contact@pandharpurdarshan.com",
                         "openingHours": "24/7",
-                        "image": "https://pandharpurdarshan.com/hero-logo-1.png",
+                        "image": "/V_logo.png",
                         "priceRange": "₹₹",
                         "servesCuisine": "Vegetarian Indian Food",
                         "makesOffer": [
@@ -342,16 +342,18 @@ export function HeaderClient({ user }) {
             {/* ORIGINAL HEADER UI - NO VISUAL CHANGES */}
             <header className="fixed top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md shadow-sm md:pb-1">
                 <div className="w-full max-w-screen-2xl mx-auto flex h-20 items-center justify-between px-3 sm:px-5 lg:px-8">
-                    <Link href="/" className="flex-shrink-0">
-                        <Image 
-                            src={'/hero-logo-1.png'} 
-                            height={200} 
-                            width={320} 
-                            className="lg:w-full ml-[-100px] md:h-[100%] md:ml-[-30px] md:w-full" 
-                            alt="Pandharpur Darshan - Live Temple Viewing, Hotel Booking & Travel Planning Services"
-                            title="Pandharpur Complete Pilgrimage Services"
-                            priority 
-                        />
+                    <Link href="/" className="flex-shrink-0 flex items-center">
+                        <div className="rounded-full border-4 border-orange-500 p-1 bg-white shadow-md">
+                            <Image 
+                                src={'/V_logo.png'} 
+                                height={180} 
+                                width={180} 
+                                className="lg:w-[50px] md:w-[40px] w-[30px] h-auto rounded-full" 
+                                alt="Pandharpur Darshan - Vitthal Rukmini Temple Logo"
+                                title="Pandharpur Vitthal Rukmini Temple - Complete Pilgrimage Services"
+                                priority 
+                            />
+                        </div>
                     </Link>
 
                     <nav className="hidden lg:flex items-center gap-6 mx-auto">
@@ -406,9 +408,10 @@ export function HeaderClient({ user }) {
                             {/* Language Selector */}
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" size="sm" className="gap-1 text-gray-700 hover:bg-gray-100">
+                                    <Button variant="ghost" size="sm" className="gap-2 text-gray-700 hover:bg-gray-100">
                                         <Languages className="h-4 w-4" />
-                                        <span>{selectedLang}</span>
+                                        <span>Language</span>
+                                        <ChevronDown className="h-4 w-4" />
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end">
@@ -416,6 +419,8 @@ export function HeaderClient({ user }) {
                                         <DropdownMenuItem
                                             key={lang.code}
                                             onClick={() => handleLanguageChange(lang.name, lang.code)}
+                                            className={`${selectedLang === lang.name ? "bg-orange-50 text-orange-600" : ""} notranslate`}
+                                            translate="no"
                                         >
                                             {lang.name}
                                         </DropdownMenuItem>
@@ -525,33 +530,32 @@ export function HeaderClient({ user }) {
                                         </div>
                                         <hr />
                                         {/* --- LANGUAGE DROPDOWN FOR MOBILE MENU --- */}
-                                        <div className="flex flex-col gap-y-2 text-sm">
-                                            <h3 className="font-semibold px-3 text-gray-500 text-xs uppercase">Language</h3>
-                                            <DropdownMenu>
-                                                <DropdownMenuTrigger asChild>
-                                                    <Button
-                                                        variant="ghost"
-                                                        className="w-full justify-between items-center px-3 py-2 text-gray-600 hover:bg-gray-100"
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button
+                                                    variant="ghost"
+                                                    className="w-full justify-between items-center px-3 py-2 text-gray-600 hover:bg-gray-100"
+                                                >
+                                                    <span className="flex items-center gap-3">
+                                                        <Languages className="h-4 w-4" />
+                                                        Language
+                                                    </span>
+                                                    <ChevronDown className="h-4 w-4" />
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent align="end" className="w-40">
+                                                {supportedLanguages.map((lang) => (
+                                                    <DropdownMenuItem
+                                                        key={lang.code}
+                                                        onClick={() => handleLanguageChange(lang.name, lang.code)}
+                                                        className={`${selectedLang === lang.name ? "bg-orange-50 text-orange-600" : ""} notranslate`}
+                                                        translate="no"
                                                     >
-                                                        <span className="flex items-center gap-3">
-                                                            <Languages className="h-4 w-4" />
-                                                            {selectedLang}
-                                                        </span>
-                                                        <ChevronDown className="h-4 w-4" />
-                                                    </Button>
-                                                </DropdownMenuTrigger>
-                                                <DropdownMenuContent className="w-[260px]">
-                                                    {supportedLanguages.map((lang) => (
-                                                        <DropdownMenuItem
-                                                            key={lang.code}
-                                                            onClick={() => handleLanguageChange(lang.name, lang.code)}
-                                                        >
-                                                            {lang.name}
-                                                        </DropdownMenuItem>
-                                                    ))}
-                                                </DropdownMenuContent>
-                                            </DropdownMenu>
-                                        </div>
+                                                        {lang.name}
+                                                    </DropdownMenuItem>
+                                                ))}
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
                                     </div>
                                     <SheetClose asChild>
                                         <Button variant="outline" className="mt-4 w-full">
