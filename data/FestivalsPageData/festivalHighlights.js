@@ -3,19 +3,19 @@ export const festivalHighlights = [
     title: "Morning Aarti",
     event: "Ashadhi Ekadashi",
     description: "The divine morning ceremony in the temple",
-    image: "/morning-aarti.jpg",
+    image: "/palkhi-image-12",
   },
   {
     title: "Palkhi Procession",
     event: "Pandharpur Yatra",
     description: "Thousands of devotees walking together in devotion",
-    image: "/palkhi-procession.jpg",
+    image: "/palkhi-procession.jpeg",
   },
   {
     title: "Deepotsav",
     event: "Kartiki Ekadashi",
     description: "The temple illuminated with thousands of oil lamps",
-    image: "/deepotsav.jpg",
+    image: "/deepotsav.jpeg",
   },
   {
     title: "Abhishekam",
