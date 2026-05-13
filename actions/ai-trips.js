@@ -1,0 +1,96 @@
+
+// In actions/ai-trips.js
+"use server";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { db } from "@/lib/prisma";
+import { checkUser } from "@/lib/checkUser";
+import { aiTripSchema } from "@/lib/schema";
+
+export async function generateAiTrip(formData) {
+    try {
+    const user = await checkUser();
+    if (!user) throw new Error("Authentication failed.");
+
+    const validation = aiTripSchema.safeParse(formData);
+    if (!validation.success) {
+        throw new Error("Invalid parameters provided.");
+    }
+
+    const { prompt, duration, people, budget } = validation.data;
+
+    if (!process.env.GEMINI_API_KEY)
+      throw new Error("CRITICAL: GEMINI_API_KEY is not configured.");
+
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const detailedPrompt = `
+      You are a world-class travel expert for Pandharpur, India. Create a hyper-detailed, step-by-step itinerary.
+      User Request: "${prompt}".
+      Parameters: Duration: ${duration} days, People: ${people}, Budget: ${budget}.
+      Generate a JSON object with this exact structure:
+      {
+        "title": "A creative title for the trip",
+        "summary": "A 2-sentence summary.",
+        "itinerary": [{
+            "day": 1,
+            "title": "Theme for the day",
+            "activities": [{
+                "time": "e.g., 08:00 AM - 10:00 AM",
+                "locationName": "Name of the place",
+                "fullAddress": "Full, real address for geocoding",
+                "coordinates": { "lat": 17.6744, "lng": 75.3235 },
+                "description": "A detailed description.",
+                "travelSuggestion": "Step-by-step directions FROM THE PREVIOUS LOCATION."
+            }]
+        }],
+        "estimatedCost": { "total": 4300 },
+        "travelTips": ["Tip 1", "Tip 2"]
+      }
+      CRITICAL: The ENTIRE output must be a single, valid JSON object. Provide accurate coordinates.
+    `;
+
+
+    const result = await model.generateContent(detailedPrompt);
+    const text = await result.response.text();
+    const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
+    let responseObject;
+    try {
+      responseObject = JSON.parse(cleanedText);
+    } catch (parseError) {
+      throw new Error("The AI generated a malformed itinerary. Please try again.");
+    }
+
+    const newTrip = await db.aiTrip.create({
+      data: { userId: user.id, prompt: formData, response: responseObject },
+    });
+
+    return { success: true, trip: newTrip };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+}
+
+export async function getAiTrips() {
+  try {
+    const user = await checkUser();
+    if (!user) throw new Error("Authentication required.");
+    const trips = await db.aiTrip.findMany({
+      where: { userId: user?.id },
+      orderBy: { createdAt: "desc" },
+    });
+    return { success: true, trips };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+}
+
+export async function deleteAiTrip(id) {
+  try {
+    const user = await checkUser();
+    if (!user) throw new Error("Authentication required.");
+    await db.aiTrip.delete({ where: { id, userId: user?.id } });
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+}

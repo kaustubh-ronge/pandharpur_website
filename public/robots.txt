@@ -1,0 +1,10 @@
+User-agent: *
+Disallow: /studio
+Disallow: /pandharpur-bookings/
+Disallow: /pandharpur-darshan-yatra-guide/
+Disallow: /super-admin
+Disallow: /sign-in
+Disallow: /sign-up
+Disallow: /pricing
+Disallow: /join-us
+Sitemap: https://pandharpurdarshan.com/sitemap.xml
