@@ -21,8 +21,10 @@
  * Using their own transform API is equivalent quality to Next.js optimization.
  */
 export default function sanityImageLoader({ src, width, quality }) {
-  // Only apply Sanity transforms to Sanity CDN URLs
-  if (src && src.includes('cdn.sanity.io')) {
+  if (!src) return '';
+
+  // 1. Handle Sanity CDN Images (Primary Use Case)
+  if (src.includes('cdn.sanity.io')) {
     const url = new URL(src);
     url.searchParams.set('w', String(width));
     url.searchParams.set('q', String(quality || 75));
@@ -31,6 +33,14 @@ export default function sanityImageLoader({ src, width, quality }) {
     return url.toString();
   }
 
-  // For all other image sources (placehold.co, wikimedia, etc.), return as-is
+  // 2. Handle Local Static Images (/_next/static/media or /public)
+  // For local images, we just return the path. 
+  // We check for startsWith('/') to identify local assets.
+  if (src.startsWith('/') && !src.startsWith('//')) {
+    return src;
+  }
+
+  // 3. Handle Other External URLs (placehold.co, wikimedia, etc.)
+  // Just return the original src as we don't want to optimize external non-CDN images here.
   return src;
 }
