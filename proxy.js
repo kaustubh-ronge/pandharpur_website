@@ -20,8 +20,13 @@ const isPublicRoute = createRouteMatcher([
 export default clerkMiddleware(async (auth, req) => {
   const path = req.nextUrl.pathname;
 
-  // Always allow crawler-critical files for SEO safety
-  if (path === "/robots.txt" || path === "/sitemap.xml") {
+  // Always allow crawler-critical and entry pages for SEO safety
+  if (
+    path === "/robots.txt" || 
+    path === "/sitemap.xml" || 
+    path === "/" || 
+    path === "/temples"
+  ) {
     return NextResponse.next();
   }
 
