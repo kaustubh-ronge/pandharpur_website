@@ -20,12 +20,17 @@ const isPublicRoute = createRouteMatcher([
 export default clerkMiddleware(async (auth, req) => {
   const path = req.nextUrl.pathname;
 
-  // Always allow crawler-critical and entry pages for SEO safety
+  // Always allow crawler-critical and all public entry pages for SEO safety
   if (
     path === "/robots.txt" || 
     path === "/sitemap.xml" || 
     path === "/" || 
-    path === "/temples"
+    path.startsWith("/temples") || 
+    path.startsWith("/pandharpur-attractions") || 
+    path.startsWith("/pandharpur-festivals") || 
+    path === "/about" || 
+    path === "/emergency" || 
+    path === "/help"
   ) {
     return NextResponse.next();
   }
