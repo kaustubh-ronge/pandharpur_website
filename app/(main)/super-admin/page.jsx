@@ -4,7 +4,10 @@ import { Button } from "@/components/ui/button";
 
 export const metadata = {
   title: "Super Admin Dashboard",
-  robots: "noindex, nofollow",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 async function getDashboardData() {

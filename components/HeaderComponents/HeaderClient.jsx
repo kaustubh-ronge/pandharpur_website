@@ -42,7 +42,7 @@ export function HeaderClient({ user }) {
         <header className="fixed top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md shadow-sm md:pb-1">
             <div className="w-full max-w-screen-2xl mx-auto flex h-20 items-center justify-between px-3 sm:px-5 lg:px-8">
                 <Link href="/" className="flex-shrink-0">
-                    <Image src={'/hero-logo-1.png'} height={200} width={320} className=" lg:w-full ml-[-100px] md:h-[100%] md:ml-[-30px] md:w-full" alt="logo" priority />                </Link>
+                    <Image src={'/hero-logo-1.png'} height={200} width={320} className=" lg:w-full ml-[-100px] md:h-[100%] md:ml-[-30px] md:w-full" alt="Pandharpur Darshan - Official Yatra Guide" priority />                </Link>
 
                 <nav className="hidden lg:flex items-center gap-6 mx-auto">
                     {navItems.map((item) => (

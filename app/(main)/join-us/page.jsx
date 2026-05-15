@@ -8,7 +8,10 @@ import { sanityFetch } from "@/sanity/lib/fetch";
 
 export const metadata = {
   title: 'Join Us | Partner Registration',
-  robots: "noindex, nofollow",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 const JoinUsPage = async () => {

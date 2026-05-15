@@ -2,7 +2,10 @@ import React from "react";
 
 export const metadata = {
   title: "Trip Planner Guide",
-  robots: "noindex, nofollow",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 const GuideLayout = ({ children }) => {

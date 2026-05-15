@@ -33,16 +33,58 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  return (
-    <ClerkProvider>
-      <html lang="en" suppressHydrationWarning className={`${poppins.variable}`}>
-        <body className="font-poppins antialiased">
-          <main className="min-h-screen">{children}</main>
-          <SpeedInsights />
-          <Analytics />
-        </body>
-      </html>
-    </ClerkProvider>
-  );
+    const organizationSchema = {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Pandharpur Darshan",
+        "url": "https://pandharpurdarshan.com",
+        "logo": "https://pandharpurdarshan.com/logo.png",
+        "description": "Official guide for Pandharpur Darshan. Find information about Lord Vitthal temple timings, festivals, and yatra guides.",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Pandharpur",
+            "addressRegion": "Maharashtra",
+            "addressCountry": "IN"
+        },
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+91-0000000000",
+            "contactType": "customer service"
+        }
+    };
+
+    const websiteSchema = {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Pandharpur Darshan",
+        "url": "https://pandharpurdarshan.com",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://pandharpurdarshan.com/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    };
+
+    return (
+        <ClerkProvider>
+            <html lang="en" suppressHydrationWarning className={`${poppins.variable}`}>
+                <head>
+                    <script
+                        type="application/ld+json"
+                        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+                    />
+                    <script
+                        type="application/ld+json"
+                        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+                    />
+                </head>
+                <body className="font-poppins antialiased">
+                    <main className="min-h-screen">{children}</main>
+                    <SpeedInsights />
+                    <Analytics />
+                </body>
+            </html>
+        </ClerkProvider>
+    );
 }
 

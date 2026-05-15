@@ -2,7 +2,10 @@ import { Button } from "@/components/ui/button";
 
 export const metadata = {
   title: "Pricing Plans",
-  robots: "noindex, nofollow",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 const plans = [

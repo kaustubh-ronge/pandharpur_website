@@ -2,7 +2,10 @@ import { AmberBackground } from "@/components/AmberSharedBackground";
 
 export const metadata = {
   title: "Bookings",
-  robots: "noindex, nofollow",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 // This layout applies the background ONLY to the pandharpur-bookings route.

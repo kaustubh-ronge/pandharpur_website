@@ -276,8 +276,30 @@ function OverviewSection({ item }) {
 
 // --- Main Client Component ---
 export default function AttractionPageClient({ item }) {
+    const attractionSchema = {
+        "@context": "https://schema.org",
+        "@type": "TouristAttraction",
+        "name": item.name,
+        "description": item.description,
+        "image": item.image,
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": item.address,
+            "addressLocality": "Pandharpur",
+            "addressRegion": "Maharashtra",
+            "addressCountry": "IN"
+        },
+        "telephone": item.phoneNumber,
+        "url": `https://pandharpurdarshan.com/pandharpur-attractions/${item.slug?.current || item.slug}`,
+        "publicAccess": true
+    };
+
     return (
         <div className="min-h-screen mt-[70px]">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(attractionSchema) }}
+            />
             <SharedBackground />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
                 <AnimatedSection className="mb-10">

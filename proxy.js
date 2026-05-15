@@ -26,12 +26,12 @@ export default clerkMiddleware(async (auth, req) => {
     path === "/" ||
     path === "/robots.txt" ||
     path === "/sitemap.xml" ||
-    path.startsWith("/temples") ||
+    path.startsWith("/about") ||
+    path.startsWith("/emergency") ||
+    path.startsWith("/help") ||
     path.startsWith("/pandharpur-attractions") ||
     path.startsWith("/pandharpur-festivals") ||
-    path === "/about" ||
-    path === "/emergency" ||
-    path === "/help" ||
+    path.startsWith("/temples") ||
     path.startsWith("/.well-known")
   ) {
     return NextResponse.next();

@@ -8,8 +8,25 @@ import faqs from "@/data/HeroData/faqsData";
 import { BlueBackground } from "../BlueSharedBackGround";
 
 const FaqSection = () => {
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": Object.values(faqs).flat().map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  };
+
   return (
     <section className="relative py-20 px-6 md:px-12 overflow-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       <BlueBackground />
       <div className="relative z-10 max-w-4xl mx-auto">
         <motion.div

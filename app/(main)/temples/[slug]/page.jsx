@@ -26,14 +26,15 @@ export async function generateMetadata({ params }) {
     if (!temple) return { title: "Temple Not Found" };
 
     return {
-        title: `${temple.name} | Pandharpur Temples`,
-        description: `Details about the sacred ${temple.name}, its history, timings, and festivals.`,
+        title: temple.seoTitle || `${temple.name} | Pandharpur Temples`,
+        description: temple.seoDescription || `Details about the sacred ${temple.name}, its history, timings, and festivals.`,
+        keywords: temple.seoKeywords || `Pandharpur, ${temple.name}, temples, Vitthal`,
         alternates: {
             canonical: `/temples/${resolvedParams.slug}`,
         },
         openGraph: {
-            title: `${temple.name} | Pandharpur Temples`,
-            description: `Explore ${temple.name}: History, Darshan timings, and spiritual significance.`,
+            title: temple.seoTitle || `${temple.name} | Pandharpur Temples`,
+            description: temple.seoDescription || `Explore ${temple.name}: History, Darshan timings, and spiritual significance.`,
             images: [temple.image],
             type: 'website',
         },
