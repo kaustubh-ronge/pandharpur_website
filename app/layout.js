@@ -42,8 +42,10 @@ export default function RootLayout({ children }) {
         "description": "Official guide for Pandharpur Darshan. Find information about Lord Vitthal temple timings, festivals, and yatra guides.",
         "address": {
             "@type": "PostalAddress",
+            "streetAddress": "Main Road, Near Vitthal Temple",
             "addressLocality": "Pandharpur",
             "addressRegion": "Maharashtra",
+            "postalCode": "413304",
             "addressCountry": "IN"
         },
         "contactPoint": {
